@@ -1,403 +1,169 @@
-@import url("/css/style.css");
-@import url("/css/sections/header.css");
-@import url("/css/sections/footer.css");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
-  
+:root {
+  --primary-color: #fff8f0;
+  --text-color: #333;
+  --accent-color: #ff6b6b;
+  --card-bg: #ffffff;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-.popular-foods {
-  margin: 50px;
-  border-radius: 50px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  padding: 64px;
-  display: flex;
-  flex-direction: column;
+/* Reset */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--primary-color);
-  background-image: url("../../assets/popular_bg.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  overflow: hidden;
+  color: var(--text-color);
 }
 
-.popular-foods__title {
-  font-size: 56px;
-  font-family: var(--playfair-display);
-  font-weight: 600;
-  line-height: 78px;
-  color: #fff;
-  text-align: center;
+/* Menu Background with Repeat Pattern */
+.menu-background {
+  margin: 50px auto;
+  padding: 64px;
+  background-color: var(--primary-color);
+  background-image: url("/assets/menu-background.png"); /* use small tile image */
+  background-repeat: repeat;
+  background-size: 150px 150px; /* or adjust as per your tile */
+  border-radius: 50px;
+  box-shadow: var(--shadow);
 }
 
-.popular-foods__filters {
-  margin-top: 48px;
-  max-width: 100%;
-  overflow-x: auto;
-
+/* Search Section */
+.subscription__form1 {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 12px;
 }
 
-.popular-foods__filter-btn {
-  padding: 10px 28px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 46px;
-
+.subscription__form1 input {
+  padding: 10px 16px;
   font-size: 16px;
-  font-weight: 300px;
-  line-height: 25px;
-  font-family: var(--plus-jakarta-sans);
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 300px;
+}
+
+.subscription__form1 button {
+  padding: 10px 16px;
+  background-color: var(--accent-color);
   color: #fff;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.popular-foods__filter-btn img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.popular-foods__filter-btn.active {
-  background: #fff;
-  color: var(--primary-color)
-}
-
-.popular-foods__filter-btn:hover {
-  background: #fff;
-  color: var(--primary-color)
-}
-
-.popular-foods__catalogue {
-  margin-top: 64px;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 56px;
-}
-
-.popular-foods__button img {
+.subscription__form1 button img {
   width: 20px;
   height: 20px;
-  object-fit: contain;
-
-  margin-left: 21px;
 }
 
-.popular-foods__card {
-  padding: 38px;
-  min-width: 300px;
-  height: fit-content;
-
+/* Filters */
+.popular-foods__filters {
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
 
-  border-radius: 36px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.popular-foods__filter-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--accent-color);
+  background-color: #fff;
+  color: var(--accent-color);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.popular-foods__filter-btn.active,
+.popular-foods__filter-btn:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* Catalogue Grid */
+.popular-foods__catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  padding: 0 24px 50px;
+}
+
+/* Card */
+.popular-foods__card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  text-align: center;
+  padding: 16px;
 }
 
 .popular-foods__card-image {
-  width: 200px;
-  height: 150px;
-  object-fit: contain;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .popular-foods__card-title {
+  font-size: 18px;
   font-weight: 600;
-  font-size: 24px;
-  font-family: var(--playfair-display);
-  color: #fff;
-  text-align: center;
+  margin: 10px 0 4px;
 }
+
 .popular-foods__card-seller {
-   font-size: 20px; 
-  font-weight: 300;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
+  font-size: 14px;
+  color: #777;
 }
 
 .popular-foods__card-details {
-  width: 100%;
-  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  align-items: center;
 }
 
 .popular-foods__card-rating {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .popular-foods__card-rating img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.popular-foods__card-rating p {
-  font-size: 20px; 
-  font-weight: 300;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
+  width: 16px;
+  height: 16px;
 }
 
 .popular-foods__card-price {
-  font-size: 20px; 
-  font-weight: 500;
-  font-family: var(--plus-jakarta-sans);
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Add to Cart */
+.subscription__form button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: var(--accent-color);
   color: #fff;
-}
-
-.popular-foods__card:hover {
-  background: #fff;
-  min-width: 310px;
-  transition: all 0.3s ease;
-}
-
-.popular-foods__card:hover .popular-foods__card-image {
-  width: 214px;
-  height: 160px;
-  transition: all 0.3s ease;
-}
-
-.popular-foods__card:hover .popular-foods__card-title {
-  color: var(--black-500);
-  font-size: 32px;
-  transition: all 0.3s ease;
-}
-
-.popular-foods__card:hover .popular-foods__card-rating img {
-  width: 32px;
-  height: 32px;
-  transition: all 0.3s ease;
-}
-
-.popular-foods__card:hover .popular-foods__card-rating p{
-  font-size: 24px;
-  color: var(--gray-100);
-  transition: all 0.3s ease;
-}
-
-.popular-foods__card:hover .popular-foods__card-price {
-  font-size: 24px;
-  color: var(--black-500);
-  transition: all 0.3s ease;
-}
-.subscription__form {
-    flex-direction: column;
-    gap: 20px;
-
-    min-width: 100%;
-    border-radius: 20px;
-    padding: 0;
-
-    border: none;
-  }
-
-  .subscription__form button {
-    min-width: 100%;
-    background-color: #8c0c0c44;
-    
-  }
-  .subscription__form:hover  button {
-    min-width: 100%;
-    background-color: #000000;
-    
-  }
-.subscription__form1 {
-  min-width: 480px;
-  margin-top: 40px;
-
-  padding: 14px 14px 14px 24px;
-
-  display: flex;
-  gap: 10px;
-
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 46px;
-}
-
-.subscription__form1 input {
-  flex: 1;
-
-  font-size:  16px;
-  font-weight: 400px;
-  font-family: var(--plus-jakarta-sans);
-
-  color: #fff;
-  opacity: 0.9;
-
-  background: transparent;
   border: none;
-  outline: none;
-}
-
-.subscription__form1 input::placeholder {
-  color: #fff;
-
-}
-
-.subscription__form1 button {
-  padding: 20px;
-
-  min-width: 70px;
-
-  font-size: 16px;
-  font-weight: 500;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
-  text-align: center;
-
-  background: var(white);
-  border-radius: 46px;
-  border: none;
-  outline: none;
-
   cursor: pointer;
-}
-.menu-background {
-  padding: 64px;
-  height: 250px;
-  background-color: var(--primary-color);
-  background-image: url('/assets/menu-background.png');
-  background-position: center;
-  background-repeat:no-repeat;
-  background-size: cover;
-  margin: 50px;
-  border-radius: 50px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  max-width: 1380px;
-  flex-direction: column;
-  overflow: hidden;
-}
-.menu-background h1{
-    font-size: 300px;
-    font-weight: 500px;
-    color: white;
-    text-shadow:rgba(0, 0, 0, 0.433) 0px 10px 20px, rgba(0, 0, 0, 0.438) 0px 6px 6px; ;
-    
-}
-.layer-container {
-   
-  text-align: center;
-  position: relative;
-  width: 100%;
-  height: 40vh;
-  overflow: hidden;
+  transition: background 0.2s ease;
 }
 
-
-/* Layer 1: Floral background */
-.floral-bg {
-   padding-right: 50px;
-  position: relative;
-  width: 95%;
-  height: 80%;
-  z-index: 2;
-   margin: 50px;
-  border-radius: 50px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  padding: 64px;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--primary-color);
-  background: url('/menu/menu-background.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  overflow: hidden;
-}
-.info{
-   position: absolute;
-   white-space: nowrap;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -45%);
-      text-align: center;
-      font-size: 10vw;
-      font-weight: 400px;
-      color: rgb(255, 255, 255);
-      z-index: 4;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.59);
-
+.subscription__form button:hover {
+  background-color: #e85d5d;
 }
 
-/* Layer 2: Animated food scroll */
-.food-scroll {
-   padding-right: 10px;
-  overflow: hidden;
-  width: 100%;
-  white-space: nowrap;
-  position: relative;
-}
-
-.food-scroll img {
-  height: 120px;
-  width: 120px;
-  margin: 0 5px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-.food-track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scroll 80s linear infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Layer 3: White smoke effect */
-.smoke {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-left: 60px;
-  margin-right: 0px;
-  width: 20%;
-  height: 40%;
-  filter: blur(15px);
-  transform: translate(135%, 90%);
-  background: radial-gradient(circle at 20% 50%, rgb(255, 255, 255) 0%, transparent 100%),
-              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.838) 0%, transparent 100%),
-              radial-gradient(circle at 80% 50%, rgb(255, 255, 255) 0%, transparent 100%);
-  z-index: 3;
-}
-.smoke2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-left: 60px;
-  margin-right: 0px;
-  width: 13%;
-  height: 40%;
-  filter: blur(15px);
-  transform: translate(410%, 70%);
-  background: radial-gradient(circle at 20% 50%, rgb(255, 255, 255) 0%, transparent 100%),
-              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.838) 0%, transparent 100%),
-              radial-gradient(circle at 80% 50%, rgb(255, 255, 255) 0%, transparent 100%);
-  z-index: 3;
-}
-.signature-text {
-    position: absolute;
-    font-family: 'Great Vibes', cursive;
-    font-size: 35px;
-    transform: rotate(-15deg) translateX(280%) translateY(-320%);
-    z-index: 4;
-    text-shadow: 0 4px 20px rgba(255, 255, 255, 0.771);
-
+/* Responsive */
+@media (max-width: 600px) {
+  .subscription__form1 input {
+    width: 100%;
   }
 
+  .popular-foods__catalogue {
+    grid-template-columns: 1fr;
+  }
+}
