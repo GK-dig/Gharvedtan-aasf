@@ -20,14 +20,15 @@
 
         <ul class="header__menu" data-aos="fade-down">
           <li>
+            <a href="/loginsignup/work.html">Login</a>
+          </li>
+          <li>
             <a href="#menu">Menu</a>
           </li>
           <li>
             <a href="#food">Food</a>
           </li>
-          <li>
-            <a href="/loginsignup/work.html">Login</a>
-          </li>
+      
           <li>
             <a href="#about-us">About Us</a>
           </li>
@@ -361,8 +362,57 @@
       
      
     </footer>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+ <script>
+  const profileIcon = document.getElementById("profileIcon");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  const loginLink = document.querySelector("a[href='/loginsignup/work.html']"); // Fixing selector
 
+  const userData = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (userData) {
+    // Hide login link
+    if (loginLink) loginLink.style.display = "none";
+
+    // Show dropdown menu
+    dropdownMenu.style.display = "block";
+
+    // Populate dropdown with user info
+    dropdownMenu.innerHTML = `
+      <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
+      <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
+      <hr style="margin: 5px 0;">
+      <a href="#">My Orders</a>
+      <a href="#">Profile</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    `;
+
+    // Toggle dropdown on icon click
+    profileIcon.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent document click from hiding menu
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+
+    // Logout handler
+    dropdownMenu.addEventListener("click", (e) => {
+      if (e.target.id === "logoutBtn") {
+        localStorage.removeItem("loggedInUser");
+        location.reload(); // Refresh to reflect logged-out state
+      }
+    });
+  } else {
+    // Hide dropdown when not logged in
+    dropdownMenu.style.display = "none";
+  }
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="js/indexjs.js"></script>
- </body>
+</body>
 </html>
