@@ -324,3 +324,54 @@ a {
   }
 }
 /* END: trending media queries */
+/* --- Profile Icon --- */
+#profileIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* --- Dropdown Menu --- */
+#dropdownMenu {
+  position: absolute;
+  top: 70px; /* adjust based on your header height */
+  right: 30px;
+  background-color: var(--color-white);
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 12px;
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 1000;
+  font-family: var(--plus-jakarta-sans);
+  border-radius: 8px;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
