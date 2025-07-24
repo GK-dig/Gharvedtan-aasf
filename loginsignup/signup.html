@@ -43,6 +43,158 @@
       <div class="subscription__form" data-aos="fade-up">
         <input type="password" id="signupRepass" placeholder="Re-enter password" />
       </div>
+<div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+  <!-- City display area -->
+  <div id="city-display-container" style="text-align: center; margin-bottom: 20px;">
+    <p id="selected-city-display" style="color: #fff; font-size: 24px; font-weight: 500;">
+       Selected City:
+      <span id="city-name">None</span>
+      <button id="clear-city-btn" title="Clear City" style="margin-left: 8px; font-size: 18px; background: none; border: none; color: #fff; cursor: pointer;">
+        -
+      </button>
+    </p>
+  </div>
+
+  <!-- City dropdown -->
+  <select id="city-dropdown">
+    <option value="" disabled selected>Select your city</option>
+    <option value="New Delhi">New Delhi</option>
+<option value="South Delhi">South Delhi</option>
+<option value="North Delhi">North Delhi</option>
+<option value="East Delhi">East Delhi</option>
+<option value="West Delhi">West Delhi</option>
+<option value="Central Delhi">Central Delhi</option>
+<option value="Rohini">Rohini</option>
+<option value="Dwarka">Dwarka</option>
+<option value="Karol Bagh">Karol Bagh</option>
+<option value="Lajpat Nagar">Lajpat Nagar</option>
+<option value="Saket">Saket</option>
+<option value="Vasant Kunj">Vasant Kunj</option>
+<option value="Mayur Vihar">Mayur Vihar</option>
+<option value="Janakpuri">Janakpuri</option>
+<option value="Pitampura">Pitampura</option>
+<option value="Shahdara">Shahdara</option>
+<option value="Connaught Place">Connaught Place</option>
+<option value="Ahmedabad">Ahmedabad</option>
+<option value="Amritsar">Amritsar</option>
+<option value="Agra">Agra</option>
+<option value="Ajmer">Ajmer</option>
+<option value="Allahabad">Allahabad</option>
+<option value="Bangalore">Bangalore</option>
+<option value="Bhubaneswar">Bhubaneswar</option>
+<option value="Chandigarh">Chandigarh</option>
+<option value="Chennai">Chennai</option>
+<option value="Coimbatore">Coimbatore</option>
+<option value="Dehradun">Dehradun</option>
+<option value="Dhanbad">Dhanbad</option>
+<option value="Ernakulam">Ernakulam</option>
+<option value="Faridabad">Faridabad</option>
+<option value="Ghaziabad">Ghaziabad</option>
+<option value="Goa">Goa</option>
+<option value="Guwahati">Guwahati</option>
+<option value="Hisar">Hisar</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Imphal">Imphal</option>
+<option value="Jalandhar">Jalandhar</option>
+<option value="Jammu">Jammu</option>
+<option value="Jhansi">Jhansi</option>
+<option value="Kanpur">Kanpur</option>
+<option value="Kochi">Kochi</option>
+<option value="Kolkata">Kolkata</option>
+<option value="Lucknow">Lucknow</option>
+<option value="Ludhiana">Ludhiana</option>
+<option value="Madurai">Madurai</option>
+<option value="Mangalore">Mangalore</option>
+<option value="Meerut">Meerut</option>
+<option value="Mysore">Mysore</option>
+<option value="Noida">Noida</option>
+<option value="Patna">Patna</option>
+<option value="Prayagraj">Prayagraj</option>
+<option value="Raipur">Raipur</option>
+<option value="Ranchi">Ranchi</option>
+<option value="Shimla">Shimla</option>
+<option value="Siliguri">Siliguri</option>
+<option value="Srinagar">Srinagar</option>
+<option value="Surat">Surat</option>
+<option value="Tirupati">Tirupati</option>
+<option value="Trivandrum">Trivandrum</option>
+<option value="Vadodara">Vadodara</option>
+<option value="Varanasi">Varanasi</option>
+<option value="Vijayawada">Vijayawada</option>
+<option value="Visakhapatnam">Visakhapatnam</option>
+<option value="Bhopal">Bhopal</option>
+<option value="Indore">Indore</option>
+<option value="Gwalior">Gwalior</option>
+<option value="Jabalpur">Jabalpur</option>
+<option value="Ujjain">Ujjain</option>
+<option value="Sagar">Sagar</option>
+<option value="Ratlam">Ratlam</option>
+<option value="Dewas">Dewas</option>
+<option value="Rewa">Rewa</option>
+<option value="Satna">Satna</option>
+<option value="Khandwa">Khandwa</option>
+<option value="Burhanpur">Burhanpur</option>
+<option value="Chhindwara">Chhindwara</option>
+<option value="Morena">Morena</option>
+<option value="Bhind">Bhind</option>
+<option value="Katni">Katni</option>
+<option value="Hoshangabad">Hoshangabad</option>
+<option value="Vidisha">Vidisha</option>
+<option value="Betul">Betul</option>
+<option value="Sehore">Sehore</option>
+<option value="Mandsaur">Mandsaur</option>
+<option value="Neemuch">Neemuch</option>
+<option value="Damoh">Damoh</option>
+<option value="Shahdol">Shahdol</option>
+<option value="Seoni">Seoni</option>
+<option value="Dindori">Dindori</option>
+<option value="Singrauli">Singrauli</option>
+<option value="Raisen">Raisen</option>
+<option value="Mandla">Mandla</option>
+<option value="Narsinghpur">Narsinghpur</option>
+<option value="Anuppur">Anuppur</option>
+<option value="Tikamgarh">Tikamgarh</option>
+<option value="Panna">Panna</option>
+<option value="Sidhi">Sidhi</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Pune">Pune</option>
+<option value="Nagpur">Nagpur</option>
+<option value="Nashik">Nashik</option>
+<option value="Aurangabad">Aurangabad</option>
+<option value="Solapur">Solapur</option>
+<option value="Thane">Thane</option>
+<option value="Navi Mumbai">Navi Mumbai</option>
+<option value="Kolhapur">Kolhapur</option>
+<option value="Amravati">Amravati</option>
+<option value="Latur">Latur</option>
+<option value="Jalgaon">Jalgaon</option>
+<option value="Nanded">Nanded</option>
+<option value="Satara">Satara</option>
+<option value="Ahmednagar">Ahmednagar</option>
+<option value="Sangli">Sangli</option>
+<option value="Akola">Akola</option>
+<option value="Chandrapur">Chandrapur</option>
+<option value="Dhule">Dhule</option>
+<option value="Beed">Beed</option>
+<option value="Parbhani">Parbhani</option>
+<option value="Jalna">Jalna</option>
+<option value="Osmanabad">Osmanabad</option>
+<option value="Wardha">Wardha</option>
+<option value="Gondia">Gondia</option>
+<option value="Bhandara">Bhandara</option>
+<option value="Yavatmal">Yavatmal</option>
+<option value="Hingoli">Hingoli</option>
+<option value="Ratnagiri">Ratnagiri</option>
+<option value="Sindhudurg">Sindhudurg</option>
+<option value="Palghar">Palghar</option>
+<option value="Washim">Washim</option>
+  </select>
+
+  <!-- Auto detect button -->
+  <button type="button" id="detect-location-btn" onclick="detectLocation()"> Auto Detect</button>
+</div>
+
+
 
       <div class="subscription__form" data-aos="fade-up">
         <div id="recaptcha-container"></div>
@@ -68,6 +220,68 @@
       <li><a href="#policies">Terms & Conditions</a></li>
     </ul>
   </footer>
+<script>
+  const dropdown = document.getElementById("city-dropdown");
+  const cityDisplay = document.getElementById("city-name");
+  const clearBtn = document.getElementById("clear-city-btn");
+  const detectBtn = document.getElementById("detect-location-btn");
+
+  function showControls() {
+    dropdown.selectedIndex = 0;
+    dropdown.style.display = "block";
+    detectBtn.style.display = "block";
+  }
+
+  function hideControls() {
+    dropdown.style.display = "none";
+    detectBtn.style.display = "none";
+  }
+
+  // Manual selection
+  dropdown.addEventListener("change", function () {
+    const selected = this.value;
+    cityDisplay.textContent = selected;
+    hideControls();
+  });
+
+  // Clear selection
+  clearBtn.addEventListener("click", function () {
+    cityDisplay.textContent = "None";
+    showControls();
+  });
+
+  // Auto-detect location
+  function detectLocation() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    function success(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+        .then(res => res.json())
+        .then(data => {
+          const city = data.address.city || data.address.town || data.address.village || "Unknown";
+          cityDisplay.textContent = city;
+          hideControls();
+          console.log("Auto-detected city:", city);
+        })
+        .catch(() => {
+          alert("Could not determine city.");
+        });
+    }
+
+    function error(err) {
+      alert("Please allow location access.");
+      console.warn(`Geolocation error (${err.code}): ${err.message}`);
+    }
+  }
+</script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="signup.js" type="module"></script>

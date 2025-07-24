@@ -104,3 +104,71 @@
 }
 
 
+.subscription__form #location {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: var(--plus-jakarta-sans);
+  color: #fff;
+  opacity: 0.8;
+
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.subscription__form #location::placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.subscription__form #detect-location-btn {
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--plus-jakarta-sans);
+  color: #fff;
+  background: var(--black-400);
+  border-radius: 46px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.subscription__form #detect-location-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+.subscription__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.subscription__form select,
+#detect-location-btn {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-family: var(--plus-jakarta-sans);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 46px;
+  cursor: pointer;
+  outline: none;
+}
+
+.subscription__form select option {
+  background-color: #000;
+  color: #fff;
+}
+
+#detect-location-btn {
+  background: var(--black-400);
+  transition: background 0.3s ease;
+}
+
+#detect-location-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
