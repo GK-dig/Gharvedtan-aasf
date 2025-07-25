@@ -8,7 +8,7 @@ const deliverySchema = new mongoose.Schema({
   },
   deliveryBoyId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // or 'DeliveryBoy' if you use a separate model
+    ref: 'User', 
     required: true
   },
   assignedAt: {
@@ -35,10 +35,10 @@ const deliverySchema = new mongoose.Schema({
     default: ''
   },
   signature: {
-    type: String // URL of signature or photo
+    type: String 
   },
   otp: {
-    type: String // Optional for secure delivery verification
+    type: String 
   }
 }, { timestamps: true });
 
