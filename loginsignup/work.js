@@ -1,3 +1,8 @@
+AOS.init({
+  duration: 1000,
+  offset: 100,
+});
+
 import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";

@@ -16,10 +16,10 @@
       </div>
       <ul class="header__menu" data-aos="fade-down">
         <li>
-  <a href="/loginsignup/work.html" >Login</a>
+  <a href="../loginsignup/work.html" >Login</a>
 </li>
 
-        <li><a href="/index.html">Back</a></li>
+        <li><a href="../index.html">Back</a></li>
       </ul>
     </nav>
   </header>
@@ -29,15 +29,11 @@
       <h2 data-aos="flip-down">Signup</h2>
 
       <div class="subscription__form" data-aos="fade-up">
-        <input type="text" id="signupName" placeholder="Enter your name" />
+        <input type="text" id="signupName" placeholder=" Enter Name" />
       </div>
 
       <div class="subscription__form" data-aos="fade-up">
-        <input type="number" id="signupPhone" placeholder="Enter your phone number" />
-      </div>
-
-      <div class="subscription__form" data-aos="fade-up">
-        <input type="password" id="signupPass" placeholder="Enter password" />
+        <input type="password" id="signupPass" placeholder="Enter Password" />
       </div>
 
       <div class="subscription__form" data-aos="fade-up">
@@ -45,12 +41,17 @@
       </div>
 <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
   <!-- City display area -->
-  <div id="city-display-container" style="text-align: center; margin-bottom: 20px;">
-    <p id="selected-city-display" style="color: #fff; font-size: 24px; font-weight: 500;">
+  <div id="city-display-container">
+    <p id="selected-city-display" style="color: #ffffffc4; font-size: 24px; font-weight: 500;margin-top: 0%;">
        Selected City:
       <span id="city-name">None</span>
-      <button id="clear-city-btn" title="Clear City" style="margin-left: 8px; font-size: 18px; background: none; border: none; color: #fff; cursor: pointer;">
-        -
+      <button id="clear-city-btn" title="Clear City" 
+      style="margin-left: 8px;
+       font-size: 18px; 
+       background: none; 
+       color: #ffffff4a; 
+       cursor: pointer;">
+        Clear Selection
       </button>
     </p>
   </div>
@@ -192,21 +193,16 @@
 
   <!-- Auto detect button -->
   <button type="button" id="detect-location-btn" onclick="detectLocation()"> Auto Detect</button>
+  
 </div>
-
-
-
-      <div class="subscription__form" data-aos="fade-up">
+<div class="subscription__form" data-aos="fade-up">
+        <input type="number" id="signupPhone" placeholder="Enter PhoneNumber" />
         <div id="recaptcha-container"></div>
-        <button onclick="sendOTP()">Get OTP</button>
+         <button onclick="sendOTP()">Get OTP</button>
       </div>
-
       <div class="subscription__form" data-aos="fade-up">
         <input type="text" id="otpInput" placeholder="Enter OTP" />
-      </div>
-
-      <div class="subscription__form" data-aos="fade-up">
-        <button onclick="verifyOTP()">Verify & Signup</button>
+         <button onclick="verifyOTP()">Verify & Signup</button>
       </div>
     </div>
   </section>
@@ -214,8 +210,8 @@
   <footer class="footer flex-between">
     <h3 class="footer__logo"><span>GharVED</span>tan</h3>
     <ul class="footer__nav">
-      <li><a href="#menu">Menu</a></li>
-      <li><a href="/addrestaurant.html">Work With Us</a></li>
+      <li><a href="../menu/menu.html">Menu</a></li>
+      <li><a href="../addrestaurant.html">Work With Us</a></li>
       <li><a href="#about-us">About Us</a></li>
       <li><a href="#policies">Terms & Conditions</a></li>
     </ul>

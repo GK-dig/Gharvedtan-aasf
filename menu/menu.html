@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="menu.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <title>menu</title>
     <script type="module">
@@ -50,7 +51,7 @@
 
                 <div class="popular-foods__card-details flex-between">
                     <div class="popular-foods__card-rating">
-                        <img src="/assets/star.svg" alt="star" />
+                       <img src="../assets/star.svg" alt="star" />
                         <p>${item.rating}</p>
                     </div>
                     <p class="popular-foods__card-price">₹${item.price}</p>
@@ -59,8 +60,8 @@
                     <button>Add to Cart</button>
                 </div>
               </article>
-            ;
-            catalogue.innerHTML += card;
+             ;
+           catalogue.insertAdjacentHTML("beforeend", card);
           }
         });
       }
@@ -76,14 +77,101 @@
 
 <body>
 
-<header>...</header>
+<header>
+        <nav class="header__nav">
+            <div class="header__logo">
+                <h4 data-aos="fade-down">Gharvedtan</h4>
+                <div class="header__logo-overlay"></div>
+            </div>
 
-<section class="layer-container">...</section>
+
+            <ul class="header__menu" data-aos="fade-down">
+
+                <li>
+                    <a href="../index.html">Home</a>
+                </li>
+                <li>
+                    <a href="../loginsignup/work.html">Login</a>
+                </li>
+                <li>
+                    <div class="profile-container">
+                        <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="#">My Orders</a>
+                            <a href="#">Profile</a>
+                            <a href="#">Settings</a>
+                            <a href="#">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="header__menu-mobile" data-aos="fade-down">
+                <li>
+                    <img src="../assets/menu.svg" alt="menu" />
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="layer-container">
+
+    <!-- Layer 1: Floral Background -->
+    <div class="floral-bg">
+      <div class="food-scroll">
+        <div class="food-track">      
+    <img src="../assets/1 (1).png " alt="food" />
+      <img src="../assets/1 (2).png" alt="food" />
+      <img src="../assets/1 (3).png" alt="food" />
+      <img src="../assets/1 (4).png" alt="food" />
+      <img src="../assets/1 (5).png" alt="food" />
+       <img src="../assets/1 (6).png" alt="food" />
+      <img src="../assets/1 (7).png" alt="food" />
+      <img src="../assets/1 (8).png" alt="food" />
+      <img src="../assets/1 (9).png" alt="food" />
+      <img src="../assets/1 (10).png" alt="food" />
+      <img src="../assets/1 (1).png" alt="food" />
+      <img src="../assets/1 (2).png" alt="food" />
+      <img src="../assets/1 (3).png" alt="food" />
+      <img src="../assets/1 (4).png" alt="food" />
+      <img src="../assets/1 (5).png" alt="food" />
+       <img src="../assets/1 (6).png" alt="food" />
+      <img src="../assets/1 (7).png" alt="food" />
+      <img src="../assets/1 (8).png" alt="food" />
+      <img src="../assets/1 (9).png" alt="food" />
+      <img src="../assets/1 (10).png" alt="food" />
+      <img src="../assets/1 (1).png" alt="food" />
+      <img src="../assets/1 (2).png" alt="food" />
+      <img src="../assets/1 (3).png" alt="food" />
+      <img src="../assets/1 (4).png" alt="food" />
+      <img src="../assets/1 (5).png" alt="food" />
+       <img src="../assets/1 (6).png" alt="food" />
+      <img src="../assets/1 (7).png" alt="food" />
+      <img src="../assets/1 (8).png" alt="food" />
+      <img src="../assets/1 (9).png" alt="food" />
+      <img src="../assets/1 (10).png" alt="food" />
+      </div>
+     
+    </div>
+      
+    </div>
+    <div class="info">
+      <span>MO&nbsp;&nbsp;&nbsp;D</span>
+    </div>
+
+    <!-- Layer 2: Moving Food Items -->
+    
+
+    <div class="smoke"></div>
+    <div class="smoke2"></div>
+    <div class="signature-text">What's your</div>
+  
+  </section>
 
 <section class="popular-foods" id="menu">
   <div class="subscription__form1" data-aos="fade-up">
     <input id="searchInput" type="text" placeholder="Search for your favourite comfort food" />
-    <button id="searchBtn"><img src="/assets/search.svg"></button>
+    <button id="searchBtn"><img src="../assets/search.svg"></button>
   </div>
 
 <div class="popular-foods__filters hide-scrollbar" data-aos="fade-up">
@@ -102,12 +190,40 @@
   </div>
 </section>
 
-<footer>...</footer>
+<footer class="footer flex-between">
+
+        <h3 class="footer__logo">
+            <span>GharVED</span>tan
+        </h3>
+
+        <ul class="footer__nav">
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="../addrestaurant.html">Work With Us</a></li>
+            <li><a href="#about-us">About Us</a></li>
+            <li><a href="#policies">Terms & Conditions</a></li>
+        </ul>
+
+
+        <ul class="footer__social">
+            <li class="flex-center">
+                <img src="../assets/facebook.svg" alt="facebook" />
+            </li>
+            <li class="flex-center">
+                <img src="../assets/instagram.svg" alt="instagram" />
+            </li>
+            <li class="flex-center">
+                <img src="../assets/twitter.svg" alt="twitter" />
+            </li>
+        </ul>
+
+
+    </footer>
+
 <script type="module" src="./firebase.js"></script>
 <script type="module" src="./menu.js"></script>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="/js/indexjs.js"></script>
+<script src="../js/indexjs.js"></script>
 </body>
 
 </html>

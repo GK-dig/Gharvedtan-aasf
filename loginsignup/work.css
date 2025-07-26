@@ -1,13 +1,17 @@
 
-@import url("/css/sections/header.css");
-@import url("/css/style.css");
-@import url("/css/sections/footer.css");
+@import url("../css/sections/header.css");
+@import url("../css/style.css");
+@import url("../css/sections/footer.css");
 
 .subscription {
   padding: 64px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;
+  text-align: center;
   background-color: var(--primary-color);
-  background-image: url('../../assets/subscribe_bg.png');
+  background-image: url('../assets/subscribe_bg.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -41,7 +45,7 @@
 }
 
 .subscription__form {
-  min-width: 480px;
+  max-width: 480px;
   margin-top: 40px;
 
   padding: 14px 14px 14px 24px;
