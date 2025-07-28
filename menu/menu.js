@@ -59,15 +59,25 @@ function renderItems(items) {
       <p>Region: ${item.region || 'N/A'}</p>
 
       <div class="subscription__form">
-        <button>Add to Cart</button>
+        <button class="add-to-cart">Add to Cart</button>
       </div>
     `;
 
     catalogue.appendChild(card);
   });
+
+  // Re-attach event listeners for "Add to Cart" buttons after items are loaded
+  const addToCartButtons = document.querySelectorAll(".add-to-cart");
+  addToCartButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const itemCard = button.closest('.popular-foods__card');
+      const itemName = itemCard.querySelector('.popular-foods__card-title').textContent;
+      alert(`Added ${itemName} to cart!`);
+    });
+  });
 }
 
-/// Normalized filter + search combined
+// Normalized filter + search combined
 function renderFilteredItems() {
   const query = normalize(searchInput.value);
 
@@ -101,5 +111,5 @@ filterButtons.forEach(btn => {
   });
 });
 
-// Load on startup
+// Load all items from Firestore
 loadItems();
