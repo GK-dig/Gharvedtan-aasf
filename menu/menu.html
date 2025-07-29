@@ -43,6 +43,8 @@
                     item.sellerName.toLowerCase().includes(searchTerm.toLowerCase())
                 ) {
                     
+=======
+>>>>>>> 07be4d8061c884ea0d7783bc6892ad26813c960c
                     const card = `
                         <article class="popular-foods__card">
                             <img class="popular-foods__card-image" src="${item.photoUrl}" alt="${item.name}" />
@@ -73,6 +75,7 @@
             });
 
             
+<<<<<<< HEAD
             document.querySelectorAll(".add-to-cart").forEach(button => {
              button.addEventListener("click", () => {
               const id = button.getAttribute("data-id");
@@ -80,6 +83,14 @@
               const price = parseFloat(button.getAttribute("data-price"));
     
                 addToCart(id, name, price);
+=======
+            const addToCartButtons = document.querySelectorAll(".add-to-cart");
+            addToCartButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const itemCard = button.closest('.popular-foods__card');
+                    const itemName = itemCard.querySelector('.popular-foods__card-title').textContent;
+                    alert(`Added ${itemName} to cart!`);
+>>>>>>> 07be4d8061c884ea0d7783bc6892ad26813c960c
                 });
             });
 
@@ -134,7 +145,6 @@
 
     <section class="layer-container">
 
-        <!-- Layer 1: Floral Background -->
         <div class="floral-bg">
             <div class="food-scroll">
                 <div class="food-track">
@@ -166,7 +176,6 @@
             <span>MO&nbsp;&nbsp;&nbsp;D</span>
         </div>
 
-        <!-- Layer 2: Moving Food Items -->
 
 
         <div class="smoke"></div>
@@ -190,7 +199,7 @@
         </div>
 
         <div class="popular-foods__catalogue" data-aos="fade-up">
-            <!-- Firebase items will render here -->
+   
         </div>
     </section>
 

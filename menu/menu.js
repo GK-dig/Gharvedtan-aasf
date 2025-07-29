@@ -10,70 +10,30 @@ import {
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 const auth = getAuth();
 
-// DOM Elements
 const catalogue = document.querySelector(".popular-foods__catalogue");
 const searchInput = document.querySelector(".subscription__form1 input");
 const filterButtons = document.querySelectorAll(".popular-foods__filter-btn");
+const searchBtn = document.getElementById("searchBtn"); 
 
 let allItems = [];
 let activeRegion = "all";
 
-// Normalize strings
+// Helper: Normalize strings
 const normalize = str => (str || "").toLowerCase().trim();
 
-// 🔁 Load items from Firestore
+// Load items from Firestore
 async function loadItems() {
   try {
     const snapshot = await getDocs(collection(db, "items"));
-    allItems = snapshot.docs.map(doc => {
-      const item = doc.data();
-      item.id = doc.id; // Include item ID
-      return item;
-    });
+    allItems = snapshot.docs.map(doc => doc.data());
     renderFilteredItems(); // initial render
   } catch (error) {
-    console.error("❌ Error loading items:", error);
-    catalogue.innerHTML = "<p>❌ Failed to load items.</p>";
+    console.error(" Error loading items:", error);
+    catalogue.innerHTML = "<p> Failed to load items.</p>";
   }
 }
 
-// 🛒 Add to Cart
-async function addToCart(item) {
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Please login to add items to cart.");
-    return;
-  }
-
-  const cartRef = doc(db, "carts", user.uid);
-  const cartSnap = await getDoc(cartRef);
-  const newItem = {
-    id: item.id,
-    name: item.name,
-    price: item.price,
-    qty: 1
-  };
-
-  if (cartSnap.exists()) {
-    const cartData = cartSnap.data();
-    const items = cartData.items || [];
-
-    const index = items.findIndex(i => i.id === item.id);
-    if (index !== -1) {
-      items[index].qty += 1;
-    } else {
-      items.push(newItem);
-    }
-
-    await setDoc(cartRef, { items }, { merge: true });
-  } else {
-    await setDoc(cartRef, { items: [newItem] });
-  }
-
-  alert(`${item.name} added to cart!`);
-}
-
-// 🧱 Render items to DOM
+// Render items to DOM
 function renderItems(items) {
   catalogue.innerHTML = '';
 
@@ -115,7 +75,7 @@ function renderItems(items) {
     catalogue.appendChild(card);
   });
 
-  // Bind Add to Cart Buttons
+  // Re-attach event listeners for "Add to Cart" buttons after items are loaded
   const addToCartButtons = document.querySelectorAll(".add-to-cart");
   addToCartButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
@@ -125,7 +85,7 @@ function renderItems(items) {
   });
 }
 
-// 🔍 Filter + Search logic
+// Normalized filter + search combined
 function renderFilteredItems() {
   const query = normalize(searchInput.value);
 
@@ -147,16 +107,17 @@ function renderFilteredItems() {
   renderItems(filtered);
 }
 
-// 🌐 Region filter buttons
+// 🔘 Region filter buttons
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
+    // UI toggle
     filterButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
-    activeRegion = normalize(btn.dataset.region);
-    renderFilteredItems();
+    activeRegion = normalize(btn.dataset.region); // Store the region
+    renderFilteredItems(); // Re-render
   });
 });
 
-// 🚀 Load items on page load
+// Load all items from Firestore
 loadItems();

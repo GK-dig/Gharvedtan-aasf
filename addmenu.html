@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu Item</title>
+    <link rel="stylesheet" href="addmenu.css"> <!-- External CSS for styling -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="firebase.js"></script> <!-- Firebase configuration -->
+</head>
+<body>
+    <h1>Add New Menu Item</h1>
+    <form id="addMenuForm">
+        <!-- Input fields for the menu item -->
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" placeholder="Enter item name" required>
+
+        <label for="price">Price</label>
+        <input type="number" id="price" placeholder="Enter item price" required>
+
+        <label for="region">Region</label>
+        <select id="region" required>
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
+            <option value="Central">Central</option>
+        </select>
+
+        <label for="photoUrl">Image URL</label>
+        <input type="text" id="photoUrl" placeholder="Enter image URL" required>
+
+        <label for="rating">Rating</label>
+        <input type="number" id="rating" step="0.1" min="1" max="5" placeholder="Enter rating (1-5)" required>
+
+        <label for="type">Type</label>
+        <select id="type" required>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+        </select>
+
+        <label for="sellerName">Seller Name</label>
+        <input type="text" id="sellerName" value="Bengali Spice" readonly>
+
+        <label for="availability">Availability</label>
+        <div class="checkbox-group">
+            <input type="checkbox" id="availability" checked>
+            <span>Available</span>
+        </div>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <script>
+        // Firebase initialization with your configuration
+        const app = firebase.initializeApp({
+       apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
+  authDomain: "gharvedtan-auth.firebaseapp.com",
+  projectId: "gharvedtan-auth",
+  storageBucket: "gharvedtan-auth.firebasestorage.app",
+  messagingSenderId: "32502650170",
+  appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
+        });
+
+        const db = firebase.firestore(app);
+
+        // Form submission event listener
+        const addMenuForm = document.getElementById('addMenuForm');
+
+        addMenuForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Fetch form data
+            const itemName = document.getElementById('itemName').value;
+            const price = document.getElementById('price').value;
+            const region = document.getElementById('region').value;
+            const photoUrl = document.getElementById('photoUrl').value;
+            const rating = document.getElementById('rating').value;
+            const type = document.getElementById('type').value;
+            const sellerName = document.getElementById('sellerName').value;
+            const availability = document.getElementById('availability').checked;
+
+            // Check if the item already exists in Firestore
+            const itemSnapshot = await db.collection('items').where('name', '==', itemName).get();
+
+            if (!itemSnapshot.empty) {
+                alert('This item already exists!');
+                return;
+            }
+
+            // Add the item to Firestore
+            await db.collection('items').add({
+                name: itemName,
+                price: parseFloat(price),
+                region: region,
+                photoUrl: photoUrl,
+                rating: parseFloat(rating),
+                type: type,
+                sellerName: sellerName,
+                availability: availability
+            });
+
+            alert('Item added successfully!');
+            addMenuForm.reset();  // Reset the form after submission
+        });
+    </script>
+</body>
+</html>
