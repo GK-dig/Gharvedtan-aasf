@@ -42,7 +42,6 @@
                     item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     item.sellerName.toLowerCase().includes(searchTerm.toLowerCase())
                 ) {
-                    // Use backticks for the template literal
                     const card = `
                         <article class="popular-foods__card">
                             <img class="popular-foods__card-image" src="${item.photoUrl}" alt="${item.name}" />
@@ -65,7 +64,7 @@
                 }
             });
 
-            // Re-attach event listeners for "Add to Cart" buttons after items are loaded
+            
             const addToCartButtons = document.querySelectorAll(".add-to-cart");
             addToCartButtons.forEach(button => {
                 button.addEventListener("click", () => {
@@ -125,7 +124,6 @@
 
     <section class="layer-container">
 
-        <!-- Layer 1: Floral Background -->
         <div class="floral-bg">
             <div class="food-scroll">
                 <div class="food-track">
@@ -157,7 +155,6 @@
             <span>MO&nbsp;&nbsp;&nbsp;D</span>
         </div>
 
-        <!-- Layer 2: Moving Food Items -->
 
 
         <div class="smoke"></div>
@@ -181,7 +178,7 @@
         </div>
 
         <div class="popular-foods__catalogue" data-aos="fade-up">
-            <!-- Firebase items will render here -->
+   
         </div>
     </section>
 

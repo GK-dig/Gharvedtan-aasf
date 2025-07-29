@@ -1,30 +1,26 @@
 import { db } from './firebase.js';
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// DOM Elements
 const catalogue = document.querySelector(".popular-foods__catalogue");
 const searchInput = document.querySelector(".subscription__form1 input");
 const filterButtons = document.querySelectorAll(".popular-foods__filter-btn");
+const searchBtn = document.getElementById("searchBtn"); 
 
 let allItems = [];
-let activeRegion = "all";
-
-// Helper: Normalize strings
+let activeRegion = "all"; 
 const normalize = str => (str || "").toLowerCase().trim();
 
-// Load items from Firestore
 async function loadItems() {
   try {
     const snapshot = await getDocs(collection(db, "items"));
     allItems = snapshot.docs.map(doc => doc.data());
-    renderFilteredItems(); // initial render
+    renderFilteredItems();
   } catch (error) {
-    console.error("❌ Error loading items:", error);
-    catalogue.innerHTML = "<p>❌ Failed to load items.</p>";
+    console.error(" Error loading items:", error);
+    catalogue.innerHTML = "<p> Failed to load items.</p>";
   }
 }
 
-// Render items to DOM
 function renderItems(items) {
   catalogue.innerHTML = '';
 
@@ -66,7 +62,6 @@ function renderItems(items) {
     catalogue.appendChild(card);
   });
 
-  // Re-attach event listeners for "Add to Cart" buttons after items are loaded
   const addToCartButtons = document.querySelectorAll(".add-to-cart");
   addToCartButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -77,7 +72,6 @@ function renderItems(items) {
   });
 }
 
-// Normalized filter + search combined
 function renderFilteredItems() {
   const query = normalize(searchInput.value);
 
@@ -99,17 +93,35 @@ function renderFilteredItems() {
   renderItems(filtered);
 }
 
-// 🔘 Region filter buttons
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    // UI toggle
+
     filterButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
-    activeRegion = normalize(btn.dataset.region); // Store the region
-    renderFilteredItems(); // Re-render
+    activeRegion = normalize(btn.dataset.region); 
+    renderFilteredItems(); 
   });
 });
 
-// Load all items from Firestore
-loadItems();
+searchInput.addEventListener("input", () => {
+  renderFilteredItems(); 
+});
+
+searchBtn.addEventListener("click", () => {
+  renderFilteredItems(); 
+});
+
+searchInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    renderFilteredItems(); 
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const allFilterButton = document.querySelector(`[data-region="all"]`);
+  if (allFilterButton) {
+    allFilterButton.classList.add("active"); 
+  }
+  loadItems();
+});

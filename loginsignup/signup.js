@@ -17,7 +17,7 @@ import {
   setDoc
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// Firebase Config
+
 const firebaseConfig = {
   apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
   authDomain: "gharvedtan-auth.firebaseapp.com",
@@ -27,7 +27,6 @@ const firebaseConfig = {
   appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -40,15 +39,14 @@ window.sendOTP = () => {
 
   const fullPhone = "+91" + phone;
 
-  // Only create recaptcha once
   if (!window.recaptchaVerifier) {
     window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
       size: "invisible",
       callback: () => {
-        sendOTP(); // Auto-retry if needed
+        sendOTP(); 
       }
     }, auth);
-    window.recaptchaVerifier.render(); // Ensure it's rendered
+    window.recaptchaVerifier.render(); 
   }
 
   signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier)
@@ -76,7 +74,6 @@ window.verifyOTP = () => {
     .then(async (result) => {
       const user = result.user;
 
-      // ✅ Save user to Firestore
       await setDoc(doc(db, "users", user.uid), {
         name,
         phone,
@@ -85,7 +82,6 @@ window.verifyOTP = () => {
         createdAt: new Date()
       });
 
-      // ✅ Save user info to localStorage so index.html can show it
       localStorage.setItem("loggedInUser", JSON.stringify({
         name: name,
         phone: phone,

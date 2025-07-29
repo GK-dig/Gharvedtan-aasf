@@ -33,13 +33,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Login function
 window.loginUser = async () => {
   const phone = document.getElementById("loginPhone").value.trim();
   const pass = document.getElementById("loginPass").value;
 
   try {
-    // Query Firestore for a user with the matching phone number
     const q = query(collection(db, "users"), where("phone", "==", phone));
     const querySnapshot = await getDocs(q);
 
@@ -55,7 +53,6 @@ window.loginUser = async () => {
      if (userData.password === pass) {
   found = true;
   
-  // Save user data to localStorage
   localStorage.setItem("loggedInUser", JSON.stringify({
     name: userData.name,
     phone: userData.phone

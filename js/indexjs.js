@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ------------------------ AOS INIT ------------------------
   AOS.init({
     duration: 1000,
     offset: 100,
   });
 
-  // ------------------------ VIDEO MODAL ------------------------
   const modal = document.getElementById("videoModal");
   const openBtn = document.getElementById("hero-content__play-button");
 
@@ -54,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // ------------------------ PROFILE DROPDOWN ------------------------
   const profileIcon = document.getElementById("profileIcon");
   const dropdownMenu = document.getElementById("dropdownMenu");
 
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------------ LOCALSTORAGE LOGIN STATE ------------------------
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
   if (user && dropdownMenu) {
@@ -101,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Optional: Hide login nav text if user is logged in
   const loginNav = document.getElementById("loginNav");
   if (loginNav) {
     loginNav.style.display = user ? "none" : "block";

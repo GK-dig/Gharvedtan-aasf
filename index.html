@@ -361,18 +361,14 @@
  <script>
   const profileIcon = document.getElementById("profileIcon");
   const dropdownMenu = document.getElementById("dropdownMenu");
-  const loginLink = document.querySelector("a[href='/loginsignup/work.html']"); // Fixing selector
+  const loginLink = document.querySelector("a[href='/loginsignup/work.html']"); 
 
   const userData = JSON.parse(localStorage.getItem("loggedInUser"));
 
   if (userData) {
-    // Hide login link
     if (loginLink) loginLink.style.display = "none";
 
-    // Show dropdown menu
     dropdownMenu.style.display = "block";
-
-    // Populate dropdown with user info
     dropdownMenu.innerHTML = `
       <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
       <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
@@ -382,28 +378,24 @@
       <a href="#" id="logoutBtn">Logout</a>
     `;
 
-    // Toggle dropdown on icon click
     profileIcon.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent document click from hiding menu
+      e.stopPropagation();
       dropdownMenu.classList.toggle("show");
     });
 
-    // Close dropdown if clicking outside
     document.addEventListener("click", (e) => {
       if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
         dropdownMenu.classList.remove("show");
       }
     });
 
-    // Logout handler
     dropdownMenu.addEventListener("click", (e) => {
       if (e.target.id === "logoutBtn") {
         localStorage.removeItem("loggedInUser");
-        location.reload(); // Refresh to reflect logged-out state
+        location.reload(); 
       }
     });
   } else {
-    // Hide dropdown when not logged in
     dropdownMenu.style.display = "none";
   }
 </script>
