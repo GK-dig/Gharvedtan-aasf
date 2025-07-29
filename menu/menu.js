@@ -1,5 +1,14 @@
 import { db } from './firebase.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+const auth = getAuth();
 
 // DOM Elements
 const catalogue = document.querySelector(".popular-foods__catalogue");
@@ -9,14 +18,18 @@ const filterButtons = document.querySelectorAll(".popular-foods__filter-btn");
 let allItems = [];
 let activeRegion = "all";
 
-// Helper: Normalize strings
+// Normalize strings
 const normalize = str => (str || "").toLowerCase().trim();
 
-// Load items from Firestore
+// 🔁 Load items from Firestore
 async function loadItems() {
   try {
     const snapshot = await getDocs(collection(db, "items"));
-    allItems = snapshot.docs.map(doc => doc.data());
+    allItems = snapshot.docs.map(doc => {
+      const item = doc.data();
+      item.id = doc.id; // Include item ID
+      return item;
+    });
     renderFilteredItems(); // initial render
   } catch (error) {
     console.error("❌ Error loading items:", error);
@@ -24,7 +37,43 @@ async function loadItems() {
   }
 }
 
-// Render items to DOM
+// 🛒 Add to Cart
+async function addToCart(item) {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Please login to add items to cart.");
+    return;
+  }
+
+  const cartRef = doc(db, "carts", user.uid);
+  const cartSnap = await getDoc(cartRef);
+  const newItem = {
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    qty: 1
+  };
+
+  if (cartSnap.exists()) {
+    const cartData = cartSnap.data();
+    const items = cartData.items || [];
+
+    const index = items.findIndex(i => i.id === item.id);
+    if (index !== -1) {
+      items[index].qty += 1;
+    } else {
+      items.push(newItem);
+    }
+
+    await setDoc(cartRef, { items }, { merge: true });
+  } else {
+    await setDoc(cartRef, { items: [newItem] });
+  }
+
+  alert(`${item.name} added to cart!`);
+}
+
+// 🧱 Render items to DOM
 function renderItems(items) {
   catalogue.innerHTML = '';
 
@@ -66,18 +115,17 @@ function renderItems(items) {
     catalogue.appendChild(card);
   });
 
-  // Re-attach event listeners for "Add to Cart" buttons after items are loaded
+  // Bind Add to Cart Buttons
   const addToCartButtons = document.querySelectorAll(".add-to-cart");
-  addToCartButtons.forEach(button => {
+  addToCartButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
-      const itemCard = button.closest('.popular-foods__card');
-      const itemName = itemCard.querySelector('.popular-foods__card-title').textContent;
-      alert(`Added ${itemName} to cart!`);
+      const item = items[index];
+      addToCart(item);
     });
   });
 }
 
-// Normalized filter + search combined
+// 🔍 Filter + Search logic
 function renderFilteredItems() {
   const query = normalize(searchInput.value);
 
@@ -99,17 +147,16 @@ function renderFilteredItems() {
   renderItems(filtered);
 }
 
-// 🔘 Region filter buttons
+// 🌐 Region filter buttons
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    // UI toggle
     filterButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
-    activeRegion = normalize(btn.dataset.region); // Store the region
-    renderFilteredItems(); // Re-render
+    activeRegion = normalize(btn.dataset.region);
+    renderFilteredItems();
   });
 });
 
-// Load all items from Firestore
+// 🚀 Load items on page load
 loadItems();

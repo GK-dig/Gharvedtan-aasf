@@ -42,7 +42,7 @@
                     item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     item.sellerName.toLowerCase().includes(searchTerm.toLowerCase())
                 ) {
-                    // Use backticks for the template literal
+                    
                     const card = `
                         <article class="popular-foods__card">
                             <img class="popular-foods__card-image" src="${item.photoUrl}" alt="${item.name}" />
@@ -57,7 +57,14 @@
                                 <p class="popular-foods__card-price">₹${item.price}</p>
                             </div>
                             <div class="subscription__form">
-                                <button class="add-to-cart">Add to Cart</button>
+                                <button 
+                             class="add-to-cart" 
+                             data-id="${item.id}" 
+                             data-name="${item.name}" 
+                             data-price="${item.price}">
+                             Add to Cart
+                             </button>
+
                             </div>
                         </article>
                     `;
@@ -65,15 +72,17 @@
                 }
             });
 
-            // Re-attach event listeners for "Add to Cart" buttons after items are loaded
-            const addToCartButtons = document.querySelectorAll(".add-to-cart");
-            addToCartButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    const itemCard = button.closest('.popular-foods__card');
-                    const itemName = itemCard.querySelector('.popular-foods__card-title').textContent;
-                    alert(`Added ${itemName} to cart!`);
+            
+            document.querySelectorAll(".add-to-cart").forEach(button => {
+             button.addEventListener("click", () => {
+              const id = button.getAttribute("data-id");
+              const name = button.getAttribute("data-name");
+              const price = parseFloat(button.getAttribute("data-price"));
+    
+                addToCart(id, name, price);
                 });
             });
+
         }
 
         document.addEventListener("DOMContentLoaded", () => {
