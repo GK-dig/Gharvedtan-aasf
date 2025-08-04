@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+h1 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.timer, .deliveries {
+    font-weight: bold;
+    color: #555;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.game-area {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.canvas-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+}
+
+canvas {
+    border: 2px solid #333;
+    display: block;
+    background-color: #f8f8f8;
+    width: 100%;
+    height: auto;
+}
+
+.mobile-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.horizontal-controls {
+    display: flex;
+    gap: 30px;
+}
+
+.mobile-controls button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background-color: #333;
+    margin: 5px;
+}
+
+#message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 100;
+    max-width: 80%;
+}
+
+#message button {
+    margin-top: 20px;
+    padding: 10px 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.win {
+    color: #4CAF50;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.lose {
+    color: #f44336;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .game-area {
+        flex-direction: column;
+    }
+    
+    .mobile-controls {
+        margin-left: 0;
+        margin-top: 15px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .horizontal-controls {
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
+}
