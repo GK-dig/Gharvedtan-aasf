@@ -30,9 +30,8 @@ onAuthStateChanged(auth, (user) => {
 // Helper: Normalize strings
 const normalize = str => (str || "").toLowerCase().trim();
 
-// Add to Cart Functionality
+// Add to Cart Functionality with User UID and Seller Details
 async function addToCart(item) {
-  // Check if user is logged in
   if (!currentUser) {
     alert("Please sign in to add items to your cart");
     window.location.href = "../loginsignup/work.html";
@@ -45,15 +44,15 @@ async function addToCart(item) {
     const cartSnap = await getDoc(cartRef);
     
     if (cartSnap.exists()) {
-      // Cart exists - check if item is already in cart
       const cartData = cartSnap.data();
-      const existingItem = cartData.items.find(cartItem => cartItem.id === item.id);
+      const existingItem = cartData.items.find(cartItem => 
+        cartItem.id === item.id && cartItem.sellerId === item.sellerId
+      );
       
       if (existingItem) {
-        // Item exists - update quantity
         await updateDoc(cartRef, {
           items: cartData.items.map(cartItem => 
-            cartItem.id === item.id 
+            cartItem.id === item.id && cartItem.sellerId === item.sellerId
               ? { ...cartItem, quantity: cartItem.quantity + 1 }
               : cartItem
           ),
@@ -62,14 +61,15 @@ async function addToCart(item) {
         });
         alert(`${item.name} quantity increased in your cart`);
       } else {
-        // Item doesn't exist - add new item
         await updateDoc(cartRef, {
           items: arrayUnion({
             id: item.id,
             name: item.name,
             price: item.price,
             quantity: 1,
-            photoUrl: item.photoUrl
+            photoUrl: item.photoUrl,
+            sellerId: item.sellerId,
+            sellerName: item.sellerName
           }),
           total: increment(item.price),
           updatedAt: new Date()
@@ -77,7 +77,6 @@ async function addToCart(item) {
         alert(`${item.name} added to your cart`);
       }
     } else {
-      // Cart doesn't exist - create new cart
       await setDoc(cartRef, {
         userId: currentUser.uid,
         items: [{
@@ -85,7 +84,9 @@ async function addToCart(item) {
           name: item.name,
           price: item.price,
           quantity: 1,
-          photoUrl: item.photoUrl
+          photoUrl: item.photoUrl,
+          sellerId: item.sellerId,
+          sellerName: item.sellerName
         }],
         total: item.price,
         createdAt: new Date(),
@@ -99,22 +100,24 @@ async function addToCart(item) {
   }
 }
 
-// Load items from Firestore
+// Load items from Firestore with seller details
 async function loadItems() {
   try {
     const snapshot = await getDocs(collection(db, "items"));
     allItems = snapshot.docs.map(doc => ({
       id: doc.id,
+      sellerId: doc.data().sellerId,       // Ensure these fields exist
+      sellerName: doc.data().sellerName,   // in your Firestore items
       ...doc.data()
     }));
-    renderFilteredItems(); // initial render
+    renderFilteredItems();
   } catch (error) {
     console.error("Error loading items:", error);
     catalogue.innerHTML = "<p>Failed to load items.</p>";
   }
 }
 
-// Render items to DOM
+// Render items to DOM with proper seller info
 function renderItems(items) {
   catalogue.innerHTML = '';
 
@@ -164,7 +167,7 @@ function renderItems(items) {
   });
 }
 
-// Normalized filter + search combined
+// Filter and search functionality
 function renderFilteredItems() {
   const query = normalize(searchInput.value);
 
@@ -186,29 +189,25 @@ function renderFilteredItems() {
   renderItems(filtered);
 }
 
-// Region filter buttons
+// Event listeners
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    // UI toggle
     filterButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-
-    activeRegion = normalize(btn.dataset.region); // Store the region
-    renderFilteredItems(); // Re-render
+    activeRegion = normalize(btn.dataset.region);
+    renderFilteredItems();
   });
 });
 
-// Search functionality
 searchBtn.addEventListener("click", () => {
   renderFilteredItems();
 });
 
-// Handle Enter key in search input
 searchInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     renderFilteredItems();
   }
 });
 
-// Load all items from Firestore when page loads
+// Initialize
 loadItems();
