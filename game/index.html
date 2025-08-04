@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Maze Game</title>
+    <title>Delivery Maze Challenge</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="onLoad()">
@@ -13,7 +13,7 @@
             <div class="controls">
                 <div class="timer">Time: <span id="time">00:00</span></div>
                 <div class="deliveries">Deliveries: <span id="deliveries">0</span></div>
-                <button id="generate">New Maze</button>
+                
             </div>
         </div>
         
@@ -21,7 +21,7 @@
             <div class="canvas-container">
                 <canvas id="mainCanvas"></canvas>
             </div>
-            
+
             <div class="mobile-controls">
                 <button id="up">↑</button>
                 <div class="horizontal-controls">
@@ -32,12 +32,32 @@
             </div>
         </div>
         
+        <div class="level-select-container">
+            <label for="level">Select Level (Grid Size): </label>
+            <select id="level">
+                <option value="10">10x10</option>
+                <option value="11">11x11</option>
+                <option value="12">12x12</option>
+                <option value="13">13x13</option>
+                <option value="14">14x14</option>
+                <option value="15">15x15</option>
+                <option value="16">16x16</option>
+                <option value="17">17x17</option>
+                <option value="18">18x18</option>
+                <option value="19">19x19</option>
+                <option value="13">20x20</option>
+
+               
+            </select>
+            <button id="generate">Generate Maze</button>
+        </div>
+
         <div id="message" class="hidden">
             <div id="messageContent"></div>
             <button onclick="hideMessage()">OK</button>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>

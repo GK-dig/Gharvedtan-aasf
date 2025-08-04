@@ -9,6 +9,7 @@ let timerInterval;
 let deliveries = 0;
 let gameActive = true;
 let playerDirection = 'right'; // Initial direction
+let messageShown = false;  // Flag to track if message has been shown
 
 // Preload images
 const images = {
@@ -23,6 +24,14 @@ const images = {
     gym: new Image(),
     medical: new Image(),
     park: new Image()
+};
+
+// Sound effects
+let audio = {
+    move: new Audio('assets/move-sound.mp3'),
+    delivery: new Audio('assets/delivery-sound.mp3'),
+    win: new Audio('assets/win-sound.mp3'),
+    lose: new Audio('assets/lose-sound.mp3')
 };
 
 // Load all images
@@ -106,7 +115,7 @@ class Maze {
         while (this.hasUnvisited()) {
             currCell = stack[stack.length - 1];
             currCell.visited = true;
-            
+
             if (this.hasUnvisitedNeighbor(currCell)) {
                 nextCell = null;
                 foundNeighbor = false;
@@ -160,13 +169,13 @@ class Maze {
     addBuildings() {
         const buildingTypes = ['house', 'shop', 'office', 'mall', 'gym', 'medical', 'park'];
         const buildingCount = Math.floor(this.cols * this.rows * 0.2);
-        
+
         for (let i = 0; i < buildingCount; i++) {
             const col = Math.floor(Math.random() * this.cols);
             const row = Math.floor(Math.random() * this.rows);
-            
+
             if ((col === 0 && row === 0) || (col === this.cols - 1 && row === this.rows - 1)) continue;
-            
+
             const randomBuilding = buildingTypes[Math.floor(Math.random() * buildingTypes.length)];
             this.cells[col][row].building = randomBuilding;
         }
@@ -201,11 +210,11 @@ class Maze {
         // Draw walls
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 3;
-        
+
         for (let col = 0; col < this.cols; col++) {
             for (let row = 0; row < this.rows; row++) {
                 const cell = this.cells[col][row];
-                
+
                 if (cell.eastWall) {
                     ctx.drawImage(images.wall, (col + 1) * this.cellSize - 5, row * this.cellSize, 10, this.cellSize);
                 }
@@ -218,7 +227,7 @@ class Maze {
                 if (cell.westWall) {
                     ctx.drawImage(images.wall, col * this.cellSize - 5, row * this.cellSize, 10, this.cellSize);
                 }
-                
+
                 // Draw buildings if any (larger size)
                 if (cell.building && images[cell.building]) {
                     const size = this.cellSize * 0.9;
@@ -231,20 +240,20 @@ class Maze {
         // Draw destination (mall) - larger size
         const endSize = this.cellSize * 0.9;
         const endOffset = (this.cellSize - endSize) / 2;
-        ctx.drawImage(images.mall, 
-                     (this.cols - 1) * this.cellSize + endOffset, 
-                     (this.rows - 1) * this.cellSize + endOffset, 
-                     endSize, endSize);
+        ctx.drawImage(images.mall,
+            (this.cols - 1) * this.cellSize + endOffset,
+            (this.rows - 1) * this.cellSize + endOffset,
+            endSize, endSize);
 
         // Draw player with rotation and larger size
         const playerSize = this.cellSize * 0.8;
         const playerOffset = (this.cellSize - playerSize) / 2;
         const centerX = player.col * this.cellSize + this.cellSize / 2;
         const centerY = player.row * this.cellSize + this.cellSize / 2;
-        
+
         ctx.save();
         ctx.translate(centerX, centerY);
-        
+
         // Rotate based on direction
         switch(playerDirection) {
             case 'up':
@@ -258,26 +267,29 @@ class Maze {
                 break;
             // 'right' is default (no rotation needed)
         }
-        
-        ctx.drawImage(images.player, 
-                     -playerSize/2, 
-                     -playerSize/2, 
-                     playerSize, playerSize);
+
+        ctx.drawImage(images.player,
+            -playerSize/2,
+            -playerSize/2,
+            playerSize, playerSize);
         ctx.restore();
 
-        // Check for win condition
-        if (player.col === this.cols - 1 && player.row === this.rows - 1 && gameActive) {
+        // Check for win condition only once
+        if (player.col === this.cols - 1 && player.row === this.rows - 1 && gameActive && !messageShown) {
             gameActive = false;
             clearInterval(timerInterval);
+            playWinSound();
             showMessage("Congratulations! You delivered all packages in " + formatTime(gameTime), "win");
+            messageShown = true;  // Set flag to true after message is shown
         }
-        
+
         // Check for building delivery
         const currentCell = this.cells[player.col][player.row];
         if (currentCell.building && gameActive) {
             deliveries++;
             document.getElementById('deliveries').textContent = deliveries;
             currentCell.building = null;
+            playDeliverySound();
         }
     }
 }
@@ -286,11 +298,13 @@ function updateGameTime() {
     if (gameActive) {
         gameTime++;
         updateTimer();
-        
-        if (gameTime >= 300) {
+
+        if (gameTime >= 300 && !messageShown) {
             gameActive = false;
             clearInterval(timerInterval);
+            playLoseSound();
             showMessage("Time's up! You didn't deliver all packages in time.", "lose");
+            messageShown = true;  // Set flag to true after message is shown
         }
     }
 }
@@ -313,6 +327,7 @@ function showMessage(text, type) {
     content.textContent = text;
     content.className = type;
     message.classList.remove('hidden');
+    message.classList.add('show');
 }
 
 function hideMessage() {
@@ -321,37 +336,41 @@ function hideMessage() {
 
 function onClick(event) {
     player.reset();
-    const cols = parseInt(document.getElementById('cols').value) || 20;
-    const rows = parseInt(document.getElementById('rows').value) || 20;
-    maze = new Maze(cols, rows, 35); // Increased cell size
+    const levelSelect = document.getElementById('level');
+    const level = levelSelect ? parseInt(levelSelect.value) : 10; // Default to 10x10 grid
+    maze = new Maze(level, level, 35); // Grid size based on selected level
 }
 
 function onControlClick(event) {
     if (!gameActive) return;
-    
+
     switch (event.target.id) {
         case 'left':
             if (!maze.cells[player.col][player.row].westWall) {
                 player.col -= 1;
                 playerDirection = 'left';
+                playMoveSound();
             }
             break;
         case 'right':
             if (!maze.cells[player.col][player.row].eastWall) {
                 player.col += 1;
                 playerDirection = 'right';
+                playMoveSound();
             }
             break;
         case 'down':
             if (!maze.cells[player.col][player.row].southWall) {
                 player.row += 1;
                 playerDirection = 'down';
+                playMoveSound();
             }
             break;
         case 'up':
             if (!maze.cells[player.col][player.row].northWall) {
                 player.row -= 1;
                 playerDirection = 'up';
+                playMoveSound();
             }
             break;
         default:
@@ -362,13 +381,14 @@ function onControlClick(event) {
 
 function onKeyDown(event) {
     if (!gameActive) return;
-    
+
     switch (event.keyCode) {
         case 37: // Left arrow
         case 65: // A
             if (!maze.cells[player.col][player.row].westWall) {
                 player.col -= 1;
                 playerDirection = 'left';
+                playMoveSound();
             }
             break;
         case 39: // Right arrow
@@ -376,6 +396,7 @@ function onKeyDown(event) {
             if (!maze.cells[player.col][player.row].eastWall) {
                 player.col += 1;
                 playerDirection = 'right';
+                playMoveSound();
             }
             break;
         case 40: // Down arrow
@@ -383,6 +404,7 @@ function onKeyDown(event) {
             if (!maze.cells[player.col][player.row].southWall) {
                 player.row += 1;
                 playerDirection = 'down';
+                playMoveSound();
             }
             break;
         case 38: // Up arrow
@@ -390,6 +412,7 @@ function onKeyDown(event) {
             if (!maze.cells[player.col][player.row].northWall) {
                 player.row -= 1;
                 playerDirection = 'up';
+                playMoveSound();
             }
             break;
         default:
@@ -398,15 +421,31 @@ function onKeyDown(event) {
     maze.redraw();
 }
 
+function playMoveSound() {
+    audio.move.play();
+}
+
+function playDeliverySound() {
+    audio.delivery.play();
+}
+
+function playWinSound() {
+    audio.win.play();
+}
+
+function playLoseSound() {
+    audio.lose.play();
+}
+
 function onLoad() {
     canvas = document.getElementById('mainCanvas');
     ctx = canvas.getContext('2d');
-    
+
     loadImages();
-    
+
     let imagesLoaded = 0;
     const totalImages = Object.keys(images).length;
-    
+
     for (const key in images) {
         images[key].onload = function() {
             imagesLoaded++;
@@ -422,7 +461,7 @@ function onLoad() {
             }
         };
     }
-    
+
     if (totalImages === 0) {
         startGame();
     }
@@ -430,8 +469,8 @@ function onLoad() {
 
 function startGame() {
     player = new Player();
-    maze = new Maze(20, 20, 35); // Increased cell size
-    
+    maze = new Maze(10, 10, 35); // Default grid size 10x10
+
     document.addEventListener('keydown', onKeyDown);
     document.getElementById('generate').addEventListener('click', onClick);
     document.getElementById('up').addEventListener('click', onControlClick);
