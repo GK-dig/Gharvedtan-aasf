@@ -1,170 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Create a Home Cook Profile - Gharvedtan</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu Item</title>
+    <link rel="stylesheet" href="addmenu.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places"></script> <!-- Replace with your Google API key -->
-    <link rel="stylesheet" href="creatres.css">
+    <script src="firebase.js"></script> <!-- Firebase configuration -->
 </head>
 <body>
-    <div id="navbar">
-        <div id="navsize">
-            <a href="../index.html"><img src="../assets/gharvedtan.png" alt=""></a>
-        </div>
+  <section class="subscription flex-center">
+    <div class="login-herocontent">
+      <h2>Home Cook Information</h2>
+
+      <div class="subscription__form">
+        <input type="text" id="cookname" placeholder="Home Cook Name" disabled />
+      </div>
+   
+      <div class="subscription__form">
+        <input  type="text" id="cookaddress" placeholder="Address will be detected" disabled/>
+      </div>
+      <div class="subscription__form" style="align-items: center">
+        <input type="text" id="cookmob" placeholder="Enter your mobile number" required />
+        <button id="sendOtpButton">Send OTP</button>
+      </div>
+      <div class="subscription__form">
+        <input type="text" id="otpInput" placeholder="Enter OTP" required />
+        <button id="verifyOtpButton">Verify OTP</button>
+      </div>
+      <div class="subscription__form">
+     <button1 id="submitBtn">Register Home Cook</button1>
+      </div>
+
     </div>
-    <div id="creatersinfo">
-        <div id="creatersinfo-left">
-            <h4 style="margin-bottom: 5px;">1. Create Your Home Cook Profile</h4>
-            <hr style="margin-bottom: 10px;">
-            <div class="ccinfo">
-                <h4>1 Personal Information</h4>
-                <p>Home cook name, address, contact info</p>
-            </div>
-            <div class="ccinfo">
-                <h4>2 Register for Online Ordering</h4>
-                <p>Provide your contact details for registration.</p>
-            </div>
-        </div>
-
-        <div id="creatorsinfo-right">
-            <h1>Home Cook Information</h1>
-
-            <!-- Full Name (Auto-detected from Firebase) -->
-            <div id="cprestaurantdetails">
-                <h3>Full Name</h3>
-                <div id="cpinputbox">
-                    <input type="text" id="cookname" placeholder="Home Cook Name" disabled>
-                </div>
-            </div>
-
-            <!-- Auto-detected address -->
-            <div id="cprestaurantdetails">
-                <h3>Location (Auto-detected)</h3>
-                <p>Your current address will be detected</p>
-                <div id="cpinputbox">
-                    <input type="text" id="cookaddress" placeholder="Address will be detected" disabled>
-                </div>
-            </div>
-
-            <!-- Phone Number & OTP Section -->
-            <div id="cprestaurantdetails">
-                <h3>Phone Number</h3>
-                <p>We will send you an OTP for verification</p>
-                <div id="cpinputbox">
-                    <input type="text" id="cookmob" placeholder="Enter your mobile number" required>
-                </div>
-                <button id="sendOtpButton">Send OTP</button>
-
-                <div id="otpSection" style="display:none;">
-                    <input type="text" id="otpInput" placeholder="Enter OTP" required>
-                    <button id="verifyOtpButton">Verify OTP</button>
-                </div>
-            </div>
-
-            <button class="nextbluebutton" id="submitBtn">Register Home Cook</button>
-        </div>
-    </div>
-
-    <script>
-        // Firebase configuration (Replace with your Firebase project details)
-        const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-            projectId: "YOUR_FIREBASE_PROJECT_ID",
-            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-            appId: "YOUR_FIREBASE_APP_ID"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // Check if the user is signed in and fetch user data (Full Name)
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('cookname').value = user.displayName || 'User';
-            }
-        });
-
-        // Geolocation: Auto-detect Address
-        function detectLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    // Use Google Places API to get the address from latitude and longitude
-                    const geocoder = new google.maps.Geocoder();
-                    const latlng = new google.maps.LatLng(latitude, longitude);
-                    geocoder.geocode({ 'latLng': latlng }, (results, status) => {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (results[0]) {
-                                document.getElementById('cookaddress').value = results[0].formatted_address;
-                            }
-                        }
-                    });
-                });
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-
-        // Call the detectLocation function
-        detectLocation();
-
-        // Firebase Phone Authentication for OTP Verification
-        const recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendOtpButton', {
-            'size': 'invisible',
-            'callback': function(response) {
-                console.log(response);  // Captcha response validation
-            }
-        });
-
-        // Send OTP to the provided phone number
-        document.getElementById('sendOtpButton').addEventListener('click', function() {
-            const phoneNumber = document.getElementById('cookmob').value;
-            const appVerifier = recaptchaVerifier;
-
-            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-                .then(function(confirmationResult) {
-                    window.confirmationResult = confirmationResult;
-                    document.getElementById('otpSection').style.display = 'block';
-                    alert('OTP sent!');
-                }).catch(function(error) {
-                    alert('Error: ' + error.message);
-                });
-        });
-
-        // Verify OTP when user inputs it
-        document.getElementById('verifyOtpButton').addEventListener('click', function() {
-            const otp = document.getElementById('otpInput').value;
-            confirmationResult.confirm(otp).then(function(result) {
-                alert('Phone number verified successfully');
-            }).catch(function(error) {
-                alert('Error during verification: ' + error.message);
-            });
-        });
-
-        // Submit the Home Cook Profile
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            const fullName = document.getElementById('cookname').value;
-            const address = document.getElementById('cookaddress').value;
-            const phone = document.getElementById('cookmob').value;
-
-            // Save data to Firestore or handle submission
-            console.log('Full Name:', fullName);
-            console.log('Address:', address);
-            console.log('Phone:', phone);
-
-            // You can push this data to Firestore or send to your server.
-        });
-    </script>
+  
+ </section>
 </body>
 </html>

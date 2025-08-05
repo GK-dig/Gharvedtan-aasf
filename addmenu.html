@@ -4,53 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Menu Item</title>
-    <link rel="stylesheet" href="addmenu.css"> <!-- External CSS for styling -->
+    <link rel="stylesheet" href="addmenu.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
     <script src="firebase.js"></script> <!-- Firebase configuration -->
 </head>
 <body>
-    <h1>Add New Menu Item</h1>
-    <form id="addMenuForm">
-        <!-- Input fields for the menu item -->
-        <label for="itemName">Item Name</label>
-        <input type="text" id="itemName" placeholder="Enter item name" required>
+  <section class="subscription flex-center">
+    <div class="login-herocontent">
+      <h2>Add New Menu Item</h2>
 
-        <label for="price">Price</label>
-        <input type="number" id="price" placeholder="Enter item price" required>
+      <div class="subscription__form">
+        <input type="text" id="itemName" placeholder="Enter item name" required />
+      </div>
 
-        <label for="region">Region</label>
-        <select id="region" required>
+      <div class="subscription__form">
+        <input  type="number" id="price" placeholder="Enter item price" required />
+      </div>
+
+      <div class="subscription__form">
+        <input type="password" id="signupRepass" placeholder="Re-enter password" />
+      </div>
+<div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+  <select id="region" required>
             <option value="North">North</option>
             <option value="South">South</option>
             <option value="East">East</option>
             <option value="West">West</option>
             <option value="Central">Central</option>
         </select>
-
-        <label for="photoUrl">Image URL</label>
-        <input type="text" id="photoUrl" placeholder="Enter image URL" required>
-
-        <label for="rating">Rating</label>
-        <input type="number" id="rating" step="0.1" min="1" max="5" placeholder="Enter rating (1-5)" required>
-
-        <label for="type">Type</label>
-        <select id="type" required>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
+</div>
+ <div class="subscription__form">
+        <input type="text" id="photoUrl" placeholder="Enter image URL" required />
+      </div>
+      <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+  <select id="availability" required>
+            <option value="Yes">Available</option>
+            <option value="No">Not-Available</option>
         </select>
+</div>
+      <div class="subscription__form">
+         <button1 type="submit">Add Item</button1>
+      </div> 
 
-        <label for="sellerName">Seller Name</label>
-        <input type="text" id="sellerName" value="Bengali Spice" readonly>
-
-        <label for="availability">Availability</label>
-        <div class="checkbox-group">
-            <input type="checkbox" id="availability" checked>
-            <span>Available</span>
-        </div>
-
-        <button type="submit">Add Item</button>
-    </form>
+     
+ </section>
 
     <script>
         // Firebase initialization with your configuration
