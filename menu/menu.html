@@ -7,97 +7,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-    <title>menu</title>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
-            authDomain: "gharvedtan-auth.firebaseapp.com",
-            projectId: "gharvedtan-auth",
-            storageBucket: "gharvedtan-auth.firebasestorage.app",
-            messagingSenderId: "32502650170",
-            appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const searchInput = document.getElementById("searchInput");
-        const searchBtn = document.getElementById("searchBtn");
-        const catalogue = document.querySelector(".popular-foods__catalogue");
-
-        async function fetchAndDisplayItems(searchTerm = "") {
-            catalogue.innerHTML = "Loading...";
-            let q = collection(db, "menuItems");
-
-            const querySnapshot = await getDocs(q);
-            catalogue.innerHTML = "";
-
-            querySnapshot.forEach(doc => {
-                const item = doc.data();
-                if (
-                    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    item.sellerName.toLowerCase().includes(searchTerm.toLowerCase())
-                ) {
-                    
-
-                    const card = `
-                        <article class="popular-foods__card">
-                            <img class="popular-foods__card-image" src="${item.photoUrl}" alt="${item.name}" />
-                            <h1 class="popular-foods__card-seller">${item.sellerName}</h1>
-                            <h4 class="popular-foods__card-title">${item.name}</h4>
-
-                            <div class="popular-foods__card-details flex-between">
-                                <div class="popular-foods__card-rating">
-                                    <img src="../assets/star.svg" alt="star" />
-                                    <p>${item.rating}</p>
-                                </div>
-                                <p class="popular-foods__card-price">₹${item.price}</p>
-                            </div>
-                            <div class="subscription__form">
-                                <button 
-                             class="add-to-cart" 
-                             data-id="${item.id}" 
-                             data-name="${item.name}" 
-                             data-price="${item.price}">
-                             Add to Cart
-                             </button>
-
-                            </div>
-                        </article>
-                    `;
-                    catalogue.insertAdjacentHTML("beforeend", card);
-                }
-            });
-
-            
-        HEAD
-            document.querySelectorAll(".add-to-cart").forEach(button => {
-             button.addEventListener("click", () => {
-              const id = button.getAttribute("data-id");
-              const name = button.getAttribute("data-name");
-              const price = parseFloat(button.getAttribute("data-price"));
-    
-                addToCart(id, name, price);
-             });
-            })
-
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Menu - Gharvedtan</title>
+    <style>
+        .no-results, .error-state {
+            text-align: center;
+            padding: 2rem;
+            color: #fff;
         }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchAndDisplayItems();
-            searchBtn.addEventListener("click", () => {
-                fetchAndDisplayItems(searchInput.value);
-            });
-        });
-    </script>
+        .no-results img, .error-state img {
+            margin-bottom: 1rem;
+        }
+        .clear-search, .error-state button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+        .search-highlight {
+            background-color: yellow;
+            color: #000;
+            font-weight: bold;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
-
     <header>
         <nav class="header__nav">
             <div class="header__logo">
@@ -106,7 +52,6 @@
             </div>
 
             <ul class="header__menu" data-aos="fade-down">
-
                 <li>
                     <a href="../index.html">Home</a>
                 </li>
@@ -128,14 +73,13 @@
 
             <ul class="header__menu-mobile" data-aos="fade-down">
                 <li>
-                    <img src="../assets/menu.svg" alt="menu" />
+                    <img src="../assets/menu.svg" alt="menu" id="mobileMenuBtn" />
                 </li>
             </ul>
         </nav>
     </header>
 
     <section class="layer-container">
-
         <div class="floral-bg">
             <div class="food-scroll">
                 <div class="food-track">
@@ -161,24 +105,20 @@
                     <img src="../assets/1 (10).png" alt="food" />
                 </div>
             </div>
-
         </div>
         <div class="info">
             <span>MO&nbsp;&nbsp;&nbsp;D</span>
         </div>
 
-
-
         <div class="smoke"></div>
         <div class="smoke2"></div>
         <div class="signature-text">What's your</div>
-
     </section>
 
     <section class="popular-foods" id="menu">
         <div class="subscription__form1" data-aos="fade-up">
-            <input id="searchInput" type="text" placeholder="Search for your favourite comfort food" />
-            <button id="searchBtn"><img src="../assets/search.svg"></button>
+            <input type="text" placeholder="Search for your favourite comfort food" class="subscription__form1 input" />
+            <button id="searchBtn"><img src="../assets/search.svg" alt="Search"></button>
         </div>
 
         <div class="popular-foods__filters hide-scrollbar" data-aos="fade-up">
@@ -190,12 +130,11 @@
         </div>
 
         <div class="popular-foods__catalogue" data-aos="fade-up">
-   
+            <div class="loading">Loading menu items...</div>
         </div>
     </section>
 
     <footer class="footer flex-between">
-
         <h3 class="footer__logo">
             <span>GharVED</span>tan
         </h3>
@@ -218,14 +157,35 @@
                 <img src="../assets/twitter.svg" alt="twitter" />
             </li>
         </ul>
-
     </footer>
 
-    <script type="module" src="./firebase.js"></script>
-    <script type="module" src="./menu.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+  
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="../js/indexjs.js"></script>
+    
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100
+        });
+
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+            document.querySelector('.header__menu').classList.toggle('show-mobile');
+        });
+
+        document.getElementById('profileIcon')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        });
+
+        document.addEventListener('click', () => {
+            document.getElementById('dropdownMenu')?.classList.remove('show');
+        });
+    </script>
+    <script type="module" src="./menu.js"></script>
 </body>
 
 </html>

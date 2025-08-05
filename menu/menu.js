@@ -11,18 +11,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+// Initialize Firebase Auth
 const auth = getAuth();
 
+// DOM Elements
 const catalogue = document.querySelector(".popular-foods__catalogue");
 const searchInput = document.querySelector(".subscription__form1 input");
 const filterButtons = document.querySelectorAll(".popular-foods__filter-btn");
-const searchBtn = document.getElementById("searchBtn"); 
+const searchBtn = document.getElementById("searchBtn");
 
+// Application State
 let allItems = [];
 let activeRegion = "all";
 let currentUser = null;
 let authReady = false;
 
+// Initialize authentication state
 const authPromise = new Promise(resolve => {
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
@@ -32,6 +37,7 @@ const authPromise = new Promise(resolve => {
   });
 });
 
+// Utility Functions
 const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
@@ -66,18 +72,20 @@ const searchItems = (query, items) => {
 const highlightMatches = (text, query) => {
   if (!query.trim()) return text;
   
-  return text.replace(new RegExp(query.split(" ").join("|"), "gi"), 
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(escapedQuery.split(" ").join("|"), "gi"), 
     match => `<span class="search-highlight">${match}</span>`
   );
 };
 
+// Render Functions
 function renderItems(items, searchQuery = '') {
   catalogue.innerHTML = '';
 
   if (items.length === 0) {
     catalogue.innerHTML = `
       <div class="no-results">
-        <img src="/assets/search-empty.svg" alt="No results" width="120"/>
+        <img src="../assets/search-empty.svg" alt="No results" width="120"/>
         <p>No items found matching "${searchQuery}"</p>
         <button class="clear-search">Clear search</button>
       </div>
@@ -93,12 +101,13 @@ function renderItems(items, searchQuery = '') {
   items.forEach(item => {
     const card = document.createElement('article');
     card.className = 'popular-foods__card';
+    card.dataset.region = item.region || '';
 
     card.innerHTML = `
       <img class="popular-foods__card-image" 
-           src="${item.photoUrl || '/assets/default.png'}" 
+           src="${item.photoUrl || '../assets/default.png'}" 
            alt="${item.name || 'Food'}"
-           onerror="this.onerror=null; this.src='/assets/default.png';" />
+           onerror="this.onerror=null; this.src='../assets/default.png';" />
 
       <h1 class="popular-foods__card-seller">${
         highlightMatches(item.sellerName || 'Unknown Seller', searchQuery)
@@ -109,7 +118,7 @@ function renderItems(items, searchQuery = '') {
 
       <div class="popular-foods__card-details flex-between">
         <div class="popular-foods__card-rating">
-          <img src="/assets/star.svg" alt="star" />
+          <img src="../assets/star.svg" alt="star" />
           <p>${item.rating || 'N/A'}</p>
         </div>
         <p class="popular-foods__card-price">₹${item.price || 'N/A'}</p>
@@ -123,15 +132,21 @@ function renderItems(items, searchQuery = '') {
     catalogue.appendChild(card);
   });
 
+  // Add event listeners to all Add to Cart buttons
   document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async () => {
       const itemId = button.dataset.id;
       const item = allItems.find(i => i.id === itemId);
-      if (item) addToCart(item);
+      if (item) {
+        button.disabled = true;
+        await addToCart(item);
+        button.disabled = false;
+      }
     });
   });
 }
 
+// Cart Operations
 async function addToCart(item) {
   try {
     if (!authReady) await authPromise;
@@ -148,7 +163,7 @@ async function addToCart(item) {
       id: item.id,
       name: item.name,
       price: item.price,
-      photoUrl: item.photoUrl || '/assets/default.png',
+      photoUrl: item.photoUrl || '../assets/default.png',
       sellerName: item.sellerName || 'Unknown Seller',
       quantity: 1,
       lastUpdated: new Date()
@@ -156,10 +171,12 @@ async function addToCart(item) {
 
     if (cartSnap.exists()) {
       const cartData = cartSnap.data();
-      const existingItemIndex = cartData.items.findIndex(i => i.id === item.id);
+      const items = cartData.items || []; // Safeguard against undefined items
+      
+      const existingItemIndex = items.findIndex(i => i.id === item.id);
       
       if (existingItemIndex >= 0) {
-        const updatedItems = [...cartData.items];
+        const updatedItems = [...items];
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
           quantity: updatedItems[existingItemIndex].quantity + 1,
@@ -188,6 +205,7 @@ async function addToCart(item) {
       });
     }
     
+    // Visual feedback for adding to cart
     const btn = document.querySelector(`.add-to-cart[data-id="${item.id}"]`);
     if (btn) {
       btn.textContent = '✓ Added';
@@ -202,44 +220,57 @@ async function addToCart(item) {
     alert(`Failed to update cart: ${error.message}`);
   }
 }
+
+// Filter and Search
 const renderFilteredItems = debounce(() => {
   const query = searchInput.value.trim();
   const regionFiltered = activeRegion === "all" 
     ? allItems 
-    : allItems.filter(item => normalize(item.region) === normalize(activeRegion));
+    : allItems.filter(item => normalize(item.region || '') === normalize(activeRegion));
 
   const searchResults = searchItems(query, regionFiltered);
   renderItems(searchResults, query);
 }, 300);
 
-filterButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    filterButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    activeRegion = normalize(btn.dataset.region);
-    renderFilteredItems();
+// Event Listeners
+function setupEventListeners() {
+  // Region filter buttons
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeRegion = normalize(btn.dataset.region);
+      renderFilteredItems();
+    });
   });
-});
 
-searchInput.addEventListener('input', renderFilteredItems);
-searchBtn.addEventListener('click', renderFilteredItems);
-searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && renderFilteredItems());
+  // Search functionality
+  searchInput.addEventListener('input', renderFilteredItems);
+  searchBtn.addEventListener('click', renderFilteredItems);
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') renderFilteredItems();
+  });
+}
 
+// Initialization
 async function initialize() {
   try {
+    setupEventListeners();
     await authPromise;
+    
     const snapshot = await getDocs(collection(db, "items"));
     allItems = snapshot.docs.map(doc => ({
       id: doc.id,
-      sellerName: doc.data().sellerName || 'Unknown Seller',
-      ...doc.data()
+      ...doc.data(),
+      sellerName: doc.data().sellerName || 'Unknown Seller'
     }));
+    
     renderFilteredItems();
   } catch (error) {
     console.error("Initialization error:", error);
     catalogue.innerHTML = `
       <div class="error-state">
-        <img src="/assets/error-icon.svg" alt="Error" width="80"/>
+        <img src="../assets/error-icon.svg" alt="Error" width="80"/>
         <p>Failed to load menu. Please refresh the page.</p>
         <button onclick="window.location.reload()">Reload Page</button>
       </div>
@@ -247,4 +278,5 @@ async function initialize() {
   }
 }
 
+// Start the application
 initialize();
