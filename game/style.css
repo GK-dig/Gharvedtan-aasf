@@ -1,4 +1,4 @@
-/* Global Styles */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -117,22 +117,20 @@ button:focus {
     transition: box-shadow 0.3s ease;
 }
 
-/* Ensure proper image scaling without distortion */
 canvas {
     display: block;
-    width: 100%; /* Ensure it scales with the container */
-    height: auto; /* Maintain aspect ratio */
+    width: 100%; 
+    height: auto; 
     border: 2px solid #333;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    image-rendering: crisp-edges; /* Prevent image blur when scaling */
+    image-rendering: crisp-edges; 
 }
 
 canvas:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-/* Mobile Controls */
 .mobile-controls {
     display: flex;
     flex-direction: column;
@@ -169,8 +167,6 @@ canvas:hover {
     background-color: #388e3c;
     transform: scale(1);
 }
-
-/* Level Select Styles */
 .level-select-container {
     display: flex;
     justify-content: center;
@@ -218,7 +214,6 @@ canvas:hover {
     transform: translateY(2px);
 }
 
-/* Message Box Styles */
 #message {
     position: fixed;
     top: 50%;
@@ -265,7 +260,6 @@ canvas:hover {
     color: #F44336;
 }
 
-/* Animation for Game Start */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -275,7 +269,6 @@ canvas:hover {
     }
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
     .game-container {
         padding: 20px;

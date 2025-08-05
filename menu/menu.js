@@ -23,7 +23,6 @@ let activeRegion = "all";
 let currentUser = null;
 let authReady = false;
 
-// Wait for auth to be ready
 const authPromise = new Promise(resolve => {
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
@@ -33,7 +32,6 @@ const authPromise = new Promise(resolve => {
   });
 });
 
-// Enhanced search function with debouncing
 const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
@@ -65,7 +63,6 @@ const searchItems = (query, items) => {
   });
 };
 
-// Highlight search matches in results
 const highlightMatches = (text, query) => {
   if (!query.trim()) return text;
   
@@ -74,7 +71,6 @@ const highlightMatches = (text, query) => {
   );
 };
 
-// Enhanced render function with search highlighting
 function renderItems(items, searchQuery = '') {
   catalogue.innerHTML = '';
 
@@ -136,7 +132,6 @@ function renderItems(items, searchQuery = '') {
   });
 }
 
-// Optimized cart function with quantity validation
 async function addToCart(item) {
   try {
     if (!authReady) await authPromise;
@@ -193,7 +188,6 @@ async function addToCart(item) {
       });
     }
     
-    // Visual feedback
     const btn = document.querySelector(`.add-to-cart[data-id="${item.id}"]`);
     if (btn) {
       btn.textContent = '✓ Added';
@@ -208,8 +202,6 @@ async function addToCart(item) {
     alert(`Failed to update cart: ${error.message}`);
   }
 }
-
-// Filter and render with debouncing
 const renderFilteredItems = debounce(() => {
   const query = searchInput.value.trim();
   const regionFiltered = activeRegion === "all" 
@@ -220,7 +212,6 @@ const renderFilteredItems = debounce(() => {
   renderItems(searchResults, query);
 }, 300);
 
-// Event listeners
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     filterButtons.forEach(b => b.classList.remove("active"));
@@ -234,7 +225,6 @@ searchInput.addEventListener('input', renderFilteredItems);
 searchBtn.addEventListener('click', renderFilteredItems);
 searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && renderFilteredItems());
 
-// Initialize
 async function initialize() {
   try {
     await authPromise;
@@ -258,39 +248,3 @@ async function initialize() {
 }
 
 initialize();
-
-// Add this CSS to your styles:
-/*
-.search-highlight {
-  background-color: #fff9c4;
-  padding: 0 2px;
-  border-radius: 3px;
-  font-weight: 500;
-}
-
-.no-results, .error-state {
-  text-align: center;
-  padding: 2rem;
-  margin: 2rem 0;
-}
-
-.no-results img, .error-state img {
-  margin-bottom: 1rem;
-  opacity: 0.7;
-}
-
-.clear-search, .error-state button {
-  background: #FF6B6B;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.clear-search:hover, .error-state button:hover {
-  background: #FF5252;
-}
-*/

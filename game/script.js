@@ -8,10 +8,9 @@ let gameTime = 0;
 let timerInterval;
 let deliveries = 0;
 let gameActive = true;
-let playerDirection = 'right'; // Initial direction
-let messageShown = false;  // Flag to track if message has been shown
+let playerDirection = 'right';
+let messageShown = false;  
 
-// Preload images
 const images = {
     player: new Image(),
     road: new Image(),
@@ -26,7 +25,6 @@ const images = {
     park: new Image()
 };
 
-// Sound effects
 let audio = {
     move: new Audio('assets/move-sound.mp3'),
     delivery: new Audio('assets/delivery-sound.mp3'),
@@ -34,7 +32,6 @@ let audio = {
     lose: new Audio('assets/lose-sound.mp3')
 };
 
-// Load all images
 function loadImages() {
     images.player.src = 'assets/deliveryBoy.png';
     images.road.src = 'assets/roads.png';
@@ -57,7 +54,7 @@ class Player {
     reset() {
         this.col = 0;
         this.row = 0;
-        playerDirection = 'right'; // Reset direction
+        playerDirection = 'right'; 
     }
 }
 
@@ -200,14 +197,12 @@ class Maze {
     redraw() {
         ctx.clearRect(0, 0, mazeWidth, mazeHeight);
 
-        // Draw roads (background)
         for (let col = 0; col < this.cols; col++) {
             for (let row = 0; row < this.rows; row++) {
                 ctx.drawImage(images.road, col * this.cellSize, row * this.cellSize, this.cellSize, this.cellSize);
             }
         }
 
-        // Draw walls
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 3;
 
@@ -228,7 +223,6 @@ class Maze {
                     ctx.drawImage(images.wall, col * this.cellSize - 5, row * this.cellSize, 10, this.cellSize);
                 }
 
-                // Draw buildings if any (larger size)
                 if (cell.building && images[cell.building]) {
                     const size = this.cellSize * 0.9;
                     const offset = (this.cellSize - size) / 2;
@@ -236,8 +230,6 @@ class Maze {
                 }
             }
         }
-
-        // Draw destination (mall) - larger size
         const endSize = this.cellSize * 0.9;
         const endOffset = (this.cellSize - endSize) / 2;
         ctx.drawImage(images.mall,
@@ -245,7 +237,6 @@ class Maze {
             (this.rows - 1) * this.cellSize + endOffset,
             endSize, endSize);
 
-        // Draw player with rotation and larger size
         const playerSize = this.cellSize * 0.8;
         const playerOffset = (this.cellSize - playerSize) / 2;
         const centerX = player.col * this.cellSize + this.cellSize / 2;
@@ -254,7 +245,6 @@ class Maze {
         ctx.save();
         ctx.translate(centerX, centerY);
 
-        // Rotate based on direction
         switch(playerDirection) {
             case 'up':
                 ctx.rotate(-Math.PI/2);
@@ -265,7 +255,7 @@ class Maze {
             case 'left':
                 ctx.rotate(Math.PI);
                 break;
-            // 'right' is default (no rotation needed)
+            
         }
 
         ctx.drawImage(images.player,
@@ -274,16 +264,14 @@ class Maze {
             playerSize, playerSize);
         ctx.restore();
 
-        // Check for win condition only once
         if (player.col === this.cols - 1 && player.row === this.rows - 1 && gameActive && !messageShown) {
             gameActive = false;
             clearInterval(timerInterval);
             playWinSound();
             showMessage("Congratulations! You delivered all packages in " + formatTime(gameTime), "win");
-            messageShown = true;  // Set flag to true after message is shown
+            messageShown = true;  
         }
 
-        // Check for building delivery
         const currentCell = this.cells[player.col][player.row];
         if (currentCell.building && gameActive) {
             deliveries++;
@@ -304,7 +292,7 @@ function updateGameTime() {
             clearInterval(timerInterval);
             playLoseSound();
             showMessage("Time's up! You didn't deliver all packages in time.", "lose");
-            messageShown = true;  // Set flag to true after message is shown
+            messageShown = true;  
         }
     }
 }
@@ -337,8 +325,8 @@ function hideMessage() {
 function onClick(event) {
     player.reset();
     const levelSelect = document.getElementById('level');
-    const level = levelSelect ? parseInt(levelSelect.value) : 10; // Default to 10x10 grid
-    maze = new Maze(level, level, 35); // Grid size based on selected level
+    const level = levelSelect ? parseInt(levelSelect.value) : 10; 
+    maze = new Maze(level, level, 35); 
 }
 
 function onControlClick(event) {
@@ -383,32 +371,32 @@ function onKeyDown(event) {
     if (!gameActive) return;
 
     switch (event.keyCode) {
-        case 37: // Left arrow
-        case 65: // A
+        case 37: 
+        case 65: 
             if (!maze.cells[player.col][player.row].westWall) {
                 player.col -= 1;
                 playerDirection = 'left';
                 playMoveSound();
             }
             break;
-        case 39: // Right arrow
-        case 68: // D
+        case 39: 
+        case 68: 
             if (!maze.cells[player.col][player.row].eastWall) {
                 player.col += 1;
                 playerDirection = 'right';
                 playMoveSound();
             }
             break;
-        case 40: // Down arrow
-        case 83: // S
+        case 40: 
+        case 83:
             if (!maze.cells[player.col][player.row].southWall) {
                 player.row += 1;
                 playerDirection = 'down';
                 playMoveSound();
             }
             break;
-        case 38: // Up arrow
-        case 87: // W
+        case 38: 
+        case 87:
             if (!maze.cells[player.col][player.row].northWall) {
                 player.row -= 1;
                 playerDirection = 'up';
@@ -469,7 +457,7 @@ function onLoad() {
 
 function startGame() {
     player = new Player();
-    maze = new Maze(10, 10, 35); // Default grid size 10x10
+    maze = new Maze(10, 10, 35); 
 
     document.addEventListener('keydown', onKeyDown);
     document.getElementById('generate').addEventListener('click', onClick);
