@@ -108,7 +108,7 @@ window.googleSignIn = async () => {
     }));
 
     alert("Google Sign-In successful!");
-    window.location.href = "/index.html"; 
+    window.location.href = "../index.html"; 
 
   } catch (error) {
     console.error("Google Sign-In Error:", error);

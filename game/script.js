@@ -90,25 +90,22 @@ class Maze {
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(updateGameTime, 1000);
 
-      // Get the pixel ratio (default is 1, but on Retina displays can be 2 or more)
-    const dpr = window.devicePixelRatio || 1;
+    
+const dpr = window.devicePixelRatio || 1;
+const resolutionFactor = 2;  
 
-// Calculate size
-    const overflowMargin = 10;
-    const displayWidth = this.cols * this.cellSize ;
-    const displayHeight = this.rows * this.cellSize ;
+const displayWidth = this.cols * this.cellSize;
+const displayHeight = this.rows * this.cellSize;
 
-// Set canvas resolution *higher* for high-DPI screens
-   canvas.width = displayWidth * dpr;
-   canvas.height = displayHeight * dpr;
+canvas.width = displayWidth * dpr * resolutionFactor;
+canvas.height = displayHeight * dpr * resolutionFactor;
 
-// Scale drawing operations to account for the increased resolution
-ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
-ctx.scale(dpr, dpr);
+ctx.setTransform(1, 0, 0, 1, 0, 0);
+ctx.scale(dpr * resolutionFactor, dpr * resolutionFactor);
 
-// Set canvas style (CSS) to display the size as intended
 canvas.style.width = `${displayWidth}px`;
 canvas.style.height = `${displayHeight}px`;
+
 
 
         for (let col = 0; col < this.cols; col++) {
