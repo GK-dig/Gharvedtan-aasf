@@ -3,21 +3,9 @@ AOS.init({
   offset: 100,
 });
 
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-
-import {
-  getAuth
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
@@ -31,6 +19,41 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+window.googleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
+        phone: user.phoneNumber || "Not Provided",
+        email: user.email,
+        uid: user.uid,
+        createdAt: new Date()
+      });
+    }
+
+    localStorage.setItem("loggedInUser", JSON.stringify({
+      name: user.displayName,
+      phone: user.phoneNumber || "Not Provided",
+      email: user.email,
+      uid: user.uid
+    }));
+
+    alert("Google Sign-In successful!");
+    window.location.href = "/index.html";
+
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+    alert("Google Sign-In failed. Please try again.");
+  }
+};
 
 window.loginUser = async () => {
   const phone = document.getElementById("loginPhone").value.trim();
@@ -49,18 +72,17 @@ window.loginUser = async () => {
 
     querySnapshot.forEach((doc) => {
       const userData = doc.data();
-     if (userData.password === pass) {
-  found = true;
-  
-  localStorage.setItem("loggedInUser", JSON.stringify({
-    name: userData.name,
-    phone: userData.phone
-  }));
+      if (userData.password === pass) {
+        found = true;
 
-  alert("Login successful!");
-  window.location.href = "/index.html";
-}
+        localStorage.setItem("loggedInUser", JSON.stringify({
+          name: userData.name,
+          phone: userData.phone
+        }));
 
+        alert("Login successful!");
+        window.location.href = "/index.html";
+      }
     });
 
     if (!found) {

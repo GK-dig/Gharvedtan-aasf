@@ -3,20 +3,9 @@ AOS.init({
   offset: 100,
 });
 
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc
-} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
@@ -43,10 +32,10 @@ window.sendOTP = () => {
     window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
       size: "invisible",
       callback: () => {
-        sendOTP(); 
+        sendOTP();
       }
     }, auth);
-    window.recaptchaVerifier.render(); 
+    window.recaptchaVerifier.render();
   }
 
   signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier)
@@ -59,6 +48,7 @@ window.sendOTP = () => {
       alert("Failed to send OTP: " + error.message);
     });
 };
+
 window.verifyOTP = () => {
   const name = document.getElementById("signupName").value.trim();
   const phone = document.getElementById("signupPhone").value.trim();
@@ -81,7 +71,6 @@ window.verifyOTP = () => {
         uid: user.uid,
         createdAt: new Date()
       });
-
       localStorage.setItem("loggedInUser", JSON.stringify({
         name: name,
         phone: phone,
@@ -97,3 +86,32 @@ window.verifyOTP = () => {
     });
 };
 
+window.googleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.displayName,
+      phone: user.phoneNumber || "Not Provided",
+      email: user.email,
+      uid: user.uid,
+      createdAt: new Date()
+    });
+
+    localStorage.setItem("loggedInUser", JSON.stringify({
+      name: user.displayName,
+      phone: user.phoneNumber || "Not Provided",
+      email: user.email,
+      uid: user.uid
+    }));
+
+    alert("Google Sign-In successful!");
+    window.location.href = "/index.html"; 
+
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+    alert("Google Sign-In failed. Please try again.");
+  }
+};
