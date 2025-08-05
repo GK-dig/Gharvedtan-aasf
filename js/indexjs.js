@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <small>${user.phone}</small>
       </div>
       <a href="#">My Orders</a>
-      <a href="#">Profile</a>
       <a href="#" id="logoutBtn">Logout</a>
     `;
 

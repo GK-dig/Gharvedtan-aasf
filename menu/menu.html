@@ -60,14 +60,13 @@
                 </li>
                 <li>
                     <div class="profile-container">
-                        <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
-                        <div class="dropdown-menu" id="dropdownMenu">
-                            <a href="#">My Orders</a>
-                            <a href="#">Profile</a>
-                            <a href="#">Settings</a>
-                            <a href="#">Logout</a>
-                        </div>
-                    </div>
+          <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="#">My Orders</a>
+            <a href="#">Profile</a>
+            <a href="#">Logout</a>
+          </div>
+        </div>
                 </li>
             </ul>
 
@@ -185,6 +184,47 @@
             document.getElementById('dropdownMenu')?.classList.remove('show');
         });
     </script>
+     <script>
+  const profileIcon = document.getElementById("profileIcon");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  const loginLink = document.querySelector("a[href='/loginsignup/work.html']"); 
+
+  const userData = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (userData) {
+    if (loginLink) loginLink.style.display = "none";
+
+    dropdownMenu.style.display = "block";
+    dropdownMenu.innerHTML = `
+      <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
+      <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
+      <hr style="margin: 5px 0;">
+      <a href="#">My Orders</a>
+      <a href="#">Profile</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    `;
+
+    profileIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+
+    dropdownMenu.addEventListener("click", (e) => {
+      if (e.target.id === "logoutBtn") {
+        localStorage.removeItem("loggedInUser");
+        location.reload(); 
+      }
+    });
+  } else {
+    dropdownMenu.style.display = "none";
+  }
+</script>
     <script type="module" src="./menu.js"></script>
 </body>
 
