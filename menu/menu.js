@@ -21,108 +21,76 @@ const searchBtn = document.getElementById("searchBtn");
 let allItems = [];
 let activeRegion = "all";
 let currentUser = null;
+let authReady = false;
 
-// Check auth state when page loads
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
+// Wait for auth to be ready
+const authPromise = new Promise(resolve => {
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    authReady = true;
+    console.log("Auth state:", user ? "Authenticated" : "Not authenticated");
+    resolve();
+  });
 });
 
-// Helper: Normalize strings
-const normalize = str => (str || "").toLowerCase().trim();
+// Enhanced search function with debouncing
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+};
 
-// Add to Cart Functionality with User UID and Seller Details
-async function addToCart(item) {
-  if (!currentUser) {
-    alert("Please sign in to add items to your cart");
-    window.location.href = "../loginsignup/work.html";
-    return;
-  }
+const normalize = str => (str || "").toLowerCase().trim().replace(/\s+/g, " ");
 
-  const cartRef = doc(db, "carts", currentUser.uid);
+const searchItems = (query, items) => {
+  if (!query.trim()) return items;
   
-  try {
-    const cartSnap = await getDoc(cartRef);
-    
-    if (cartSnap.exists()) {
-      const cartData = cartSnap.data();
-      const existingItem = cartData.items.find(cartItem => 
-        cartItem.id === item.id && cartItem.sellerId === item.sellerId
-      );
-      
-      if (existingItem) {
-        await updateDoc(cartRef, {
-          items: cartData.items.map(cartItem => 
-            cartItem.id === item.id && cartItem.sellerId === item.sellerId
-              ? { ...cartItem, quantity: cartItem.quantity + 1 }
-              : cartItem
-          ),
-          total: increment(item.price),
-          updatedAt: new Date()
-        });
-        alert(`${item.name} quantity increased in your cart`);
-      } else {
-        await updateDoc(cartRef, {
-          items: arrayUnion({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: 1,
-            photoUrl: item.photoUrl,
-            sellerId: item.sellerId,
-            sellerName: item.sellerName
-          }),
-          total: increment(item.price),
-          updatedAt: new Date()
-        });
-        alert(`${item.name} added to your cart`);
-      }
-    } else {
-      await setDoc(cartRef, {
-        userId: currentUser.uid,
-        items: [{
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: 1,
-          photoUrl: item.photoUrl,
-          sellerId: item.sellerId,
-          sellerName: item.sellerName
-        }],
-        total: item.price,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-      alert(`${item.name} added to your cart`);
-    }
-  } catch (error) {
-    console.error("Error updating cart:", error);
-    alert("Failed to add item to cart. Please try again.");
-  }
-}
+  const normalizedQuery = normalize(query);
+  const queryTerms = normalizedQuery.split(" ").filter(term => term.length > 0);
 
-// Load items from Firestore with seller details
-async function loadItems() {
-  try {
-    const snapshot = await getDocs(collection(db, "items"));
-    allItems = snapshot.docs.map(doc => ({
-      id: doc.id,
-      sellerId: doc.data().sellerId,       // Ensure these fields exist
-      sellerName: doc.data().sellerName,   // in your Firestore items
-      ...doc.data()
-    }));
-    renderFilteredItems();
-  } catch (error) {
-    console.error("Error loading items:", error);
-    catalogue.innerHTML = "<p>Failed to load items.</p>";
-  }
-}
+  return items.filter(item => {
+    const searchFields = [
+      item.name,
+      item.sellerName,
+      item.description || '',
+      item.region || '',
+      item.category || ''
+    ].map(field => normalize(field));
 
-// Render items to DOM with proper seller info
-function renderItems(items) {
+    return queryTerms.every(term => 
+      searchFields.some(field => field.includes(term))
+    );
+  });
+};
+
+// Highlight search matches in results
+const highlightMatches = (text, query) => {
+  if (!query.trim()) return text;
+  
+  return text.replace(new RegExp(query.split(" ").join("|"), "gi"), 
+    match => `<span class="search-highlight">${match}</span>`
+  );
+};
+
+// Enhanced render function with search highlighting
+function renderItems(items, searchQuery = '') {
   catalogue.innerHTML = '';
 
   if (items.length === 0) {
-    catalogue.innerHTML = `<p>No items found.</p>`;
+    catalogue.innerHTML = `
+      <div class="no-results">
+        <img src="/assets/search-empty.svg" alt="No results" width="120"/>
+        <p>No items found matching "${searchQuery}"</p>
+        <button class="clear-search">Clear search</button>
+      </div>
+    `;
+    
+    document.querySelector('.clear-search')?.addEventListener('click', () => {
+      searchInput.value = '';
+      renderFilteredItems();
+    });
     return;
   }
 
@@ -136,8 +104,12 @@ function renderItems(items) {
            alt="${item.name || 'Food'}"
            onerror="this.onerror=null; this.src='/assets/default.png';" />
 
-      <h1 class="popular-foods__card-seller">${item.sellerName || 'Unknown Seller'}</h1>
-      <h4 class="popular-foods__card-title">${item.name || 'Unnamed Dish'}</h4>
+      <h1 class="popular-foods__card-seller">${
+        highlightMatches(item.sellerName || 'Unknown Seller', searchQuery)
+      }</h1>
+      <h4 class="popular-foods__card-title">${
+        highlightMatches(item.name || 'Unnamed Dish', searchQuery)
+      }</h4>
 
       <div class="popular-foods__card-details flex-between">
         <div class="popular-foods__card-rating">
@@ -155,39 +127,98 @@ function renderItems(items) {
     catalogue.appendChild(card);
   });
 
-  // Add event listeners to all Add to Cart buttons
   document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', () => {
       const itemId = button.dataset.id;
       const item = allItems.find(i => i.id === itemId);
-      if (item) {
-        addToCart(item);
-      }
+      if (item) addToCart(item);
     });
   });
 }
 
-// Filter and search functionality
-function renderFilteredItems() {
-  const query = normalize(searchInput.value);
+// Optimized cart function with quantity validation
+async function addToCart(item) {
+  try {
+    if (!authReady) await authPromise;
+    if (!currentUser) {
+      alert("Please sign in to add items to your cart");
+      window.location.href = "../loginsignup/work.html";
+      return;
+    }
 
-  const filtered = allItems.filter(item => {
-    const nameMatch = normalize(item.name).includes(query);
-    const sellerMatch = normalize(item.sellerName).includes(query);
-    const regionMatch = normalize(item.region).includes(query);
+    const cartRef = doc(db, "carts", currentUser.uid);
+    const cartSnap = await getDoc(cartRef);
+    
+    const newItem = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      photoUrl: item.photoUrl || '/assets/default.png',
+      sellerName: item.sellerName || 'Unknown Seller',
+      quantity: 1,
+      lastUpdated: new Date()
+    };
 
-    const matchesSearch = nameMatch || sellerMatch || regionMatch;
-
-    const itemRegion = normalize(item.region).replace(/\s+/g, "");
-    const activeRegionNorm = activeRegion.replace(/\s+/g, "");
-
-    const matchesRegion = activeRegion === "all" || itemRegion === activeRegionNorm;
-
-    return matchesSearch && matchesRegion;
-  });
-
-  renderItems(filtered);
+    if (cartSnap.exists()) {
+      const cartData = cartSnap.data();
+      const existingItemIndex = cartData.items.findIndex(i => i.id === item.id);
+      
+      if (existingItemIndex >= 0) {
+        const updatedItems = [...cartData.items];
+        updatedItems[existingItemIndex] = {
+          ...updatedItems[existingItemIndex],
+          quantity: updatedItems[existingItemIndex].quantity + 1,
+          lastUpdated: new Date()
+        };
+        
+        await updateDoc(cartRef, {
+          items: updatedItems,
+          total: increment(item.price),
+          updatedAt: new Date()
+        });
+      } else {
+        await updateDoc(cartRef, {
+          items: arrayUnion(newItem),
+          total: increment(item.price),
+          updatedAt: new Date()
+        });
+      }
+    } else {
+      await setDoc(cartRef, {
+        userId: currentUser.uid,
+        items: [newItem],
+        total: item.price,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+    }
+    
+    // Visual feedback
+    const btn = document.querySelector(`.add-to-cart[data-id="${item.id}"]`);
+    if (btn) {
+      btn.textContent = '✓ Added';
+      btn.style.backgroundColor = '#4CAF50';
+      setTimeout(() => {
+        btn.textContent = 'Add to Cart';
+        btn.style.backgroundColor = '';
+      }, 2000);
+    }
+  } catch (error) {
+    console.error("Cart error:", error);
+    alert(`Failed to update cart: ${error.message}`);
+  }
 }
+
+// Filter and render with debouncing
+const renderFilteredItems = debounce(() => {
+  const query = searchInput.value.trim();
+  const regionFiltered = activeRegion === "all" 
+    ? allItems 
+    : allItems.filter(item => normalize(item.region) === normalize(activeRegion));
+
+  const searchResults = searchItems(query, regionFiltered);
+  renderItems(searchResults, query);
+}, 300);
 
 // Event listeners
 filterButtons.forEach(btn => {
@@ -199,15 +230,67 @@ filterButtons.forEach(btn => {
   });
 });
 
-searchBtn.addEventListener("click", () => {
-  renderFilteredItems();
-});
-
-searchInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    renderFilteredItems();
-  }
-});
+searchInput.addEventListener('input', renderFilteredItems);
+searchBtn.addEventListener('click', renderFilteredItems);
+searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && renderFilteredItems());
 
 // Initialize
-loadItems();
+async function initialize() {
+  try {
+    await authPromise;
+    const snapshot = await getDocs(collection(db, "items"));
+    allItems = snapshot.docs.map(doc => ({
+      id: doc.id,
+      sellerName: doc.data().sellerName || 'Unknown Seller',
+      ...doc.data()
+    }));
+    renderFilteredItems();
+  } catch (error) {
+    console.error("Initialization error:", error);
+    catalogue.innerHTML = `
+      <div class="error-state">
+        <img src="/assets/error-icon.svg" alt="Error" width="80"/>
+        <p>Failed to load menu. Please refresh the page.</p>
+        <button onclick="window.location.reload()">Reload Page</button>
+      </div>
+    `;
+  }
+}
+
+initialize();
+
+// Add this CSS to your styles:
+/*
+.search-highlight {
+  background-color: #fff9c4;
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.no-results, .error-state {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.no-results img, .error-state img {
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.clear-search, .error-state button {
+  background: #FF6B6B;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-search:hover, .error-state button:hover {
+  background: #FF5252;
+}
+*/
