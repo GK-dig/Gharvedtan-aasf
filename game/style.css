@@ -1,4 +1,23 @@
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap");
+
+:root {
+  --playfair-display: "Playfair Display", serif;
+  --plus-jakarta-sans: "Plus Jakarta Sans", sans-serif;
+
+  --primary-color: #b1454a;
+  --secondary-color: #121212;
+
+  --black-200: #020202;
+  --black-300: #333333;
+  --black-400: #1f1e31;
+  --black-500: #555555;
+  --gray-100: #888888;
+
+  --color-white: #fff;
+  --color-creamson: #fff0de;
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -10,64 +29,72 @@ html {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--plus-jakarta-sans);
     background-color: #f7f7f7;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ff7f50, #ff4500);
+    height: 100%;
+    background-image: url('../assets/popular_bg.png');
+    background-size: contain;
+    background-repeat: repeat;
     position: relative;
+    flex-direction: column;
+  
 }
 
 .game-container {
     background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    padding: 40px;
-    width: 100%;
-    max-width: 1200px;
+    border-radius: 50px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.54);
+    padding: 10px;
+    max-width: 900px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-image: url("../assets/bg-2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
     position: relative;
-    z-index: 10;
-}
-
-.game-container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+    margin-top:10px;
+    align-items: center;
+    max-height: 40%;
+    margin-bottom:10px;
 }
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     align-items: center;
     margin-bottom: 20px;
-    gap: 20px;
+    gap: 5px;
     flex-wrap: wrap;
+    
 }
 
 h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #333;
+    font-size: 3rem;
+    font-weight: 1000;
+    color: #b34747a7;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 3px;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--plus-jakarta-sans)
 }
 
 .controls {
     display: flex;
     gap: 20px;
     align-items: center;
+    justify-content: center;
+    
 }
 
 .timer, .deliveries {
     font-weight: 600;
     font-size: 1.25rem;
-    color: #444;
+    color: #44444475;
+    text-align: center;
 }
 
 button {
@@ -106,25 +133,28 @@ button:focus {
     gap: 30px;
     flex-wrap: wrap;
     margin-bottom: 30px;
+    height: 100%;
 }
 
 .canvas-container {
     flex: 1;
-    min-width: 300px;
     max-width: 650px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
+    background-color: #e0e0e000;
+    border-radius: 20px;
     transition: box-shadow 0.3s ease;
+    height:600px;
+    align-items: center;
+    justify-content: center;
 }
 
 canvas {
     display: block;
     width: 100%; 
     height: auto; 
-    border: 2px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    image-rendering: crisp-edges; 
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.437);
+    
 }
 
 canvas:hover {
@@ -143,7 +173,7 @@ canvas:hover {
 
 .horizontal-controls {
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 .mobile-controls button {
@@ -159,12 +189,12 @@ canvas:hover {
 }
 
 .mobile-controls button:hover {
-    background-color: #45a049;
+    background-color: #15181546;
     transform: scale(1.1);
 }
 
 .mobile-controls button:active {
-    background-color: #388e3c;
+    background-color: #00000056;
     transform: scale(1);
 }
 .level-select-container {
@@ -172,8 +202,13 @@ canvas:hover {
     justify-content: center;
     align-items: center;
     gap: 25px;
-    margin-top: 20px;
     transition: opacity 0.3s ease;
+}
+.level-select-container label{
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #44444475;
+    text-align: center;
 }
 
 .level-select-container select {
@@ -189,23 +224,23 @@ canvas:hover {
 }
 
 .level-select-container select:hover {
-    border-color: #4CAF50;
+    border-color: #af5e4c;
     background-color: #f0f0f0;
 }
 
 .level-select-container button {
     padding: 12px 25px;
     font-size: 1rem;
-    background-color: #FF9800;
+    background-color: #b14e38ab;
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .level-select-container button:hover {
-    background-color: #f57c00;
+    background-color: #ae3c2a;
     transform: translateY(-3px);
 }
 
@@ -253,11 +288,11 @@ canvas:hover {
 }
 
 .win {
-    color: #4CAF50;
+    color: #af534ca6;
 }
 
 .lose {
-    color: #F44336;
+    color: #0000007c;
 }
 
 @keyframes fadeIn {
@@ -269,7 +304,7 @@ canvas:hover {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .game-container {
         padding: 20px;
     }

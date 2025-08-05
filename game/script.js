@@ -15,14 +15,14 @@ const images = {
     player: new Image(),
     road: new Image(),
     wall: new Image(),
+    wall1: new Image(),
     building: new Image(),
     house: new Image(),
     shop: new Image(),
     office: new Image(),
     mall: new Image(),
     gym: new Image(),
-    medical: new Image(),
-    park: new Image()
+    medical: new Image()
 };
 
 let audio = {
@@ -36,6 +36,7 @@ function loadImages() {
     images.player.src = 'assets/deliveryBoy.png';
     images.road.src = 'assets/roads.png';
     images.wall.src = 'assets/wall.png';
+    images.wall1.src = 'assets/wall1.png';
     images.building.src = 'assets/building.png';
     images.house.src = 'assets/house.png';
     images.shop.src = 'assets/shop.png';
@@ -43,7 +44,7 @@ function loadImages() {
     images.mall.src = 'assets/mall.png';
     images.gym.src = 'assets/gym.png';
     images.medical.src = 'assets/medical.png';
-    images.park.src = 'assets/park.png';
+   
 }
 
 class Player {
@@ -89,11 +90,26 @@ class Maze {
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(updateGameTime, 1000);
 
-        mazeHeight = this.rows * this.cellSize;
-        mazeWidth = this.cols * this.cellSize;
+      // Get the pixel ratio (default is 1, but on Retina displays can be 2 or more)
+    const dpr = window.devicePixelRatio || 1;
 
-        canvas.height = mazeHeight;
-        canvas.width = mazeWidth;
+// Calculate size
+    const overflowMargin = 10;
+    const displayWidth = this.cols * this.cellSize ;
+    const displayHeight = this.rows * this.cellSize ;
+
+// Set canvas resolution *higher* for high-DPI screens
+   canvas.width = displayWidth * dpr;
+   canvas.height = displayHeight * dpr;
+
+// Scale drawing operations to account for the increased resolution
+ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+ctx.scale(dpr, dpr);
+
+// Set canvas style (CSS) to display the size as intended
+canvas.style.width = `${displayWidth}px`;
+canvas.style.height = `${displayHeight}px`;
+
 
         for (let col = 0; col < this.cols; col++) {
             this.cells[col] = [];
@@ -164,7 +180,7 @@ class Maze {
     }
 
     addBuildings() {
-        const buildingTypes = ['house', 'shop', 'office', 'mall', 'gym', 'medical', 'park'];
+        const buildingTypes = ['house', 'shop', 'office', 'mall', 'gym', 'medical'];
         const buildingCount = Math.floor(this.cols * this.rows * 0.2);
 
         for (let i = 0; i < buildingCount; i++) {
@@ -211,16 +227,16 @@ class Maze {
                 const cell = this.cells[col][row];
 
                 if (cell.eastWall) {
-                    ctx.drawImage(images.wall, (col + 1) * this.cellSize - 5, row * this.cellSize, 10, this.cellSize);
+                    ctx.drawImage(images.wall, (col + 1) * this.cellSize - 20, row * this.cellSize, 40, this.cellSize);
                 }
                 if (cell.northWall) {
-                    ctx.drawImage(images.wall, col * this.cellSize, row * this.cellSize - 5, this.cellSize, 10);
+                    ctx.drawImage(images.wall1, col * this.cellSize, row * this.cellSize - 5, this.cellSize, 30);
                 }
                 if (cell.southWall) {
-                    ctx.drawImage(images.wall, col * this.cellSize, (row + 1) * this.cellSize - 5, this.cellSize, 10);
+                    ctx.drawImage(images.wall1, col * this.cellSize, (row + 1) * this.cellSize - 15, this.cellSize, 25);
                 }
                 if (cell.westWall) {
-                    ctx.drawImage(images.wall, col * this.cellSize - 5, row * this.cellSize, 10, this.cellSize);
+                    ctx.drawImage(images.wall, col * this.cellSize -15, row * this.cellSize, 30, this.cellSize);
                 }
 
                 if (cell.building && images[cell.building]) {
@@ -457,7 +473,7 @@ function onLoad() {
 
 function startGame() {
     player = new Player();
-    maze = new Maze(10, 10, 35); 
+    maze = new Maze(10, 10, 60); 
 
     document.addEventListener('keydown', onKeyDown);
     document.getElementById('generate').addEventListener('click', onClick);
