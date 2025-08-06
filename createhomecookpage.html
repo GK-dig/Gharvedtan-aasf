@@ -1,41 +1,52 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Menu Item</title>
-    <link rel="stylesheet" href="addmenu.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="firebase.js"></script>
+    <title>Register Home Cook</title>
+    <link rel="stylesheet" href="createhomecookpage.css">
 </head>
 <body>
   <section class="subscription flex-center">
-    <div class="login-herocontent">
-      <h2>Home Cook Information</h2>
+    <div class="registration-form">
+      <h2>Register Home Cook</h2>
+
+      <p>Sign up and start sharing your home-cooked meals with the world!</p>
 
       <div class="subscription__form">
-        <input type="text" id="cookname" placeholder="Home Cook Name" disabled />
+        <input type="text" id="cookname" placeholder="Enter Home Cook's Name" required />
       </div>
-   
+
       <div class="subscription__form">
-        <input  type="text" id="cookaddress" placeholder="Address will be detected" disabled/>
+        <input type="text" id="cookaddress" placeholder="Address will be detected" />
       </div>
-      <div class="subscription__form" style="align-items: center">
-        <input type="text" id="cookmob" placeholder="Enter your mobile number" required />
+
+      <button type="button" id="detect-location-btn">Auto Detect Location</button>
+
+      <div class="subscription__form">
+        <input type="text" id="cookmob" placeholder="Enter Mobile Number" required />
         <button id="sendOtpButton">Send OTP</button>
       </div>
+
       <div class="subscription__form">
         <input type="text" id="otpInput" placeholder="Enter OTP" required />
         <button id="verifyOtpButton">Verify OTP</button>
       </div>
+
       <div class="subscription__form">
-     <button1 id="submitBtn">Register Home Cook</button1>
+        <input type="password" id="password" placeholder="Enter Password" required />
+      </div>
+
+      <div class="subscription__form">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      </div>
+
+      <div class="subscription__form">
+        <button id="submitBtn">Register Home Cook</button>
       </div>
 
     </div>
-  
- </section>
+  </section>
+  <script type="module" src="createhomecookpage.js"></script>
 </body>
 </html>
