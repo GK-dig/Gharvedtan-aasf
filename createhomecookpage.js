@@ -24,9 +24,10 @@ const cookname = document.getElementById("cookname");
 const cookmob = document.getElementById("cookmob");
 const otpInput = document.getElementById("otpInput");
 const detectBtn = document.getElementById("detect-location-btn");
-const cityDisplay = document.getElementById("cookaddress"); 
+const cityDisplay = document.getElementById("cookaddress");  // The address input field
 
 let verificationId = "";
+
 
 sendOtpButton.addEventListener("click", () => {
   const phoneNumber = cookmob.value;
@@ -36,14 +37,12 @@ sendOtpButton.addEventListener("click", () => {
     return;
   }
 
-
   window.recaptchaVerifier = new RecaptchaVerifier('sendOtpButton', {
     size: 'invisible',
     callback: function(response) {
     
     },
   }, auth);
-
 
   const appVerifier = window.recaptchaVerifier;
   signInWithPhoneNumber(auth, phoneNumber, appVerifier)
@@ -56,7 +55,6 @@ sendOtpButton.addEventListener("click", () => {
       alert("Error sending OTP");
     });
 });
-
 
 verifyOtpButton.addEventListener("click", () => {
   const otp = otpInput.value;
@@ -79,32 +77,35 @@ verifyOtpButton.addEventListener("click", () => {
 });
 
 submitBtn.addEventListener("click", async () => {
-  const cookName = cookname.value;
-  const cookMob = cookmob.value;
-  const cookCity = cityDisplay.value || "Unknown"; 
+  const sellerName = cookname.value;
+  const sellerMob = cookmob.value;
+  const sellerCity = cityDisplay.value || "Unknown";  
   
-  if (!cookName || !cookMob) {
+  if (!sellerName || !sellerMob) {
     alert("Please fill in all the details.");
     return;
   }
 
   try {
-    await addDoc(collection(db, "homecooks"), {
-      name: cookName,
-      mobile: cookMob,
-      city: cookCity,
+    await addDoc(collection(db, "sellers"), {
+      name: sellerName,
+      mobile: sellerMob,
+      city: sellerCity,
+      role: "seller" 
     });
 
-    alert("Home Cook registered successfully!");
+    alert("Seller registered successfully!");
 
+  
     cookname.value = "";
     cookmob.value = "";
     otpInput.value = "";
   } catch (e) {
     console.error("Error adding document: ", e);
-    alert("Error registering Home Cook.");
+    alert("Error registering Seller.");
   }
 });
+
 function detectLocation() {
   if (!navigator.geolocation) {
     alert("Geolocation is not supported.");
@@ -121,7 +122,6 @@ function detectLocation() {
       .then(res => res.json())
       .then(data => {
         const city = data.address.city || data.address.town || data.address.village || "Unknown";
-        
        
         cityDisplay.value = city; 
         console.log("Auto-detected city:", city);
@@ -136,5 +136,4 @@ function detectLocation() {
     console.warn(`Geolocation error (${err.code}): ${err.message}`);
   }
 }
-
 document.getElementById("detect-location-btn").addEventListener("click", detectLocation);
