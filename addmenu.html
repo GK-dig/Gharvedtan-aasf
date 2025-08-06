@@ -4,21 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <link rel="stylesheet" href="menu.css">
+    <title>Add Menu Item</title>
+    <link rel="stylesheet" href="addmenu.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="firebase.js"></script> 
+    <script src="firebase.js"></script>
 </head>
 
 <body>
     <section class="subscription flex-center">
         <div class="login-herocontent">
-            <h2>Menu</h2>
+            <h2>Add New Menu Item</h2>
+            <form id="addMenuForm">
+                <div class="subscription__form">
+                    <input type="text" id="itemName" placeholder="Enter item name" required />
+                </div>
 
-            <div class="menu-container"></div>
+                <div class="subscription__form">
+                    <input type="number" id="price" placeholder="Enter item price" required />
+                </div>
 
+                <div class="subscription__form">
+                    <input type="password" id="signupRepass" placeholder="Re-enter password" />
+                </div>
+
+                <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+                    <select id="region" required>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="Central">Central</option>
+                    </select>
+                </div>
+
+                <div class="subscription__form">
+                    <input type="text" id="photoUrl" placeholder="Enter image URL" required />
+                </div>
+
+                <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+                    <select id="availability" required>
+                        <option value="Yes">Available</option>
+                        <option value="No">Not-Available</option>
+                    </select>
+                </div>
+
+                <div class="subscription__form">
+                    <button1 type="submit">Add Item</button1>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -33,82 +67,59 @@
         });
 
         const db = firebase.firestore(app);
-        const auth = firebase.auth();
+        const addMenuForm = document.getElementById('addMenuForm');
 
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                console.log("User not authenticated, redirecting to login...");
-                window.location.href = '/login.html';  
-            } else {
-                console.log("User authenticated:", user);
+        addMenuForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            const itemName = document.getElementById('itemName').value;
+            const price = document.getElementById('price').value;
+            const region = document.getElementById('region').value;
+            const photoUrl = document.getElementById('photoUrl').value;
+            const availability = document.getElementById('availability').value;
+
+            const rating = document.getElementById('rating') ? document.getElementById('rating').value : 0;  // Optional
+            const type = document.getElementById('type') ? document.getElementById('type').value : '';  // Optional
+            const sellerName = document.getElementById('sellerName') ? document.getElementById('sellerName').value : '';  // Optional
+
+            const itemSnapshot = await db.collection('items').where('name', '==', itemName).get();
+
+            if (!itemSnapshot.empty) {
+                alert('This item already exists!');
+                return;
             }
-        });
-
-        async function addToCart(userId) {
-            const itemName = "Chingri Malai Curry";  
-            const price = 300;  
-            const itemData = {
+            await db.collection('items').add({
                 name: itemName,
-                price: price,
-                quantity: 1
-            };
+                price: parseFloat(price),
+                region: region,
+                photoUrl: photoUrl,
+                rating: parseFloat(rating),
+                type: type,
+                sellerName: sellerName,
+                availability: availability
+            });
 
-            const cartRef = db.collection('users').doc(userId).collection('carts').doc('cartId');
-            const cartDoc = await cartRef.get();
-
-            if (!cartDoc.exists) {
-                await cartRef.set({
-                    items: [itemData]
-                });
-            } else {
-                const cartData = cartDoc.data();
-                const cartItems = cartData.items || [];
-                const itemIndex = cartItems.findIndex(item => item.name === itemName);
-                if (itemIndex === -1) {
-                    cartItems.push(itemData);
-                } else {
-                    cartItems[itemIndex].quantity += 1;
-                }
-
-                await cartRef.update({
-                    items: cartItems
-                });
-            }
-
-            alert('Item added to cart!');
-        }
+            alert('Item added successfully!');
+            addMenuForm.reset();  
+        });
 
         async function fetchAndDisplayItems() {
             try {
-                const menuSnapshot = await db.collection('menu').get(); 
-                const menuItems = menuSnapshot.docs.map(doc => doc.data());
-
-                menuItems.forEach(item => {
-                    const menuDiv = document.createElement('div');
-                    menuDiv.classList.add('menu-item');
-                    menuDiv.innerHTML = `
-                        <img src="${item.photoUrl}" alt="${item.name}" />
-                        <div class="item-details">
-                            <h3>${item.name}</h3>
-                            <p>${item.description}</p>
-                            <span>⭐ ${item.rating}</span>
-                            <span>₹${item.price}</span>
-                            <button class="addToCartBtn" data-item-id="${item.id}">Add to Cart</button>
-                        </div>
-                    `;
-                    document.querySelector('.menu-container').appendChild(menuDiv);
-
-                  
-                    document.querySelector(`.addToCartBtn[data-item-id="${item.id}"]`).addEventListener('click', () => {
-                        addToCart(item.id); 
-                    });
+               
+                const response = await fetch('your-api-url', {
+                    method: 'GET', 
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                console.log(data); 
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
         }
-
-        fetchAndDisplayItems(); 
     </script>
 </body>
 
