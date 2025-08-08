@@ -16,10 +16,13 @@
 
   --color-white: #fff;
   --color-creamson: #fff0de;
+  --color-success: #4CAF50;
+  --color-error: #f44336;
+  --color-warning: #ff9800;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--plus-jakarta-sans);
   margin: 0;
   padding: 0;
   background-color: #f7f7f7;
@@ -33,7 +36,7 @@ body {
   flex-direction: column;
 }
 
-.subscription {
+.registration-container {
   padding: 64px;
   background-color: var(--primary-color);
   background-image: url('./assets/subscribe_bg.png');
@@ -48,37 +51,72 @@ body {
   overflow: hidden;
 }
 
-.subscription h2 {
+.registration-container h2 {
   font-size: 88px;
   font-family: var(--playfair-display);
   font-weight: 600;
   line-height: 123px;
   color: #fff;
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.subscription p {
+.form-group {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+label {
+  display: block;
   font-size: 18px;
   font-family: var(--plus-jakarta-sans);
   font-weight: 300;
-  line-height: 36px;
-  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 20px 24px;
+  font-size: 16px;
+  font-family: var(--plus-jakarta-sans);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 46px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+}
+
+.toggle-password:hover {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.subscription__form {
-  min-width: 480px;
-  margin-top: 40px;
-  padding: 14px 14px 14px 24px;
-  display: flex;
-  gap: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.858);
-  border-radius: 46px;
-}
-
-.subscription__form button {
+button {
   padding: 20px;
-  min-width: 300px;
   font-size: 16px;
   font-weight: 500;
   font-family: var(--plus-jakarta-sans);
@@ -89,47 +127,144 @@ body {
   border: none;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.subscription__form input {
-  flex: 1;
-  font-size: 16px;
-  font-weight: 400px;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
-  opacity: 0.5;
-  background: transparent;
-  border: none;
-  outline: none;
+button:hover {
+  background: var(--black-300);
+  transform: translateY(-2px);
 }
 
-.subscription__form input::placeholder {
-  color: #fff;
-  opacity: 0.5;
+button:disabled {
+  background: var(--black-500);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
 }
 
-.subscription__form select {
-  width: 100%;
-  padding: 10px 24px;
-  font-size: 16px;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 46px;
-  cursor: pointer;
-  outline: none;
+#location-status, .password-strength, .password-match {
+  margin-top: 12px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.otp-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+#otpInput {
+  width: 200px;
 }
 
 #detect-location-btn {
   background-color: #f39c12;
   border: none;
   cursor: pointer;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 20px 24px;
+  border-radius: 46px;
   color: white;
+  font-family: var(--plus-jakarta-sans);
+  font-weight: 500;
+  margin-top: 10px;
 }
 
 #detect-location-btn:hover {
   background-color: #e67e22;
+}
+
+#submitBtn {
+  width: 100%;
+  margin-top: 30px;
+  background-color: var(--secondary-color);
+  font-size: 18px;
+  padding: 24px;
+}
+
+#submitBtn:hover {
+  background-color: #000;
+}
+
+.success-message {
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.error-message {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.warning-message {
+  color: var(--color-warning);
+  font-weight: 500;
+}
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strength-meter {
+  height: 4px;
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-meter-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Password strength colors */
+.strength-weak {
+  background-color: var(--color-error);
+  width: 25%;
+}
+
+.strength-medium {
+  background-color: var(--color-warning);
+  width: 50%;
+}
+
+.strength-strong {
+  background-color: var(--color-success);
+  width: 75%;
+}
+
+.strength-very-strong {
+  background-color: var(--color-success);
+  width: 100%;
+}
+/* Add these styles to your existing CSS file */
+
+#map {
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+}
+
+.gm-style .gm-style-iw {
+    font-family: var(--plus-jakarta-sans);
+    font-weight: 400;
+    color: var(--black-400);
+}
+
+.gm-style .gm-style-iw a {
+    color: var(--primary-color);
+}
+
+.gm-ui-hover-effect {
+    opacity: 0.6;
+}
+
+.gm-ui-hover-effect:hover {
+    opacity: 1;
 }

@@ -1,253 +1,92 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Menu Item</title>
-    <link rel="stylesheet" href="addmenu.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="firebase.js"></script>
+    <title>Seller Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="createhomecookpage.css">
 </head>
 <body>
-
-  <section class="subscription flex-center">
-    <div class="login-herocontent">
-      <h2>Home Cook Information</h2>
-
-      <div class="subscription__form">
-        <input type="text" id="cookname" placeholder="Home Cook Name" disabled />
-      </div>
-  <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
-      <div id="city-display-container">
-    <p id="selected-city-display" style="color: #ffffffc4; font-size: 24px; font-weight: 500;margin-top: 0%;">
-       Selected City:
-      <span id="city-name">None</span>
-      <button id="clear-city-btn" title="Clear City" 
-      style="margin-left: 8px;
-       font-size: 18px; 
-       background: none; 
-       color: #ffffff4a; 
-       cursor: pointer;">
-        Clear Selection
-      </button>
-    </p>
-  </div>
-
-  <select id="city-dropdown">
-    <option value="" disabled selected>Select your city</option>
-    <option value="New Delhi">New Delhi</option>
-<option value="South Delhi">South Delhi</option>
-<option value="North Delhi">North Delhi</option>
-<option value="East Delhi">East Delhi</option>
-<option value="West Delhi">West Delhi</option>
-<option value="Central Delhi">Central Delhi</option>
-<option value="Rohini">Rohini</option>
-<option value="Dwarka">Dwarka</option>
-<option value="Karol Bagh">Karol Bagh</option>
-<option value="Lajpat Nagar">Lajpat Nagar</option>
-<option value="Saket">Saket</option>
-<option value="Vasant Kunj">Vasant Kunj</option>
-<option value="Mayur Vihar">Mayur Vihar</option>
-<option value="Janakpuri">Janakpuri</option>
-<option value="Pitampura">Pitampura</option>
-<option value="Shahdara">Shahdara</option>
-<option value="Connaught Place">Connaught Place</option>
-<option value="Ahmedabad">Ahmedabad</option>
-<option value="Amritsar">Amritsar</option>
-<option value="Agra">Agra</option>
-<option value="Ajmer">Ajmer</option>
-<option value="Allahabad">Allahabad</option>
-<option value="Bangalore">Bangalore</option>
-<option value="Bhubaneswar">Bhubaneswar</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Chennai">Chennai</option>
-<option value="Coimbatore">Coimbatore</option>
-<option value="Dehradun">Dehradun</option>
-<option value="Dhanbad">Dhanbad</option>
-<option value="Ernakulam">Ernakulam</option>
-<option value="Faridabad">Faridabad</option>
-<option value="Ghaziabad">Ghaziabad</option>
-<option value="Goa">Goa</option>
-<option value="Guwahati">Guwahati</option>
-<option value="Hisar">Hisar</option>
-<option value="Hyderabad">Hyderabad</option>
-<option value="Imphal">Imphal</option>
-<option value="Jalandhar">Jalandhar</option>
-<option value="Jammu">Jammu</option>
-<option value="Jhansi">Jhansi</option>
-<option value="Kanpur">Kanpur</option>
-<option value="Kochi">Kochi</option>
-<option value="Kolkata">Kolkata</option>
-<option value="Lucknow">Lucknow</option>
-<option value="Ludhiana">Ludhiana</option>
-<option value="Madurai">Madurai</option>
-<option value="Mangalore">Mangalore</option>
-<option value="Meerut">Meerut</option>
-<option value="Mysore">Mysore</option>
-<option value="Noida">Noida</option>
-<option value="Patna">Patna</option>
-<option value="Prayagraj">Prayagraj</option>
-<option value="Raipur">Raipur</option>
-<option value="Ranchi">Ranchi</option>
-<option value="Shimla">Shimla</option>
-<option value="Siliguri">Siliguri</option>
-<option value="Srinagar">Srinagar</option>
-<option value="Surat">Surat</option>
-<option value="Tirupati">Tirupati</option>
-<option value="Trivandrum">Trivandrum</option>
-<option value="Vadodara">Vadodara</option>
-<option value="Varanasi">Varanasi</option>
-<option value="Vijayawada">Vijayawada</option>
-<option value="Visakhapatnam">Visakhapatnam</option>
-<option value="Bhopal">Bhopal</option>
-<option value="Indore">Indore</option>
-<option value="Gwalior">Gwalior</option>
-<option value="Jabalpur">Jabalpur</option>
-<option value="Ujjain">Ujjain</option>
-<option value="Sagar">Sagar</option>
-<option value="Ratlam">Ratlam</option>
-<option value="Dewas">Dewas</option>
-<option value="Rewa">Rewa</option>
-<option value="Satna">Satna</option>
-<option value="Khandwa">Khandwa</option>
-<option value="Burhanpur">Burhanpur</option>
-<option value="Chhindwara">Chhindwara</option>
-<option value="Morena">Morena</option>
-<option value="Bhind">Bhind</option>
-<option value="Katni">Katni</option>
-<option value="Hoshangabad">Hoshangabad</option>
-<option value="Vidisha">Vidisha</option>
-<option value="Betul">Betul</option>
-<option value="Sehore">Sehore</option>
-<option value="Mandsaur">Mandsaur</option>
-<option value="Neemuch">Neemuch</option>
-<option value="Damoh">Damoh</option>
-<option value="Shahdol">Shahdol</option>
-<option value="Seoni">Seoni</option>
-<option value="Dindori">Dindori</option>
-<option value="Singrauli">Singrauli</option>
-<option value="Raisen">Raisen</option>
-<option value="Mandla">Mandla</option>
-<option value="Narsinghpur">Narsinghpur</option>
-<option value="Anuppur">Anuppur</option>
-<option value="Tikamgarh">Tikamgarh</option>
-<option value="Panna">Panna</option>
-<option value="Sidhi">Sidhi</option>
-<option value="Mumbai">Mumbai</option>
-<option value="Pune">Pune</option>
-<option value="Nagpur">Nagpur</option>
-<option value="Nashik">Nashik</option>
-<option value="Aurangabad">Aurangabad</option>
-<option value="Solapur">Solapur</option>
-<option value="Thane">Thane</option>
-<option value="Navi Mumbai">Navi Mumbai</option>
-<option value="Kolhapur">Kolhapur</option>
-<option value="Amravati">Amravati</option>
-<option value="Latur">Latur</option>
-<option value="Jalgaon">Jalgaon</option>
-<option value="Nanded">Nanded</option>
-<option value="Satara">Satara</option>
-<option value="Ahmednagar">Ahmednagar</option>
-<option value="Sangli">Sangli</option>
-<option value="Akola">Akola</option>
-<option value="Chandrapur">Chandrapur</option>
-<option value="Dhule">Dhule</option>
-<option value="Beed">Beed</option>
-<option value="Parbhani">Parbhani</option>
-<option value="Jalna">Jalna</option>
-<option value="Osmanabad">Osmanabad</option>
-<option value="Wardha">Wardha</option>
-<option value="Gondia">Gondia</option>
-<option value="Bhandara">Bhandara</option>
-<option value="Yavatmal">Yavatmal</option>
-<option value="Hingoli">Hingoli</option>
-<option value="Ratnagiri">Ratnagiri</option>
-<option value="Sindhudurg">Sindhudurg</option>
-<option value="Palghar">Palghar</option>
-<option value="Washim">Washim</option>
-  </select>
-
-  <button type="button" id="detect-location-btn" onclick="detectLocation()"> Auto Detect</button>
-  
-</div>
-</div>
-
-      <div class="subscription__form" style="align-items: center">
-        <input type="text" id="cookmob" placeholder="Enter your mobile number" required />
-        <button id="sendOtpButton">Send OTP</button>
-      </div>
-      <div class="subscription__form">
-        <input type="text" id="otpInput" placeholder="Enter OTP" required />
-        <button id="verifyOtpButton">Verify OTP</button>
-      </div>
-      <div class="subscription__form">
-     <button1 id="submitBtn">Register Home Cook</button1>
-      </div>
-
+    <div class="registration-container">
+        <h2>Seller Registration</h2>
+        
+        <div class="form-group">
+            <label for="cookname">Full Name</label>
+            <input type="text" id="cookname" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="cookmob">Mobile Number</label>
+            <input type="tel" id="cookmob" placeholder="Enter your 10-digit mobile number" required>
+            <button id="sendOtpButton">Send OTP</button>
+        </div>
+        
+        <div class="form-group otp-container" id="otpGroup" style="display: none;">
+            <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6">
+            <button id="verifyOtpButton">Verify OTP</button>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Create a strong password" required>
+                <span class="toggle-password">👁️</span>
+            </div>
+            <div class="password-strength">
+                <span>Strength:</span>
+                <div class="strength-meter">
+                    <div class="strength-meter-fill" id="strengthMeter"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-container">
+                <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+                <span class="toggle-password">👁️</span>
+            </div>
+            <div class="password-match" id="passwordMatch"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="cookaddress">Your Location</label>
+            <input type="text" id="cookaddress" placeholder="Your location will appear here" readonly>
+            <button id="detect-location-btn">Detect My Location</button>
+            <div id="location-status"></div>
+            <div id="map" style="height: 200px; width: 100%; margin-top: 15px; display: none;"></div>
+        </div>
+        
+        <button id="submitBtn" disabled>Complete Registration</button>
     </div>
-  
- </section>
- <script>
-  const dropdown = document.getElementById("city-dropdown");
-  const cityDisplay = document.getElementById("city-name");
-  const clearBtn = document.getElementById("clear-city-btn");
-  const detectBtn = document.getElementById("detect-location-btn");
 
-  function showControls() {
-    dropdown.selectedIndex = 0;
-    dropdown.style.display = "block";
-    detectBtn.style.display = "block";
-  }
+    <!-- Load Google Maps API asynchronously -->
+    <script>
+      // Global function for Maps API to callback
+      window.initMap = function() {
+        console.log('Google Maps API loaded and ready');
+        // The actual map initialization will happen when needed
+      };
 
-  function hideControls() {
-    dropdown.style.display = "none";
-    detectBtn.style.display = "none";
-  }
+      function loadGoogleMaps() {
+        const script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw&libraries=places&callback=initMap';
+        script.async = true;
+        script.defer = true;
+        script.onerror = function() {
+          console.error('Failed to load Google Maps API');
+          document.getElementById('location-status').textContent = 'Map service unavailable. Please refresh the page.';
+        };
+        document.head.appendChild(script);
+      }
 
-  dropdown.addEventListener("change", function () {
-    const selected = this.value;
-    cityDisplay.textContent = selected;
-    hideControls();
-  });
+      // Load when DOM is ready
+      document.addEventListener('DOMContentLoaded', loadGoogleMaps);
+    </script>
 
-  clearBtn.addEventListener("click", function () {
-    cityDisplay.textContent = "None";
-    showControls();
-  });
-
-  function detectLocation() {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(success, error);
-
-    function success(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-        .then(res => res.json())
-        .then(data => {
-          const city = data.address.city || data.address.town || data.address.village || "Unknown";
-          cityDisplay.textContent = city;
-          hideControls();
-          console.log("Auto-detected city:", city);
-        })
-        .catch(() => {
-          alert("Could not determine city.");
-        });
-    }
-
-    function error(err) {
-      alert("Please allow location access.");
-      console.warn(`Geolocation error (${err.code}): ${err.message}`);
-    }
-  }
-</script>
-
+    <!-- Your application script -->
+    <script type="module" src="createhomecookpage.js"></script>
 </body>
 </html>
