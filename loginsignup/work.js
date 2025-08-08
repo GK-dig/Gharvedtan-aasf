@@ -78,6 +78,8 @@ window.loginUser = async () => {
         sessionStorage.setItem("loggedInUser", JSON.stringify({
           name: userData.name,
           phone: userData.phone,
+          email: userData.email,
+          uid: userData.uid
           
         }));
 

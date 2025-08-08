@@ -12,22 +12,20 @@ import {
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// Initialize Firebase Auth
 const auth = getAuth();
 
-// DOM Elements
 const catalogue = document.querySelector(".popular-foods__catalogue");
 const searchInput = document.querySelector(".subscription__form1 input");
 const filterButtons = document.querySelectorAll(".popular-foods__filter-btn");
 const searchBtn = document.getElementById("searchBtn");
 
-// Application State
+
 let allItems = [];
 let activeRegion = "all";
 let currentUser = null;
 let authReady = false;
 
-// Initialize authentication state
+
 const authPromise = new Promise(resolve => {
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
@@ -37,7 +35,7 @@ const authPromise = new Promise(resolve => {
   });
 });
 
-// Utility Functions
+
 const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
@@ -132,7 +130,7 @@ function renderItems(items, searchQuery = '') {
     catalogue.appendChild(card);
   });
 
-  // Add event listeners to all Add to Cart buttons
+
   document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', async () => {
       const itemId = button.dataset.id;
@@ -146,19 +144,21 @@ function renderItems(items, searchQuery = '') {
   });
 }
 
-// Cart Operations
 async function addToCart(item) {
   try {
     if (!authReady) await authPromise;
-    if (!currentUser) {
+
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    
+    if (!loggedInUser) {
       alert("Please sign in to add items to your cart");
-      window.location.href = "../loginsignup/work.html";
-      return;
+      window.location.href = "../loginsignup/work.html";  
+      return;  
     }
 
-    const cartRef = doc(db, "carts", currentUser.uid);
+    const cartRef = doc(db, "carts", loggedInUser.uid);  
     const cartSnap = await getDoc(cartRef);
-    
+
     const newItem = {
       id: item.id,
       name: item.name,
@@ -171,10 +171,9 @@ async function addToCart(item) {
 
     if (cartSnap.exists()) {
       const cartData = cartSnap.data();
-      const items = cartData.items || []; // Safeguard against undefined items
-      
+      const items = cartData.items || [];  
       const existingItemIndex = items.findIndex(i => i.id === item.id);
-      
+
       if (existingItemIndex >= 0) {
         const updatedItems = [...items];
         updatedItems[existingItemIndex] = {
@@ -182,7 +181,7 @@ async function addToCart(item) {
           quantity: updatedItems[existingItemIndex].quantity + 1,
           lastUpdated: new Date()
         };
-        
+
         await updateDoc(cartRef, {
           items: updatedItems,
           total: increment(item.price),
@@ -197,15 +196,14 @@ async function addToCart(item) {
       }
     } else {
       await setDoc(cartRef, {
-        userId: currentUser.uid,
+        userId: loggedInUser.uid,
         items: [newItem],
         total: item.price,
         createdAt: new Date(),
         updatedAt: new Date()
       });
     }
-    
-    // Visual feedback for adding to cart
+
     const btn = document.querySelector(`.add-to-cart[data-id="${item.id}"]`);
     if (btn) {
       btn.textContent = '✓ Added';
@@ -221,7 +219,6 @@ async function addToCart(item) {
   }
 }
 
-// Filter and Search
 const renderFilteredItems = debounce(() => {
   const query = searchInput.value.trim();
   const regionFiltered = activeRegion === "all" 
@@ -232,9 +229,7 @@ const renderFilteredItems = debounce(() => {
   renderItems(searchResults, query);
 }, 300);
 
-// Event Listeners
 function setupEventListeners() {
-  // Region filter buttons
   filterButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       filterButtons.forEach(b => b.classList.remove("active"));
@@ -244,7 +239,6 @@ function setupEventListeners() {
     });
   });
 
-  // Search functionality
   searchInput.addEventListener('input', renderFilteredItems);
   searchBtn.addEventListener('click', renderFilteredItems);
   searchInput.addEventListener('keypress', (e) => {
@@ -252,7 +246,7 @@ function setupEventListeners() {
   });
 }
 
-// Initialization
+
 async function initialize() {
   try {
     setupEventListeners();
@@ -278,5 +272,4 @@ async function initialize() {
   }
 }
 
-// Start the application
 initialize();
