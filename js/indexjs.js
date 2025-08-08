@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
 
   if (user && dropdownMenu) {
     dropdownMenu.innerHTML = `
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
       logoutBtn.onclick = () => {
-        localStorage.removeItem("loggedInUser");
+        sessionStorage.removeItem("loggedInUser");
         location.reload();
       };
     }

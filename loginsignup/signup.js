@@ -71,7 +71,7 @@ window.verifyOTP = () => {
         uid: user.uid,
         createdAt: new Date()
       });
-      localStorage.setItem("loggedInUser", JSON.stringify({
+      sessionStorage.setItem("loggedInUser", JSON.stringify({
         name: name,
         phone: phone,
         uid: user.uid
@@ -100,7 +100,7 @@ window.googleSignIn = async () => {
       createdAt: new Date()
     });
 
-    localStorage.setItem("loggedInUser", JSON.stringify({
+    sessionStorage.setItem("loggedInUser", JSON.stringify({
       name: user.displayName,
       phone: user.phoneNumber || "Not Provided",
       email: user.email,

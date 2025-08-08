@@ -39,7 +39,7 @@ window.googleSignIn = async () => {
       });
     }
 
-    localStorage.setItem("loggedInUser", JSON.stringify({
+sessionStorage.setItem("loggedInUser", JSON.stringify({
       name: user.displayName,
       phone: user.phoneNumber || "Not Provided",
       email: user.email,
@@ -75,9 +75,10 @@ window.loginUser = async () => {
       if (userData.password === pass) {
         found = true;
 
-        localStorage.setItem("loggedInUser", JSON.stringify({
+        sessionStorage.setItem("loggedInUser", JSON.stringify({
           name: userData.name,
-          phone: userData.phone
+          phone: userData.phone,
+          
         }));
 
         alert("Login successful!");
