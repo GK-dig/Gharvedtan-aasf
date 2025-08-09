@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu Item</title>
+    <link rel="stylesheet" href="addmenu.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js"></script> <!-- Added Firebase Storage -->
+    <script src="firebase.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="header__nav">
+            <div class="header__logo">
+                <h4 data-aos="fade-down">GHARVEDTAN</h4>
+                <div class="header__logo-overlay"></div>
+            </div>
+            <ul class="header__menu" data-aos="fade-down">
+                <li><a href="./loginsignup - Copy/work.html">Login</a></li>
+                <li><a href="../index.html">Back</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="subscription flex-center">
+        <div class="login-herocontent">
+            <h2>Add New Menu Item</h2>
+            <form id="addMenuForm">
+                <div class="subscription__form">
+                    <input type="text" id="itemName" placeholder="Enter item name" required />
+                </div>
+
+                <div class="subscription__form">
+                    <input type="number" id="price" placeholder="Enter item price" required />
+                </div>
+
+                <div class="subscription__form">
+                    <input type="password" id="signupRepass" placeholder="Re-enter password" />
+                </div>
+
+                <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+                    <select id="region" required>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="Central">Central</option>
+                    </select>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="subscription__form">
+                    <input type="file" id="imageUpload" accept="image/*" required />
+                </div>
+
+                <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
+                    <select id="availability" required>
+                        <option value="Yes">Available</option>
+                        <option value="No">Not-Available</option>
+                    </select>
+                </div>
+
+                <div class="subscription__form">
+                    <button type="submit">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer class="footer flex-between">
+        <h3 class="footer__logo"><span>GharVED</span>tan</h3>
+        <ul class="footer__nav">
+            <li><a href="../menu/menu.html">Menu</a></li>
+            <li><a href="../addrestaurant.html">Work With Us</a></li>
+            <li><a href="#about-us">About Us</a></li>
+            <li><a href="#policies">Terms & Conditions</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        const app = firebase.initializeApp({
+            apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
+            authDomain: "gharvedtan-auth.firebaseapp.com",
+            projectId: "gharvedtan-auth",
+            storageBucket: "gharvedtan-auth.firebasestorage.app",
+            messagingSenderId: "32502650170",
+            appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
+        });
+
+        const db = firebase.firestore(app);
+        const storage = firebase.storage(app);  // Initialize Firebase Storage
+        const addMenuForm = document.getElementById('addMenuForm');
+        const imageUpload = document.getElementById('imageUpload'); // Get image upload input
+
+        addMenuForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const itemName = document.getElementById('itemName').value;
+            const price = document.getElementById('price').value;
+            const region = document.getElementById('region').value;
+            const availability = document.getElementById('availability').value;
+
+            // Get the selected file
+            const file = imageUpload.files[0];
+            if (!file) {
+                alert("Please select an image.");
+                return;
+            }
+
+            const storageRef = storage.ref('images/' + file.name); // Create a reference to the storage location
+            const uploadTask = storageRef.put(file); // Upload the image
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // Optional: track upload progress
+                },
+                (error) => {
+                    console.error("Upload failed:", error);
+                }, 
+                async () => {
+                    // Get the download URL after upload completes
+                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+
+                    // Check if the item already exists
+                    const itemSnapshot = await db.collection('items').where('name', '==', itemName).get();
+                    if (!itemSnapshot.empty) {
+                        alert('This item already exists!');
+                        return;
+                    }
+
+                    // Add item details along with the image URL to Firestore
+                    await db.collection('items').add({
+                        name: itemName,
+                        price: parseFloat(price),
+                        region: region,
+                        photoUrl: downloadURL,  // Store image URL
+                        availability: availability
+                    });
+
+                    alert('Item added successfully!');
+                    addMenuForm.reset(); // Reset the form
+                }
+            );
+        });
+
+        async function fetchAndDisplayItems() {
+            try {
+                const response = await fetch('your-api-url', {
+                    method: 'GET',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

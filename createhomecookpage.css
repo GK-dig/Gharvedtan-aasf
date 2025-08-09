@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap");
-
+@import url("./css/sections/header.css");
+@import url("./css/sections/footer.css");
 :root {
   --playfair-display: "Playfair Display", serif;
   --plus-jakarta-sans: "Plus Jakarta Sans", sans-serif;
@@ -127,7 +126,10 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
+  margin-top:10px;
   transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {
@@ -160,7 +162,7 @@ button:disabled {
 }
 
 #detect-location-btn {
-  background-color: #f39c12;
+  background-color: #181105;
   border: none;
   cursor: pointer;
   padding: 20px 24px;
@@ -242,29 +244,14 @@ button:disabled {
   background-color: var(--color-success);
   width: 100%;
 }
-/* Add these styles to your existing CSS file */
 
-#map {
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 15px;
+#map-container {
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
 }
 
-.gm-style .gm-style-iw {
-    font-family: var(--plus-jakarta-sans);
-    font-weight: 400;
-    color: var(--black-400);
-}
-
-.gm-style .gm-style-iw a {
-    color: var(--primary-color);
-}
-
-.gm-ui-hover-effect {
-    opacity: 0.6;
-}
-
-.gm-ui-hover-effect:hover {
-    opacity: 1;
+#osm-map {
+  border-radius: 15px;
 }

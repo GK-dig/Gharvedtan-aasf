@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="loginsignup/signup.css">
+     <link rel="stylesheet" href="feedback.css">
     <title>Gharvedtan</title>
   </head>
   
@@ -25,11 +26,7 @@
             <a href="#menu">Menu</a>
           </li>
           <li>
-            <a href="#food">Discover</a>
-          </li>
-      
-          <li>
-            <a href="#about-us">About Us</a>
+            <a href="./index.html">Back</a>
           </li>
           <li>
             <div class="profile-container">
@@ -49,22 +46,27 @@
         </ul>
       </nav>
     </header>
-<section class="subscription flex-center" id="services">
-      <h2 data-aos="flip-down">
-       Mann Ki Baat
-      </h2>
-      <p data-aos="fade-up">Drop your thoughts in our feedback form</p>
-       <div class="subscription__form" data-aos="fade-up">
-          <input type="text" id="comment" placeholder="Type Here...." disabled />
-      </div>
-      <div class="subscription__form" data-aos="fade-up">
-      
-        <button1>Submit</button1>
-      </div>
-      
-    </section>
+        <section class="subscription flex-center" id="services">
+              <h2 data-aos="flip-down">Mann Ki Baat</h2>
+              <p data-aos="fade-up">Drop your thoughts in our feedback form</p>
+        
 
+  <div class="toolbar" role="toolbar" aria-label="Text formatting">
+    <button type="button" class="tool-btn button" data-cmd="bold" title="Bold"><b>B</b></button>
+    <button type="button" class="tool-btn button" data-cmd="italic" title="Italic"><i>I</i></button>
+    <button type="button" class="tool-btn button" data-cmd="underline" title="Underline"><u>U</u></button>
+    <button type="button" class="tool-btn button" data-cmd="insertUnorderedList" title="Bullet list">• Bullets </button>
+    <button type="button" class="tool-btn button" data-cmd="insertOrderedList" title="Numbered list">1.List</button>
+  </div>
 
+  <!-- Editable area (now only text) -->
+  <div id="comment" class="editor empty" contenteditable="true"
+       data-placeholder="Type here..." aria-label="Feedback"></div>
+              <div class="subscription__form" data-aos="fade-up">
+              
+                <button onclick="submitFeedback()">Submit</button>
+              </div>
+        </section>
     <footer class="footer flex-between">
      
       <h3 class="footer__logo">
@@ -98,6 +100,167 @@
 
      
     </footer>
+   <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize AOS animations
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+
+  // Profile dropdown functionality
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  
+  if (profileIcon && dropdownMenu) {
+    profileIcon.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.style.display = 'none';
+    });
+  }
+
+  // Feedback editor functionality
+  const editor = document.getElementById('comment');
+  const toolBtns = document.querySelectorAll('.tool-btn');
+
+  // Apply formatting on button click
+  toolBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.dataset.cmd;
+      editor.focus();
+      document.execCommand(cmd, false, null);
+      adjustEditorHeight();
+      togglePlaceholder();
+    });
+  });
+
+  // Auto-grow editor height
+  function adjustEditorHeight() {
+    editor.style.height = 'auto';
+    editor.style.height = editor.scrollHeight + 'px';
+  }
+
+  // Placeholder toggle
+  function togglePlaceholder() {
+    const text = editor.textContent.replace(/\u200B/g, '').trim();
+    if (!text) editor.classList.add('empty');
+    else editor.classList.remove('empty');
+  }
+
+  // Update on input
+  editor.addEventListener('input', () => {
+    adjustEditorHeight();
+    togglePlaceholder();
+  });
+
+  // Also update placeholder on focus/blur
+  editor.addEventListener('focus', togglePlaceholder);
+  editor.addEventListener('blur', togglePlaceholder);
+
+  // Initialize on load
+  adjustEditorHeight();
+  togglePlaceholder();
+
+  // Keyboard shortcuts for formatting
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'i' || e.key === 'u')) {
+      setTimeout(() => {
+        adjustEditorHeight();
+        togglePlaceholder();
+      }, 0);
+    }
+  });
+});
+
+// Enhanced submit feedback function with localStorage
+function submitFeedback() {
+  const editor = document.getElementById('comment');
+  if (!editor) {
+    console.error('Editor element not found!');
+    alert('Error: Feedback editor not available');
+    return;
+  }
+
+  const html = editor.innerHTML;
+  const text = editor.textContent.trim();
+  
+  if (!text) {
+    alert('Please type your feedback before submitting.');
+    return;
+  }
+
+  try {
+    // Create feedback object with timestamp
+    const feedback = {
+      content: text,
+      htmlContent: html,
+      timestamp: new Date().toISOString()
+    };
+
+    // Get existing feedback or initialize empty array
+    let allFeedback = [];
+    const storedData = localStorage.getItem('gharvedtan_feedback');
+    
+    if (storedData) {
+      try {
+        allFeedback = JSON.parse(storedData);
+        if (!Array.isArray(allFeedback)) {
+          console.warn('Existing data was not an array, resetting');
+          allFeedback = [];
+        }
+      } catch (e) {
+        console.warn('Failed to parse stored data, resetting', e);
+        allFeedback = [];
+      }
+    }
+
+    // Add new feedback
+    allFeedback.push(feedback);
+    
+    // Store back to localStorage
+    localStorage.setItem('gharvedtan_feedback', JSON.stringify(allFeedback));
+    
+    // Verify storage
+    const verify = localStorage.getItem('gharvedtan_feedback');
+    if (!verify) {
+      throw new Error('Failed to verify storage');
+    }
+
+    // Success
+    alert('Thank you for your feedback! ');
+    
+    // Reset editor
+    editor.innerHTML = '';
+    editor.style.height = 'auto';
+    editor.classList.add('empty');
+
+  } catch (error) {
+    console.error('Storage Error:', error);
+    alert('Error: Could not save feedback. ' + error.message);
+  }
+}
+
+// Debug function to check storage
+function viewStoredFeedback() {
+  try {
+    const stored = localStorage.getItem('gharvedtan_feedback');
+    console.log('Current localStorage content:', stored);
+    if (stored) {
+      console.log('Parsed content:', JSON.parse(stored));
+    }
+    return stored;
+  } catch (e) {
+    console.error('Debug check failed:', e);
+    return null;
+  }
+}
+</script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="js/indexjs.js"></script>
   </body>
