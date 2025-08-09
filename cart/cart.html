@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+  <div class="cart-container">
+    <div class="cart-header">
+      <div>
+        <h1 class="cart-title">Your Cart</h1>
+        <p class="cart-items-count"><span id="itemCount">0</span> items</p>
+      </div>
+      <a href="../menu/menu.html" class="continue-shopping">
+        <i class="fas fa-arrow-left"></i> Continue Shopping
+      </a>
+    </div>
+
+    <div class="cart-content">
+      <div class="cart-items" id="cartItems">
+        <!-- Cart items will be dynamically inserted here -->
+        <div class="empty-cart">
+          <img src="../assets/empty-cart.svg" alt="Empty cart">
+          <h3>Your cart is empty</h3>
+          <p>Looks like you haven't added anything to your cart yet</p>
+          <a href="../menu/menu.html" class="btn-primary">Browse Menu</a>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-details">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery Fee</span>
+            <span>₹49</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="total">₹49</span>
+          </div>
+          <button id="clearCartBtn" class="btn-danger">Clear Cart</button>
+        </div>
+        <button id="checkoutBtn" class="btn-primary" disabled>Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="cart.js"></script>
+</body>
+</html>

@@ -2,230 +2,193 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="menu.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <title>Menu - Gharvedtan</title>
-    <style>
-        .no-results, .error-state {
-            text-align: center;
-            padding: 2rem;
-            color: #fff;
-        }
-        .no-results img, .error-state img {
-            margin-bottom: 1rem;
-        }
-        .clear-search, .error-state button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            margin-top: 1rem;
-            cursor: pointer;
-        }
-        .search-highlight {
-            background-color: yellow;
-            color: #000;
-            font-weight: bold;
-            padding: 0 2px;
-            border-radius: 2px;
-        }
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #fff;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="menu.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <title>Menu - Gharvedtan</title>
+  <style>
+    .no-results,
+    .error-state {
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .no-results img,
+    .error-state img {
+      margin-bottom: 1rem;
+    }
+
+    .clear-search,
+    .error-state button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .search-highlight {
+      background-color: yellow;
+      color: #000;
+      font-weight: bold;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .cart {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    .go-to-cart-button {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <nav class="header__nav">
-            <div class="header__logo">
-                <h4 data-aos="fade-down">Gharvedtan</h4>
-                <div class="header__logo-overlay"></div>
-            </div>
+  <header>
+    <nav class="header__nav">
+      <div class="header__logo">
+        <h4 data-aos="fade-down">Gharvedtan</h4>
+        <div class="header__logo-overlay"></div>
+      </div>
 
-            <ul class="header__menu" data-aos="fade-down">
-                <li>
-                    <a href="../index.html">Home</a>
-                </li>
-                <li>
-                    <a href="../loginsignup/work.html">Login</a>
-                </li>
-                <li>
-                    <div class="profile-container">
-          <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
-          <div class="dropdown-menu" id="dropdownMenu">
-            <a href="#">My Orders</a>
-            <a href="#">Profile</a>
-            <a href="#">Logout</a>
-          </div>
+      <ul class="header__menu" data-aos="fade-down">
+        <li>
+          <a href="../index.html">Home</a>
+        </li>
+        <li>
+          <a href="../loginsignup/work.html">Login</a>
+        </li>
+        <li>
+          <a href="../cart/cart.html" class="go-to-cart-button">
+            <img src="../assets/cart.png" alt="Go to Cart" class="cart" />
+          </a>
+        </li>
+      </ul>
+
+      <ul class="header__menu-mobile" data-aos="fade-down">
+        <li>
+          <img src="../assets/menu.svg" alt="menu" id="mobileMenuBtn" />
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="layer-container">
+    <div class="floral-bg">
+      <div class="food-scroll">
+        <div class="food-track">
+          <img src="../assets/1 (1).png" alt="food" />
+          <img src="../assets/1 (2).png" alt="food" />
+          <img src="../assets/1 (3).png" alt="food" />
+          <img src="../assets/1 (4).png" alt="food" />
+          <img src="../assets/1 (5).png" alt="food" />
+          <img src="../assets/1 (6).png" alt="food" />
+          <img src="../assets/1 (7).png" alt="food" />
+          <img src="../assets/1 (8).png" alt="food" />
+          <img src="../assets/1 (9).png" alt="food" />
+          <img src="../assets/1 (10).png" alt="food" />
+          <img src="../assets/1 (1).png" alt="food" />
+          <img src="../assets/1 (2).png" alt="food" />
+          <img src="../assets/1 (3).png" alt="food" />
+          <img src="../assets/1 (4).png" alt="food" />
+          <img src="../assets/1 (5).png" alt="food" />
+          <img src="../assets/1 (6).png" alt="food" />
+          <img src="../assets/1 (7).png" alt="food" />
+          <img src="../assets/1 (8).png" alt="food" />
+          <img src="../assets/1 (9).png" alt="food" />
+          <img src="../assets/1 (10).png" alt="food" />
         </div>
-                </li>
-            </ul>
+      </div>
+    </div>
+    <div class="info">
+      <span>MO&nbsp;&nbsp;&nbsp;D</span>
+    </div>
 
-            <ul class="header__menu-mobile" data-aos="fade-down">
-                <li>
-                    <img src="../assets/menu.svg" alt="menu" id="mobileMenuBtn" />
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <div class="smoke"></div>
+    <div class="smoke2"></div>
+    <div class="signature-text">What's your</div>
+  </section>
 
-    <section class="layer-container">
-        <div class="floral-bg">
-            <div class="food-scroll">
-                <div class="food-track">
-                    <img src="../assets/1 (1).png" alt="food" />
-                    <img src="../assets/1 (2).png" alt="food" />
-                    <img src="../assets/1 (3).png" alt="food" />
-                    <img src="../assets/1 (4).png" alt="food" />
-                    <img src="../assets/1 (5).png" alt="food" />
-                    <img src="../assets/1 (6).png" alt="food" />
-                    <img src="../assets/1 (7).png" alt="food" />
-                    <img src="../assets/1 (8).png" alt="food" />
-                    <img src="../assets/1 (9).png" alt="food" />
-                    <img src="../assets/1 (10).png" alt="food" />
-                    <img src="../assets/1 (1).png" alt="food" />
-                    <img src="../assets/1 (2).png" alt="food" />
-                    <img src="../assets/1 (3).png" alt="food" />
-                    <img src="../assets/1 (4).png" alt="food" />
-                    <img src="../assets/1 (5).png" alt="food" />
-                    <img src="../assets/1 (6).png" alt="food" />
-                    <img src="../assets/1 (7).png" alt="food" />
-                    <img src="../assets/1 (8).png" alt="food" />
-                    <img src="../assets/1 (9).png" alt="food" />
-                    <img src="../assets/1 (10).png" alt="food" />
-                </div>
-            </div>
-        </div>
-        <div class="info">
-            <span>MO&nbsp;&nbsp;&nbsp;D</span>
-        </div>
+  <section class="popular-foods" id="menu">
+    <div class="subscription__form1" data-aos="fade-up">
+      <input type="text" placeholder="Search for your favourite comfort food" class="subscription__form1 input" />
+      <button id="searchBtn"><img src="../assets/search.svg" alt="Search"></button>
+    </div>
 
-        <div class="smoke"></div>
-        <div class="smoke2"></div>
-        <div class="signature-text">What's your</div>
-    </section>
+    <div class="popular-foods__filters hide-scrollbar" data-aos="fade-up">
+      <button class="popular-foods__filter-btn active" data-region="all">All</button>
+      <button class="popular-foods__filter-btn" data-region="south">South Indian</button>
+      <button class="popular-foods__filter-btn" data-region="north">North Indian</button>
+      <button class="popular-foods__filter-btn" data-region="west">West Indian</button>
+      <button class="popular-foods__filter-btn" data-region="east">East Indian</button>
+    </div>
 
-    <section class="popular-foods" id="menu">
-        <div class="subscription__form1" data-aos="fade-up">
-            <input type="text" placeholder="Search for your favourite comfort food" class="subscription__form1 input" />
-            <button id="searchBtn"><img src="../assets/search.svg" alt="Search"></button>
-        </div>
+    <div class="popular-foods__catalogue" data-aos="fade-up">
+      <div class="loading">Loading menu items...</div>
+    </div>
+  </section>
 
-        <div class="popular-foods__filters hide-scrollbar" data-aos="fade-up">
-            <button class="popular-foods__filter-btn active" data-region="all">All</button>
-            <button class="popular-foods__filter-btn" data-region="south">South Indian</button>
-            <button class="popular-foods__filter-btn" data-region="north">North Indian</button>
-            <button class="popular-foods__filter-btn" data-region="west">West Indian</button>
-            <button class="popular-foods__filter-btn" data-region="east">East Indian</button>
-        </div>
+  <footer class="footer flex-between">
+    <h3 class="footer__logo">
+      <span>GharVED</span>tan
+    </h3>
 
-        <div class="popular-foods__catalogue" data-aos="fade-up">
-            <div class="loading">Loading menu items...</div>
-        </div>
-    </section>
+    <ul class="footer__nav">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="../addrestaurant.html">Work With Us</a></li>
+      <li><a href="#about-us">About Us</a></li>
+      <li><a href="#policies">Terms & Conditions</a></li>
+    </ul>
 
-    <footer class="footer flex-between">
-        <h3 class="footer__logo">
-            <span>GharVED</span>tan
-        </h3>
+    <ul class="footer__social">
+      <li class="flex-center">
+        <img src="../assets/facebook.svg" alt="facebook" />
+      </li>
+      <li class="flex-center">
+        <img src="../assets/instagram.svg" alt="instagram" />
+      </li>
+      <li class="flex-center">
+        <img src="../assets/twitter.svg" alt="twitter" />
+      </li>
+    </ul>
+  </footer>
 
-        <ul class="footer__nav">
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="../addrestaurant.html">Work With Us</a></li>
-            <li><a href="#about-us">About Us</a></li>
-            <li><a href="#policies">Terms & Conditions</a></li>
-        </ul>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-        <ul class="footer__social">
-            <li class="flex-center">
-                <img src="../assets/facebook.svg" alt="facebook" />
-            </li>
-            <li class="flex-center">
-                <img src="../assets/instagram.svg" alt="instagram" />
-            </li>
-            <li class="flex-center">
-                <img src="../assets/twitter.svg" alt="twitter" />
-            </li>
-        </ul>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    
-  
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <script>
-        AOS.init({
-            duration: 800,
-            offset: 100
-        });
-
-        document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
-            document.querySelector('.header__menu').classList.toggle('show-mobile');
-        });
-
-        document.getElementById('profileIcon')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.getElementById('dropdownMenu').classList.toggle('show');
-        });
-
-        document.addEventListener('click', () => {
-            document.getElementById('dropdownMenu')?.classList.remove('show');
-        });
-    </script>
-     <script>
-  const profileIcon = document.getElementById("profileIcon");
-  const dropdownMenu = document.getElementById("dropdownMenu");
-  const loginLink = document.querySelector("a[href='/loginsignup/work.html']"); 
-
-  const userData = JSON.parse(localStorage.getItem("loggedInUser"));
-
-  if (userData) {
-    if (loginLink) loginLink.style.display = "none";
-
-    dropdownMenu.style.display = "block";
-    dropdownMenu.innerHTML = `
-      <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
-      <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
-      <hr style="margin: 5px 0;">
-      <a href="#">My Orders</a>
-      <a href="#">Profile</a>
-      <a href="#" id="logoutBtn">Logout</a>
-    `;
-
-    profileIcon.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle("show");
+  <script>
+    AOS.init({
+      duration: 800,
+      offset: 100
     });
 
-    document.addEventListener("click", (e) => {
-      if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
-        dropdownMenu.classList.remove("show");
-      }
+    document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+      document.querySelector('.header__menu').classList.toggle('show-mobile');
     });
+  </script>
 
-    dropdownMenu.addEventListener("click", (e) => {
-      if (e.target.id === "logoutBtn") {
-        localStorage.removeItem("loggedInUser");
-        location.reload(); 
-      }
-    });
-  } else {
-    dropdownMenu.style.display = "none";
-  }
-</script>
-    <script type="module" src="./menu.js"></script>
+  <script type="module" src="./menu.js"></script>
 </body>
 
 </html>
