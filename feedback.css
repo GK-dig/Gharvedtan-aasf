@@ -1,0 +1,88 @@
+:root {
+  --primary-color:#b1454a;;
+  --secondary-color: #000000;
+  --dark-color: #333;
+  --light-color: #fff;
+  --gray-color: #fff0de;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.toolbar button1 {
+  background-color: #fbfbfb46;
+  border: none;
+  color: rgba(255, 255, 255, 0.555);
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  align-items: center;
+}
+
+.button1:hover {
+  background-color: #ffffff3b;
+}
+
+.button1:focus {
+  outline: none;
+}
+#comment{
+    width: 500px;           /* Field width */
+    min-height: 40px;       /* Starting height */
+    resize: none;           /* Prevent manual resize handle */
+    overflow: hidden;       /* Hide scrollbars */
+      box-sizing: border-box;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--plus-jakarta-sans);
+  color: var(--light-color);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+textarea::placeholder {
+        color: rgb(255, 255, 255);  /* Change this to your desired color */
+        opacity: 1;  /* Make sure color is fully visible */
+    }
+
+
+    .toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+  .button1, .tool-btn {
+    background: #ffffff16;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background .15s ease;
+  }
+  .tool-btn:hover, .button1:hover { background:#ffffff45; }
+  .tool-btn:focus, .button1:focus { outline: 2px solid rgba(0, 0, 0, 0.237); }
+
+  .editor {
+    width: 100%;
+    max-width: 700px;        /* adjust */
+    min-height: 60px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 15px;
+    line-height: 1.4;
+    overflow: hidden; /* hide scrollbars (we auto-resize) */
+    background: #fff;
+    white-space: pre-wrap; /* preserve wrap */
+  }
+
+  /* Fake placeholder: only shown when we add .empty */
+  .editor.empty::before {
+    content: attr(data-placeholder);
+    color: #ffffff79;          /* placeholder color */
+    pointer-events: none;
+    display: block;
+    opacity: 1;
+  }

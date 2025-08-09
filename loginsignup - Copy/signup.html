@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup | GharVEDtan</title>
+  <link rel="stylesheet" href="signup.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+<body>
+  <header>
+    <nav class="header__nav">
+      <div class="header__logo">
+        <h4 data-aos="fade-down">GHARVEDTAN</h4>
+        <div class="header__logo-overlay"></div>
+      </div>
+      <ul class="header__menu" data-aos="fade-down">
+        <li><a href="../loginsignup/work.html">Login</a></li>
+        <li><a href="../index.html">Back</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="subscription flex-center">
+    <div class="login-herocontent">
+      <h2 data-aos="flip-down">Create Account</h2>
+
+      <form id="signupForm">
+        <div class="form-group" data-aos="fade-up">
+          <input type="text" id="signupName" placeholder="Enter Full Name" required />
+        </div>
+
+        <div class="form-group" data-aos="fade-up">
+          <input type="password" id="signupPass" placeholder="Create Password" required />
+        </div>
+
+        <div class="form-group" data-aos="fade-up">
+          <input type="password" id="signupRepass" placeholder="Confirm Password" required />
+        </div>
+
+        <div class="form-group" data-aos="fade-up">
+          <div class="location-selector">
+            <p class="location-display">
+              Selected City: <span id="city-name">None</span>
+              <button type="button" id="clear-city-btn" class="btn-clear" title="Clear Selection">
+                <i class="fas fa-times"></i>
+              </button>
+            </p>
+            <select id="city-dropdown" class="form-select" required>
+              <option value="" disabled selected>Select your city</option>
+              <!-- City options remain the same -->
+            </select>
+            <button type="button" id="detect-location-btn" class="btn-secondary" onclick="detectLocation()">
+              <i class="fas fa-location-arrow"></i> Detect My Location
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group phone-verification" data-aos="fade-up">
+          <input type="tel" id="signupPhone" placeholder="Enter Phone Number" required />
+          <div id="recaptcha-container"></div>
+          <button type="button" id="send-otp-btn" class="btn-secondary" onclick="sendOTP()">
+            Send OTP
+          </button>
+        </div>
+
+        <div class="form-group" data-aos="fade-up">
+          <input type="text" id="otpInput" placeholder="Enter OTP" disabled />
+          <button type="button" id="verify-btn" class="btn-primary" onclick="verifyOTP()" disabled>
+            Verify & Sign Up
+          </button>
+        </div>
+
+        <div class="social-login" data-aos="fade-up">
+          <p class="divider">or sign up with</p>
+          <button type="button" class="btn-google" onclick="googleSignIn()">
+            <i class="fab fa-google"></i> Google
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer flex-between">
+    <h3 class="footer__logo"><span>GharVED</span>tan</h3>
+    <ul class="footer__nav">
+      <li><a href="../menu/menu.html">Menu</a></li>
+      <li><a href="../addrestaurant.html">Work With Us</a></li>
+      <li><a href="#about-us">About Us</a></li>
+      <li><a href="#policies">Terms & Conditions</a></li>
+    </ul>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script type="module" src="signup.js"></script>
+</body>
+</html>

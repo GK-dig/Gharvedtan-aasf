@@ -15,45 +15,27 @@
 }
 
 .subscription {
-  padding: 64px;
-
+  padding: 4rem 2rem;
   background-color: var(--primary-color);
   background-image: url('../assets/subscribe_bg.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  margin: 50px;
-  border-radius: 50px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  max-width: 980px;
+  margin: 2rem auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 800px;
   flex-direction: column;
-  overflow: hidden;
-  align-items: center;
-  margin-left: 200px;
 }
-
 
 .subscription h2 {
-  font-size: 88px;
+  font-size: 2.5rem;
   font-family: var(--playfair-display);
   font-weight: 600;
-  line-height: 123px;
-
-  color: #fff;
+  color: var(--light-color);
   text-align: center;
+  margin-bottom: 2rem;
 }
-
-.subscription p {
-  font-size: 18px;
-  font-family: var(--plus-jakarta-sans);
-  font-weight: 300;
-  line-height: 36px;
-
-  margin-top: 32px;
-
-  color: rgba(255, 255, 255, 0.8);
-}
-
 
 .form-group {
   margin-bottom: 1.5rem;
@@ -169,7 +151,6 @@
   color: var(--light-color);
   position: relative;
   margin: 1.5rem 0;
-  text-align: center;
 }
 
 .divider::before,
@@ -180,7 +161,6 @@
   width: 40%;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.3);
-  text-align: center;
 }
 
 .divider::before {
@@ -193,25 +173,6 @@
 
 #recaptcha-container {
   margin: 0.5rem 0;
-}
-.subscription__form select option {
-  background-color: #e19e9e;
-  color: #000000;
-}
-
-
-.subscription__form select
- {
-  width: 100%;
-  padding: 10px 24px;
-  font-size: 16px;
-  font-family: var(--plus-jakarta-sans);
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 46px;
-  cursor: pointer;
-  outline: none;
 }
 
 @media (max-width: 768px) {
@@ -228,5 +189,75 @@
   .form-select {
     padding: 0.8rem;
   }
+}
+
+
+#location-status, .password-strength, .password-match {
+  margin-top: 12px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.success-message {
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.error-message {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.warning-message {
+  color: var(--color-warning);
+  font-weight: 500;
+}
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strength-meter {
+  height: 4px;
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-meter-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Password strength colors */
+.strength-weak {
+  background-color: var(--color-error);
+  width: 25%;
+}
+
+.strength-medium {
+  background-color: var(--color-warning);
+  width: 50%;
+}
+
+.strength-strong {
+  background-color: var(--color-success);
+  width: 75%;
+}
+
+.strength-very-strong {
+  background-color: var(--color-success);
+  width: 100%;
+}
+
+#map-container {
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
 }
 
