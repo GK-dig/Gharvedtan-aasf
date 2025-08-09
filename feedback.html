@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="loginsignup/signup.css">
+     <link rel="stylesheet" href="feedback.css">
     <title>Gharvedtan</title>
   </head>
   
@@ -25,11 +26,7 @@
             <a href="#menu">Menu</a>
           </li>
           <li>
-            <a href="#food">Discover</a>
-          </li>
-      
-          <li>
-            <a href="#about-us">About Us</a>
+            <a href="./index.html">Back</a>
           </li>
           <li>
             <div class="profile-container">
@@ -49,22 +46,27 @@
         </ul>
       </nav>
     </header>
-<section class="subscription flex-center" id="services">
-      <h2 data-aos="flip-down">
-       Mann Ki Baat
-      </h2>
-      <p data-aos="fade-up">Drop your thoughts in our feedback form</p>
-       <div class="subscription__form" data-aos="fade-up">
-          <input type="text" id="comment" placeholder="Type Here...." disabled />
-      </div>
-      <div class="subscription__form" data-aos="fade-up">
-      
-        <button1>Submit</button1>
-      </div>
-      
-    </section>
+        <section class="subscription flex-center" id="services">
+              <h2 data-aos="flip-down">Mann Ki Baat</h2>
+              <p data-aos="fade-up">Drop your thoughts in our feedback form</p>
+        
 
+  <div class="toolbar" role="toolbar" aria-label="Text formatting">
+    <button type="button" class="tool-btn button1" data-cmd="bold" title="Bold"><b>B</b></button>
+    <button type="button" class="tool-btn button1" data-cmd="italic" title="Italic"><i>I</i></button>
+    <button type="button" class="tool-btn button1" data-cmd="underline" title="Underline"><u>U</u></button>
+    <button type="button" class="tool-btn button1" data-cmd="insertUnorderedList" title="Bullet list">• Bullets </button>
+    <button type="button" class="tool-btn button1" data-cmd="insertOrderedList" title="Numbered list">1.List</button>
+  </div>
 
+  <!-- Editable area (now only text) -->
+  <div id="comment" class="editor empty" contenteditable="true"
+       data-placeholder="Type here..." aria-label="Feedback"></div>
+              <div class="subscription__form" data-aos="fade-up">
+              
+                <button1 onclick="submitFeedback()">Submit</button1>
+              </div>
+        </section>
     <footer class="footer flex-between">
      
       <h3 class="footer__logo">
@@ -98,6 +100,79 @@
 
      
     </footer>
+    <script>
+const editor = document.getElementById('comment');
+  const toolBtns = document.querySelectorAll('.tool-btn');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // apply formatting on button click
+  toolBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.dataset.cmd;
+      // focus editor so execCommand targets it
+      editor.focus();
+      // execCommand is deprecated but still supported in most browsers
+      document.execCommand(cmd, false, null);
+      // after formatting adjust height & placeholder
+      adjustEditorHeight();
+      togglePlaceholder();
+    });
+  });
+
+  // auto-grow editor height
+  function adjustEditorHeight() {
+    // reset height to let it shrink if text removed
+    editor.style.height = 'auto';
+    // scrollHeight gives the required height to show content
+    editor.style.height = editor.scrollHeight + 'px';
+  }
+
+  // placeholder toggle (we use class .empty because :empty can be broken by <br>)
+  function togglePlaceholder() {
+    // trim to detect visible text only
+    const text = editor.textContent.replace(/\u200B/g, '').trim(); // remove zero-width if any
+    if (!text) editor.classList.add('empty');
+    else editor.classList.remove('empty');
+  }
+
+  // update on input
+  editor.addEventListener('input', () => {
+    adjustEditorHeight();
+    togglePlaceholder();
+  });
+
+  // also update placeholder on focus/blur (for some browsers)
+  editor.addEventListener('focus', togglePlaceholder);
+  editor.addEventListener('blur', togglePlaceholder);
+
+  // init on load
+  window.addEventListener('load', () => {
+    adjustEditorHeight();
+    togglePlaceholder();
+  });
+
+  // submit handler — you can replace console.log with AJAX/fetch to server
+  submitBtn.addEventListener('click', () => {
+    const html = editor.innerHTML;
+    const text = editor.textContent.trim();
+    if (!text) { alert('Please type your feedback before submitting.'); return; }
+
+    console.log('Feedback (HTML):', html); // send html if you want to keep formatting
+    alert('Thank you for your feedback!');
+    // reset editor
+    editor.innerHTML = '';
+    adjustEditorHeight();
+    togglePlaceholder();
+  });
+
+  // optional: allow Ctrl/Cmd+B and Ctrl/Cmd+I to style (execCommand handles it already in most browsers)
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'i' || e.key === 'u')) {
+      // let browser handle default formatting shortcut
+      setTimeout(() => { adjustEditorHeight(); togglePlaceholder(); }, 0);
+    }
+  });
+</script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="js/indexjs.js"></script>
   </body>
