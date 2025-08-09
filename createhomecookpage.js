@@ -1,3 +1,6 @@
+import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { db } from './firebase.js'; // Your Firestore config setup
+
 // State variables
 let otpGenerated = null;
 let otpExpirationTime = null;
@@ -34,7 +37,6 @@ function initEventListeners() {
     detectLocationBtn.addEventListener('click', detectLocation);
     submitBtn.addEventListener('click', handleSubmit);
 
-    
     togglePasswordButtons.forEach(button => {
         button.addEventListener('click', function() {
             const input = this.parentElement.querySelector('input');
@@ -48,15 +50,24 @@ function initEventListeners() {
         input.addEventListener('input', validateForm);
     });
 }
+
 function generateOTP() {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     otpExpirationTime = new Date().getTime() + 300000; 
     return otp;
 }
 
-
 function isOtpExpired() {
     return new Date().getTime() > otpExpirationTime;
+}
+
+// Function to check if the mobile number already exists in Firestore
+async function isMobileNumberAlreadyExists(mobileNumber) {
+    const sellersRef = collection(db, "sellers");
+    const q = query(sellersRef, where("mobile", "==", mobileNumber));
+    const querySnapshot = await getDocs(q);
+
+    return !querySnapshot.empty; // Returns true if the number already exists
 }
 
 function handleSendOtp() {
@@ -227,7 +238,6 @@ async function reverseGeocode(coords) {
     }
 }
 
-
 function constructReadableAddress(address) {
     const addressParts = [
         address.road,
@@ -278,24 +288,49 @@ function showStatus(element, message, type) {
     }
 }
 
-
 async function handleSubmit(event) {
     event.preventDefault();
-    
+
     if (!validateForm()) {
         showStatus(locationStatus, 'Please fill all required fields correctly', 'error');
         return;
     }
-    
-    const email = `${cookMobInput.value.trim()}@gharvedtan.com`;
+
+    const mobile = cookMobInput.value.trim();
+
+    // Check if the mobile number is already in use
+    const isDuplicate = await isMobileNumberAlreadyExists(mobile);
+
+    if (isDuplicate) {
+        showStatus(locationStatus, 'This mobile number is already registered. Please use a different number.', 'error');
+        return;
+    }
+
     const password = passwordInput.value;
     const name = cookNameInput.value.trim();
-    const mobile = cookMobInput.value.trim();
     const experience = experienceInput.value.trim();
     const specialties = specialtiesInput.value.trim().split(',').map(s => s.trim());
     const address = cookAddressInput.value.trim();
-    
-    alert('Form submitted successfully!');
+
+    // Firestore logic to save data
+    try {
+        const docRef = await addDoc(collection(db, "sellers"), {
+            password,
+            name,
+            mobile,
+            experience,
+            specialties,
+            address,
+            location: userCoordinates // save location if needed
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+        showStatus(locationStatus, 'Form submitted and data saved successfully!', 'success');
+        alert('Form submitted successfully!');
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        showStatus(locationStatus, 'There was an error saving your data. Please try again.', 'error');
+    }
 }
 
 initEventListeners();
