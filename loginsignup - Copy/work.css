@@ -3,9 +3,8 @@
 @import url("../css/sections/footer.css");
 @import url("../css/sections/subscribe.css");
 
-
 :root {
-  --primary-color:#b1454a;;
+  --primary-color: #b1454a;
   --secondary-color: #000000;
   --dark-color: #333;
   --light-color: #fff;
@@ -25,6 +24,7 @@
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   max-width: 800px;
+  display: flex;
   flex-direction: column;
 }
 

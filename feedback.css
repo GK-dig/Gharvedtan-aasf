@@ -7,7 +7,7 @@
   --border-radius: 8px;
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-.toolbar button1 {
+.toolbar button {
   background-color: #fbfbfb46;
   border: none;
   color: rgba(255, 255, 255, 0.555);
@@ -19,12 +19,14 @@
   align-items: center;
 }
 
-.button1:hover {
+.button:hover {
   background-color: #ffffff3b;
+  width: 100%;
 }
 
-.button1:focus {
+.button:focus {
   outline: none;
+  width: 100%;
 }
 #comment{
     width: 500px;           /* Field width */
@@ -50,7 +52,7 @@ textarea::placeholder {
 
 
     .toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-  .button1, .tool-btn {
+  .button, .tool-btn {
     background: #ffffff16;
     border: none;
     color: white;
@@ -60,8 +62,8 @@ textarea::placeholder {
     font-size: 14px;
     transition: background .15s ease;
   }
-  .tool-btn:hover, .button1:hover { background:#ffffff45; }
-  .tool-btn:focus, .button1:focus { outline: 2px solid rgba(0, 0, 0, 0.237); }
+  .tool-btn:hover, .button:hover { background:#ffffff45; }
+  .tool-btn:focus, .button:focus { outline: 2px solid rgba(0, 0, 0, 0.237); }
 
   .editor {
     width: 100%;
@@ -86,3 +88,17 @@ textarea::placeholder {
     display: block;
     opacity: 1;
   }
+  .subscription__form button {
+  width: 100%; /* Full width */
+  padding: 15px; /* Adjust padding to make the button taller */
+  border-radius: 30px; /* Rounded corners */
+  background-color: #3d3b60; /* Dark background color */
+  color: white; /* White text color */
+  font-size: 16px; /* Font size */
+  border: none; /* Remove the border */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.subscription__form button:hover {
+  background-color: #2a2a49; /* Darker background on hover */
+}

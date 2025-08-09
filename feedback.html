@@ -52,11 +52,11 @@
         
 
   <div class="toolbar" role="toolbar" aria-label="Text formatting">
-    <button type="button" class="tool-btn button1" data-cmd="bold" title="Bold"><b>B</b></button>
-    <button type="button" class="tool-btn button1" data-cmd="italic" title="Italic"><i>I</i></button>
-    <button type="button" class="tool-btn button1" data-cmd="underline" title="Underline"><u>U</u></button>
-    <button type="button" class="tool-btn button1" data-cmd="insertUnorderedList" title="Bullet list">• Bullets </button>
-    <button type="button" class="tool-btn button1" data-cmd="insertOrderedList" title="Numbered list">1.List</button>
+    <button type="button" class="tool-btn button" data-cmd="bold" title="Bold"><b>B</b></button>
+    <button type="button" class="tool-btn button" data-cmd="italic" title="Italic"><i>I</i></button>
+    <button type="button" class="tool-btn button" data-cmd="underline" title="Underline"><u>U</u></button>
+    <button type="button" class="tool-btn button" data-cmd="insertUnorderedList" title="Bullet list">• Bullets </button>
+    <button type="button" class="tool-btn button" data-cmd="insertOrderedList" title="Numbered list">1.List</button>
   </div>
 
   <!-- Editable area (now only text) -->
@@ -64,7 +64,7 @@
        data-placeholder="Type here..." aria-label="Feedback"></div>
               <div class="subscription__form" data-aos="fade-up">
               
-                <button1 onclick="submitFeedback()">Submit</button1>
+                <button onclick="submitFeedback()">Submit</button>
               </div>
         </section>
     <footer class="footer flex-between">
@@ -100,78 +100,166 @@
 
      
     </footer>
-    <script>
-const editor = document.getElementById('comment');
-  const toolBtns = document.querySelectorAll('.tool-btn');
-  const submitBtn = document.getElementById('submitBtn');
+   <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize AOS animations
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
 
-  // apply formatting on button click
+  // Profile dropdown functionality
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  
+  if (profileIcon && dropdownMenu) {
+    profileIcon.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.style.display = 'none';
+    });
+  }
+
+  // Feedback editor functionality
+  const editor = document.getElementById('comment');
+  const toolBtns = document.querySelectorAll('.tool-btn');
+
+  // Apply formatting on button click
   toolBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const cmd = btn.dataset.cmd;
-      // focus editor so execCommand targets it
       editor.focus();
-      // execCommand is deprecated but still supported in most browsers
       document.execCommand(cmd, false, null);
-      // after formatting adjust height & placeholder
       adjustEditorHeight();
       togglePlaceholder();
     });
   });
 
-  // auto-grow editor height
+  // Auto-grow editor height
   function adjustEditorHeight() {
-    // reset height to let it shrink if text removed
     editor.style.height = 'auto';
-    // scrollHeight gives the required height to show content
     editor.style.height = editor.scrollHeight + 'px';
   }
 
-  // placeholder toggle (we use class .empty because :empty can be broken by <br>)
+  // Placeholder toggle
   function togglePlaceholder() {
-    // trim to detect visible text only
-    const text = editor.textContent.replace(/\u200B/g, '').trim(); // remove zero-width if any
+    const text = editor.textContent.replace(/\u200B/g, '').trim();
     if (!text) editor.classList.add('empty');
     else editor.classList.remove('empty');
   }
 
-  // update on input
+  // Update on input
   editor.addEventListener('input', () => {
     adjustEditorHeight();
     togglePlaceholder();
   });
 
-  // also update placeholder on focus/blur (for some browsers)
+  // Also update placeholder on focus/blur
   editor.addEventListener('focus', togglePlaceholder);
   editor.addEventListener('blur', togglePlaceholder);
 
-  // init on load
-  window.addEventListener('load', () => {
-    adjustEditorHeight();
-    togglePlaceholder();
-  });
+  // Initialize on load
+  adjustEditorHeight();
+  togglePlaceholder();
 
-  // submit handler — you can replace console.log with AJAX/fetch to server
-  submitBtn.addEventListener('click', () => {
-    const html = editor.innerHTML;
-    const text = editor.textContent.trim();
-    if (!text) { alert('Please type your feedback before submitting.'); return; }
-
-    console.log('Feedback (HTML):', html); // send html if you want to keep formatting
-    alert('Thank you for your feedback!');
-    // reset editor
-    editor.innerHTML = '';
-    adjustEditorHeight();
-    togglePlaceholder();
-  });
-
-  // optional: allow Ctrl/Cmd+B and Ctrl/Cmd+I to style (execCommand handles it already in most browsers)
+  // Keyboard shortcuts for formatting
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'i' || e.key === 'u')) {
-      // let browser handle default formatting shortcut
-      setTimeout(() => { adjustEditorHeight(); togglePlaceholder(); }, 0);
+      setTimeout(() => {
+        adjustEditorHeight();
+        togglePlaceholder();
+      }, 0);
     }
   });
+});
+
+// Enhanced submit feedback function with localStorage
+function submitFeedback() {
+  const editor = document.getElementById('comment');
+  if (!editor) {
+    console.error('Editor element not found!');
+    alert('Error: Feedback editor not available');
+    return;
+  }
+
+  const html = editor.innerHTML;
+  const text = editor.textContent.trim();
+  
+  if (!text) {
+    alert('Please type your feedback before submitting.');
+    return;
+  }
+
+  try {
+    // Create feedback object with timestamp
+    const feedback = {
+      content: text,
+      htmlContent: html,
+      timestamp: new Date().toISOString()
+    };
+
+    // Get existing feedback or initialize empty array
+    let allFeedback = [];
+    const storedData = localStorage.getItem('gharvedtan_feedback');
+    
+    if (storedData) {
+      try {
+        allFeedback = JSON.parse(storedData);
+        if (!Array.isArray(allFeedback)) {
+          console.warn('Existing data was not an array, resetting');
+          allFeedback = [];
+        }
+      } catch (e) {
+        console.warn('Failed to parse stored data, resetting', e);
+        allFeedback = [];
+      }
+    }
+
+    // Add new feedback
+    allFeedback.push(feedback);
+    
+    // Store back to localStorage
+    localStorage.setItem('gharvedtan_feedback', JSON.stringify(allFeedback));
+    
+    // Verify storage
+    const verify = localStorage.getItem('gharvedtan_feedback');
+    if (!verify) {
+      throw new Error('Failed to verify storage');
+    }
+
+    // Success
+    alert('Thank you for your feedback! ');
+    
+    // Reset editor
+    editor.innerHTML = '';
+    editor.style.height = 'auto';
+    editor.classList.add('empty');
+
+  } catch (error) {
+    console.error('Storage Error:', error);
+    alert('Error: Could not save feedback. ' + error.message);
+  }
+}
+
+// Debug function to check storage
+function viewStoredFeedback() {
+  try {
+    const stored = localStorage.getItem('gharvedtan_feedback');
+    console.log('Current localStorage content:', stored);
+    if (stored) {
+      console.log('Parsed content:', JSON.parse(stored));
+    }
+    return stored;
+  } catch (e) {
+    console.error('Debug check failed:', e);
+    return null;
+  }
+}
 </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="js/indexjs.js"></script>
