@@ -83,3 +83,21 @@
 
   cursor: pointer;
 }
+.subscription__form button1 {
+  padding: 20px;
+
+  min-width: 440px;
+
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--plus-jakarta-sans);
+  color: #fff;
+  text-align: center;
+
+  background: var(--black-400);
+  border-radius: 46px;
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+}
