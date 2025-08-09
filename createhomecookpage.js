@@ -1,459 +1,301 @@
-// Firebase imports and configuration
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, signInWithCredential, PhoneAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
-    authDomain: "gharvedtan-auth.firebaseapp.com",
-    projectId: "gharvedtan-auth",
-    storageBucket: "gharvedtan-auth.appspot.com",
-    messagingSenderId: "32502650170",
-    appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// State variables
+let otpGenerated = null;
+let otpExpirationTime = null;
+let userCoordinates = null; // Declare userCoordinates at the top
+let locationVerified = false; // Declare locationVerified for tracking location status
 
 // DOM Elements
-const elements = {
-    sendOtpButton: document.getElementById("sendOtpButton"),
-    verifyOtpButton: document.getElementById("verifyOtpButton"),
-    submitBtn: document.getElementById("submitBtn"),
-    cookname: document.getElementById("cookname"),
-    cookmob: document.getElementById("cookmob"),
-    password: document.getElementById("password"),
-    confirmPassword: document.getElementById("confirmPassword"),
-    otpInput: document.getElementById("otpInput"),
-    otpGroup: document.getElementById("otpGroup"),
-    detectBtn: document.getElementById("detect-location-btn"),
-    cityDisplay: document.getElementById("cookaddress"),
-    locationStatus: document.getElementById("location-status"),
-    passwordMatch: document.getElementById("passwordMatch"),
-    strengthMeter: document.getElementById("strengthMeter"),
-    togglePasswordButtons: document.querySelectorAll(".toggle-password"),
-    mapElement: document.getElementById("map")
-};
+const cookNameInput = document.getElementById('cookname');
+const cookMobInput = document.getElementById('cookmob');
+const sendOtpButton = document.getElementById('sendOtpButton');
+const otpGroup = document.getElementById('otpGroup');
+const otpInput = document.getElementById('otpInput');
+const verifyOtpButton = document.getElementById('verifyOtpButton');
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+const cookAddressInput = document.getElementById('cookaddress');
+const detectLocationBtn = document.getElementById('detect-location-btn');
+const locationStatus = document.getElementById('location-status');
+const coordinatesDisplay = document.getElementById('coordinates-display');
+const mapContainer = document.getElementById('map-container');
+const osmMap = document.getElementById('osm-map');
+const submitBtn = document.getElementById('submitBtn');
+const strengthMeter = document.getElementById('strengthMeter');
+const passwordMatch = document.getElementById('passwordMatch');
+const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+const experienceInput = document.getElementById('experience');
+const specialtiesInput = document.getElementById('specialties');
 
-let verificationId = "";
-let isOtpVerified = false;
-let isPasswordValid = false;
-let doPasswordsMatch = false;
-let map;
-let marker;
-let geocoder;
+function initEventListeners() {
+    sendOtpButton.addEventListener('click', handleSendOtp);
+    verifyOtpButton.addEventListener('click', handleVerifyOtp);
+    passwordInput.addEventListener('input', checkPasswordStrength);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch); // Link the function here
+    detectLocationBtn.addEventListener('click', detectLocation);
+    submitBtn.addEventListener('click', handleSubmit);
 
-// Utility functions
-function showStatus(message, type = 'info') {
-    if (!elements.locationStatus) return;
-    elements.locationStatus.textContent = message;
-    elements.locationStatus.className = `${type}-message`;
-}
+    
+    togglePasswordButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🔒';
+        });
+    });
 
-async function checkMapsAPI() {
-    return new Promise((resolve, reject) => {
-        const maxAttempts = 10;
-        let attempts = 0;
-        
-        const check = () => {
-            attempts++;
-            if (window.google && window.google.maps && google.maps.importLibrary) {
-                resolve(true);
-            } else if (attempts >= maxAttempts) {
-                reject(new Error("Google Maps API failed to load"));
-            } else {
-                setTimeout(check, 200);
-            }
-        };
-        
-        check();
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', validateForm);
     });
 }
-
-// Map functions
-async function initMapComponents() {
-    try {
-        await checkMapsAPI();
-        if (!geocoder) {
-            geocoder = new google.maps.Geocoder();
-        }
-        return true;
-    } catch (error) {
-        console.error("Failed to initialize map components:", error);
-        showStatus("Map service initialization failed", "error");
-        return false;
-    }
+function generateOTP() {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    otpExpirationTime = new Date().getTime() + 300000; 
+    return otp;
 }
 
-async function createMap(lat, lng) {
-    if (!await initMapComponents()) return false;
-    
-    try {
-        elements.mapElement.style.display = "block";
-        const location = { lat, lng };
-        
-        // Load required libraries
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        
-        map = new Map(elements.mapElement, {
-            center: location,
-            zoom: 15,
-            mapId: "DEMO_MAP_ID",
-            disableDefaultUI: true,
-            zoomControl: true
-        });
-        
-        marker = new AdvancedMarkerElement({
-            position: location,
-            map: map,
-            gmpDraggable: true,
-            title: "Your location"
-        });
-        
-        marker.addListener("dragend", () => {
-            updateAddressFromPosition(marker.position);
-        });
-        
-        return true;
-    } catch (error) {
-        console.error("Map creation error:", error);
-        showStatus("Failed to create map", "error");
-        return false;
-    }
+
+function isOtpExpired() {
+    return new Date().getTime() > otpExpirationTime;
 }
 
-async function updateAddressFromPosition(position) {
-    if (!geocoder) {
-        showStatus("Geocoding service not ready", "error");
+function handleSendOtp() {
+    const mobileNumber = cookMobInput.value.trim();
+
+    if (!/^\d{10}$/.test(mobileNumber)) {
+        showStatus(locationStatus, 'Please enter a valid 10-digit mobile number', 'error');
         return;
     }
 
-    try {
-        const { results } = await new Promise((resolve, reject) => {
-            geocoder.geocode({ location: position }, (results, status) => {
-                status === "OK" ? resolve({ results }) : reject(status);
-            });
-        });
+    otpGenerated = generateOTP();
+    console.log(`OTP for ${mobileNumber}: ${otpGenerated}`); 
+    showStatus(locationStatus, 'OTP sent to your mobile number', 'success');
 
-        if (results[0]) {
-            elements.cityDisplay.value = results[0].formatted_address;
-            showStatus("Location updated! Drag marker to adjust.", "success");
-        } else {
-            showStatus("No address found for this location", "warning");
-        }
-    } catch (error) {
-        console.error("Geocoding error:", error);
-        showStatus("Could not determine address", "error");
+    otpGroup.style.display = 'flex';
+    sendOtpButton.disabled = true;
+    cookMobInput.readOnly = true;
+
+    setTimeout(() => {
+        sendOtpButton.disabled = false;
+        sendOtpButton.textContent = 'Resend OTP';
+    }, 30000);
+}
+
+function handleVerifyOtp() {
+    const otp = otpInput.value.trim();
+
+    if (!/^\d{6}$/.test(otp)) {
+        showStatus(locationStatus, 'Please enter a valid 6-digit OTP', 'error');
+        return;
     }
-}
 
-// Location detection
-async function detectLocation() {
-    if (!elements.locationStatus || !elements.detectBtn) return;
-
-    showStatus("Detecting your location...");
-    elements.detectBtn.disabled = true;
-    elements.detectBtn.textContent = "Detecting...";
-
-    try {
-        if (!navigator.geolocation) {
-            throw new Error("Geolocation not supported");
-        }
-
-        const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true,
-                timeout: 10000
-            });
-        });
-
-        const { latitude: lat, longitude: lng, accuracy } = position.coords;
-        const mapCreated = await createMap(lat, lng);
-        
-        if (mapCreated) {
-            await updateAddressFromPosition({ lat, lng });
-            showStatus(`Location found (accuracy: ${Math.round(accuracy)} meters)`, "success");
-        }
-    } catch (error) {
-        console.error("Location error:", error);
-        let message = "Error getting location: ";
-        
-        if (error.code === error.PERMISSION_DENIED) {
-            message += "Please enable location permissions";
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
-            message += "Location unavailable";
-        } else if (error.code === error.TIMEOUT) {
-            message += "Request timed out";
-        } else {
-            message += error.message || "Unknown error";
-        }
-        
-        showStatus(message, "error");
-    } finally {
-        if (elements.detectBtn) {
-            elements.detectBtn.disabled = false;
-            elements.detectBtn.textContent = "Detect My Location";
-        }
+    if (isOtpExpired()) {
+        showStatus(locationStatus, 'OTP has expired. Please request a new one.', 'error');
+        otpGroup.style.display = 'none';
+        sendOtpButton.disabled = false;
+        cookMobInput.readOnly = false;
+        return;
     }
-}
 
-// Password validation functions
-function checkPasswordStrength(value) {
-    let strength = 0;
-    
-    if (value.length >= 8) strength++;
-    if (value.length >= 12) strength++;
-    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) strength++;
-    if (/\d/.test(value)) strength++;
-    if (/[^a-zA-Z0-9]/.test(value)) strength++;
-    
-    return strength;
-}
-
-function updatePasswordStrength() {
-    const value = elements.password.value;
-    const strength = checkPasswordStrength(value);
-    
-    elements.strengthMeter.className = "strength-meter-fill";
-    
-    if (value.length === 0) {
-        elements.strengthMeter.style.width = "0%";
-        isPasswordValid = false;
-    } else if (strength <= 1) {
-        elements.strengthMeter.classList.add("strength-weak");
-        isPasswordValid = false;
-    } else if (strength === 2) {
-        elements.strengthMeter.classList.add("strength-medium");
-        isPasswordValid = true;
-    } else if (strength === 3) {
-        elements.strengthMeter.classList.add("strength-strong");
-        isPasswordValid = true;
+    if (otp === otpGenerated) {
+        showStatus(locationStatus, 'Mobile number verified successfully', 'success');
+        otpGroup.style.display = 'none';
+        verifyOtpButton.disabled = true;
+        otpInput.readOnly = true;
+        validateForm();
     } else {
-        elements.strengthMeter.classList.add("strength-very-strong");
-        isPasswordValid = true;
+        showStatus(locationStatus, 'Invalid OTP. Please try again.', 'error');
     }
-    
-    checkPasswordMatch();
-    checkFormCompletion();
 }
 
 function checkPasswordMatch() {
-    const passwordValue = elements.password.value;
-    const confirmValue = elements.confirmPassword.value;
-    
-    if (confirmValue.length === 0) {
-        elements.passwordMatch.textContent = "";
-        elements.passwordMatch.className = "";
-        doPasswordsMatch = false;
-    } else if (passwordValue === confirmValue) {
-        elements.passwordMatch.textContent = "Passwords match!";
-        elements.passwordMatch.className = "success-message";
-        doPasswordsMatch = true;
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    if (confirmPassword.length === 0) {
+        passwordMatch.textContent = '';
+    } else if (password === confirmPassword) {
+        passwordMatch.textContent = 'Passwords match';
+        passwordMatch.className = 'success-message';
     } else {
-        elements.passwordMatch.textContent = "Passwords do not match!";
-        elements.passwordMatch.className = "error-message";
-        doPasswordsMatch = false;
+        passwordMatch.textContent = 'Passwords do not match';
+        passwordMatch.className = 'error-message';
     }
-    
-    checkFormCompletion();
+
+    validateForm(); 
 }
 
-// Form validation
-function checkFormCompletion() {
-    elements.submitBtn.disabled = !(
-        elements.cookname.value.trim() && 
-        elements.cookmob.value.trim() && 
-        elements.cityDisplay.value.trim() && 
-        isOtpVerified &&
-        isPasswordValid &&
-        doPasswordsMatch
+function checkPasswordStrength() {
+    const password = passwordInput.value;
+    let strength = 0;
+    const meterWidth = password.length > 0 ? 100 : 0;
+    
+    const hasMinLength = password.length >= 8;
+    const hasGoodLength = password.length >= 12;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSpecialChars = /[^A-Za-z0-9]/.test(password);
+    
+    if (hasMinLength) strength += 1;
+    if (hasGoodLength) strength += 1;
+    if (hasUpperCase) strength += 1;
+    if (hasNumbers) strength += 1;
+    if (hasSpecialChars) strength += 1;
+    
+    strengthMeter.style.width = `${meterWidth}%`;
+    strengthMeter.className = 'strength-meter-fill';
+    
+    if (password.length === 0) {
+        strengthMeter.style.width = '0%';
+    } else if (strength <= 2) {
+        strengthMeter.classList.add('strength-weak');
+    } else if (strength === 3) {
+        strengthMeter.classList.add('strength-medium');
+    } else if (strength === 4) {
+        strengthMeter.classList.add('strength-strong');
+    } else {
+        strengthMeter.classList.add('strength-very-strong');
+    }
+    
+    validateForm();
+}
+
+function detectLocation() {
+    showStatus(locationStatus, 'Detecting your location...', 'warning');
+    
+    if (!navigator.geolocation) {
+        showStatus(locationStatus, 'Geolocation is not supported by your browser', 'error');
+        return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            userCoordinates = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy
+            };
+            showStatus(locationStatus, 'Location detected! Fetching address...', 'success');
+            displayCoordinates(userCoordinates);
+            reverseGeocode(userCoordinates);
+            showMap(userCoordinates);
+        },
+        error => {
+            handleGeolocationError(error);
+        },
+        { 
+            enableHighAccuracy: true, 
+            timeout: 10000,
+            maximumAge: 0
+        }
     );
 }
 
-// OTP functions
-async function sendOTP() {
-    const phoneNumber = "+91" + elements.cookmob.value.trim();
-    
-    if (!phoneNumber || phoneNumber.length < 13) {
-        showStatus("Please enter a valid 10-digit phone number.", "error");
-        return;
-    }
+function displayCoordinates(coords) {
+    coordinatesDisplay.textContent = `Latitude: ${coords.latitude.toFixed(6)}, Longitude: ${coords.longitude.toFixed(6)} (Accuracy: ${Math.round(coords.accuracy)} meters)`;
+    coordinatesDisplay.style.display = 'block';
+}
 
+async function reverseGeocode(coords) {
     try {
-        elements.sendOtpButton.disabled = true;
-        elements.sendOtpButton.textContent = "Sending OTP...";
-        
-        if (window.recaptchaVerifier) {
-            window.recaptchaVerifier.clear();
+        const { latitude, longitude } = coords;
+        const apiKey = '746316c1987948209ad60505dfd5e8be'; // Replace with your OpenCage API key
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}&language=en&pretty=1`;
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('Failed to fetch the address');
+
+        const data = await response.json();
+
+        if (data.status.code !== 200) {
+            throw new Error('Failed to fetch address');
         }
 
-        const recaptchaVerifier = new RecaptchaVerifier('sendOtpButton', {
-            'size': 'invisible',
-        }, auth);
+        const address = data.results[0].formatted;
+        cookAddressInput.value = address;
 
-        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
-        verificationId = confirmationResult.verificationId;
-        
-        elements.otpGroup.style.display = "flex";
-        elements.sendOtpButton.textContent = "OTP Sent!";
-        showStatus("OTP has been sent to your mobile number.", "success");
+        showStatus(locationStatus, 'Address fetched successfully!', 'success');
+        locationVerified = true;
+        validateForm();
+
     } catch (error) {
-        console.error("OTP sending error:", error);
-        showStatus("Error sending OTP: " + error.message, "error");
-        elements.sendOtpButton.disabled = false;
-        elements.sendOtpButton.textContent = "Send OTP";
+        console.error('Reverse geocoding error:', error);
+        showStatus(locationStatus, 'Failed to fetch address details. You can enter it manually.', 'error');
+        cookAddressInput.readOnly = false;
+        locationVerified = true;
+        validateForm();
     }
 }
 
-async function verifyOTP() {
-    const otp = elements.otpInput.value.trim();
+
+function constructReadableAddress(address) {
+    const addressParts = [
+        address.road,
+        address.neighbourhood,
+        address.suburb,
+        address.city_district,
+        address.city,
+        address.state,
+        address.country
+    ].filter(part => part); 
     
-    if (!otp || otp.length !== 6) {
-        showStatus("Please enter a valid 6-digit OTP.", "error");
-        return;
-    }
-
-    try {
-        elements.verifyOtpButton.disabled = true;
-        elements.verifyOtpButton.textContent = "Verifying...";
-        
-        const credential = PhoneAuthProvider.credential(verificationId, otp);
-        await signInWithCredential(auth, credential);
-        
-        isOtpVerified = true;
-        elements.verifyOtpButton.textContent = "Verified!";
-        elements.verifyOtpButton.style.backgroundColor = "var(--color-success)";
-        showStatus("Mobile number verified successfully!", "success");
-        checkFormCompletion();
-    } catch (error) {
-        console.error("OTP verification error:", error);
-        showStatus("Invalid OTP. Please try again.", "error");
-        elements.verifyOtpButton.disabled = false;
-        elements.verifyOtpButton.textContent = "Verify OTP";
-        elements.verifyOtpButton.style.backgroundColor = "";
-    }
+    return addressParts.join(', ');
 }
 
-// Toggle password visibility
-function setupPasswordToggle() {
-    elements.togglePasswordButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const input = this.parentElement.querySelector("input");
-            if (input.type === "password") {
-                input.type = "text";
-                this.textContent = "👁️";
-            } else {
-                input.type = "password";
-                this.textContent = "👁️";
-            }
-        });
-    });
-}
-
-// Form submission
-async function submitForm() {
-    const sellerName = elements.cookname.value.trim();
-    const sellerMob = elements.cookmob.value.trim();
-    const sellerLocation = elements.cityDisplay.value.trim();
-    const sellerPassword = elements.password.value;
+function showMap(coords) {
+    const { latitude, longitude } = coords;
+    const zoom = 15;
     
-    if (!sellerName || !sellerMob || !sellerLocation || !isOtpVerified || !isPasswordValid || !doPasswordsMatch) {
-        showStatus("Please complete all required fields correctly.", "error");
-        return;
-    }
+    osmMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${longitude-0.01}%2C${latitude-0.01}%2C${longitude+0.01}%2C${latitude+0.01}&layer=mapnik&marker=${latitude}%2C${longitude}`;
+    mapContainer.style.display = 'block';
+}
 
-    try {
-        elements.submitBtn.disabled = true;
-        elements.submitBtn.textContent = "Registering...";
-        
-        const sellerData = {
-            name: sellerName,
-            mobile: sellerMob,
-            location: sellerLocation,
-            password: sellerPassword, // Note: In production, hash this password
-            role: "seller",
-            timestamp: new Date()
-        };
+function validateForm() {
+    const isNameValid = cookNameInput.value.trim().length >= 2;
+    const isMobileValid = /^\d{10}$/.test(cookMobInput.value.trim());
+    const isPasswordValid = passwordInput.value.length >= 8;
+    const isPasswordMatchValid = passwordInput.value === confirmPasswordInput.value && passwordInput.value.length > 0;
+    const isAddressValid = cookAddressInput.value.trim().length > 0;
+    const isExperienceValid = experienceInput.value.trim().length > 0;
+    const isSpecialtiesValid = specialtiesInput.value.trim().length > 0;
 
-        if (marker) {
-            sellerData.coordinates = {
-                lat: marker.position.lat,
-                lng: marker.position.lng
-            };
-        }
+    submitBtn.disabled = !(isNameValid && isMobileValid && otpGenerated && isPasswordValid && 
+        isPasswordMatchValid && isAddressValid && locationVerified &&
+        isExperienceValid && isSpecialtiesValid);
+    
+    return !submitBtn.disabled;
+}
 
-        await addDoc(collection(db, "sellers"), sellerData);
-
-        showStatus("Registration successful! Thank you for registering.", "success");
-        
-        // Reset form
+function showStatus(element, message, type) {
+    element.textContent = message;
+    element.className = `${type}-message`;
+    element.style.display = 'block';
+    
+    if (type === 'success') {
         setTimeout(() => {
-            elements.cookname.value = "";
-            elements.cookmob.value = "";
-            elements.password.value = "";
-            elements.confirmPassword.value = "";
-            elements.otpInput.value = "";
-            elements.cityDisplay.value = "";
-            elements.otpGroup.style.display = "none";
-            isOtpVerified = false;
-            isPasswordValid = false;
-            doPasswordsMatch = false;
-            elements.sendOtpButton.disabled = false;
-            elements.sendOtpButton.textContent = "Send OTP";
-            elements.verifyOtpButton.disabled = false;
-            elements.verifyOtpButton.textContent = "Verify OTP";
-            elements.verifyOtpButton.style.backgroundColor = "";
-            elements.submitBtn.disabled = true;
-            elements.submitBtn.textContent = "Complete Registration";
-            elements.locationStatus.textContent = "";
-            elements.locationStatus.className = "";
-            elements.passwordMatch.textContent = "";
-            elements.passwordMatch.className = "";
-            elements.strengthMeter.className = "strength-meter-fill";
-            elements.strengthMeter.style.width = "0%";
-            if (elements.mapElement) elements.mapElement.style.display = "none";
-        }, 2000);
-        
-    } catch (e) {
-        console.error("Error adding document: ", e);
-        showStatus("Error during registration. Please try again.", "error");
-        elements.submitBtn.disabled = false;
-        elements.submitBtn.textContent = "Complete Registration";
+            element.style.display = 'none';
+        }, 5000);
     }
 }
 
-// Initialize event listeners
-function initEventListeners() {
-    if (elements.detectBtn) {
-        elements.detectBtn.addEventListener("click", detectLocation);
+
+async function handleSubmit(event) {
+    event.preventDefault();
+    
+    if (!validateForm()) {
+        showStatus(locationStatus, 'Please fill all required fields correctly', 'error');
+        return;
     }
     
-    if (elements.sendOtpButton) {
-        elements.sendOtpButton.addEventListener("click", sendOTP);
-    }
+    const email = `${cookMobInput.value.trim()}@gharvedtan.com`;
+    const password = passwordInput.value;
+    const name = cookNameInput.value.trim();
+    const mobile = cookMobInput.value.trim();
+    const experience = experienceInput.value.trim();
+    const specialties = specialtiesInput.value.trim().split(',').map(s => s.trim());
+    const address = cookAddressInput.value.trim();
     
-    if (elements.verifyOtpButton) {
-        elements.verifyOtpButton.addEventListener("click", verifyOTP);
-    }
-    
-    if (elements.password) {
-        elements.password.addEventListener("input", updatePasswordStrength);
-    }
-    
-    if (elements.confirmPassword) {
-        elements.confirmPassword.addEventListener("input", checkPasswordMatch);
-    }
-    
-    if (elements.submitBtn) {
-        elements.submitBtn.addEventListener("click", submitForm);
-    }
-    
-    setupPasswordToggle();
+    alert('Form submitted successfully!');
 }
 
-// Initialize the application
-document.addEventListener("DOMContentLoaded", () => {
-    initEventListeners();
-});
+initEventListeners();
