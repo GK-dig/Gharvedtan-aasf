@@ -5,145 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community Guidelines | Your Platform Name</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #e67e22;
-            --secondary: #2e7d32;
-            --text: #333;
-            --text-light: #666;
-            --bg: #fff9f5;
-            --card: #fff;
-            --border: #e0e0e0;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            background-color: var(--bg);
-            line-height: 1.7;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .guidelines-header {
-            background-color: var(--card);
-            padding: 4rem 0;
-            text-align: center;
-            background-image: url('illustrations/community-pattern.svg');
-            background-repeat: repeat-x;
-            background-position: bottom;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .guidelines-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-      
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-           
-           
-  background-image: url("../assets/overlay-pattern.png");
-  
-}
-        .guidelines-header p {
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .guidelines-content {
-            background-color: var(--card);
-            padding: 3rem;
-            margin: 3rem auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .guideline {
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px dashed var(--border);
-        }
-        
-        .guideline:last-child {
-            border-bottom: none;
-        }
-        
-        .guideline h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .guideline-icon {
-            font-size: 1.5rem;
-        }
-        
-        .guideline p, .guideline li {
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-        
-        .values-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        
-        .values-list li {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .values-list li::before {
-          
-            position: absolute;
-            left: 0;
-        }
-        
-        .guidelines-footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: var(--text-light);
-            border-top: 1px solid var(--border);
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1.5rem;
-            }
-            
-            .guidelines-content {
-                padding: 2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="terms-and-conditions.css">
 </head>
 <body>
-    <header class="guidelines-header">
+        <header>
+      <nav class="header__nav">
+        <div class="header__logo">
+          <h4 data-aos="fade-down">Gharvedtan</h4>
+          <div class="header__logo-overlay"></div>
+        </div>
+
+        <ul class="header__menu" data-aos="fade-down">
+          <li>
+            <a href="./index.html">Home</a>
+          </li>
+        </ul>
+
+        <ul class="header__menu-mobile" data-aos="fade-down">
+          <li>
+            <img src="assets/menu.svg" alt="menu" />
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <header class="terms-header">
         <div class="container">
             <h1>Our Community Heartbeat</h1>
-            <p>The values that keep our kitchen warm and welcoming</p>
+            <p class="subtitle">The values that keep our kitchen warm and welcoming</p>
         </div>
     </header>
-    
     <main class="container">
         <div class="guidelines-content">
-            <section class="guideline">
+            <section class="legal-details">
                 <h2><span class="guideline-icon"></span> For Home Cooks</h2>
                 <ul>
                     <li>Cook with the same love you'd pour into meals for your own family</li>
@@ -152,7 +46,7 @@
                 </ul>
             </section>
             
-            <section class="guideline">
+            <section class="legal-details">
                 <h2><span class="guideline-icon"></span> For Buyers</h2>
                 <ul>
                     <li>Respect the cultural significance behind each dish</li>
@@ -161,7 +55,7 @@
                 </ul>
             </section>
             
-            <section class="guideline">
+            <section class="legal-details">
                 <h2><span class="guideline-icon"></span> For Everyone</h2>
                 <ul class="values-list">
                     <li><strong>Respect:</strong> Honor different culinary traditions and perspectives</li>
@@ -171,18 +65,52 @@
                 </ul>
             </section>
             
-            <section class="guideline">
+            <section class="legal-details">
                 <h2><span class="guideline-icon"></span> Our Shared Kitchen</h2>
                 <p>This platform is more than transactions—it's about preserving culinary heritage while building new connections. We resolve conflicts through understanding first, with removal being a last resort for those who repeatedly disregard our community values.</p>
             </section>
         </div>
     </main>
     
-    <footer class="guidelines-footer">
-        <div class="container">
-            <p>Have suggestions to improve our community? <a href="mailto:team.gharvedtan@gmail.com
-" style="color: var(--primary);">Share your thoughts</a>.</p>
-        </div>
+       <footer class="footer flex-between">
+     
+      <h3 class="footer__logo">
+        <span>GharVED</span>tan
+      </h3>
+
+      <ul class="footer__nav">
+        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+
+       
+
+        <li><a href="/contact-us.html">Contact Us</a></li>
+
+        <li><a href="/community-guidelines.html">Community Guidelines</a></li>
+        <li>
+    </li>
+      </ul>
+
+   <ul class="footer__social">
+  <li class="flex-center">
+    <a href="https://www.facebook.com/profile.php?id=61579207825053" target="_blank" rel="noopener noreferrer">
+      <img src="assets/facebook.svg" alt="facebook" />
+    </a>
+  </li>
+  <li class="flex-center">
+    <a href="https://www.instagram.com/gharvedtan/" target="_blank" rel="noopener noreferrer">
+      <img src="assets/instagram.svg" alt="instagram" />
+    </a>
+  </li>
+  <li class="flex-center">
+    <a href="https://x.com/gharvedtan" target="_blank" rel="noopener noreferrer">
+      <img src="assets/twitter.svg" alt="twitter" />
+    </a>
+  </li>
+  
+</ul>
+    <div class="container">
+        <p>© 2023 GharVEDtan. All rights reserved. Made with  and memories.</p>
+    </div>
     </footer>
 </body>
 </html>

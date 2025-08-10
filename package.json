@@ -19,8 +19,15 @@
   },
   "homepage": "https://github.com/GK-dig/Gharvedtan-aasf#readme",
   "dependencies": {
+<<<<<<< HEAD
     "cli-progress": "^3.12.0",
     "dotenv": "^17.2.1",
     "firebase-admin": "^13.4.0"
+=======
+    "cloudinary": "^2.7.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+>>>>>>> 9001f069fb2d90879d19a0f88d60dd09859ef3a3
   }
 }

@@ -14,7 +14,7 @@ const itemCountElement = document.getElementById('itemCount');
 const subtotalElement = document.getElementById('subtotal');
 const totalElement = document.getElementById('total');
 const checkoutBtn = document.getElementById('checkoutBtn');
-const clearCartBtn = document.getElementById('clearCartBtn'); // ✅ Added
+const clearCartBtn = document.getElementById('clearCartBtn'); 
 
 let cartData = null;
 

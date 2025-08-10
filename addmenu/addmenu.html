@@ -6,13 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add New Menu Item</title>
   <link rel="stylesheet" href="addmenu.css" />
-  <!-- Load Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js"></script>
-  <!-- Load your Firebase config -->
-  <script src="firebase.js"></script>
-  <!-- Load your custom logic -->
+  <script src="../firebase.js"></script>
   <script type="module" src="addmenu.js"></script>
 </head>
 
@@ -28,10 +25,6 @@
         <div class="subscription__form">
           <input type="number" id="price" placeholder="Enter item price" required />
         </div>
-
-        <!-- <div class="subscription__form">
-          <input type="password" id="signupRepass" placeholder="Re-enter password" />
-        </div> -->
 
         <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
           <select id="region" required>
@@ -49,8 +42,8 @@
         </div>
 
         <div id="imagePreview" style="min-height: 200px; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9;">
-  <span style="color: #999; font-size: 14px;">No image selected</span>
-</div>
+          <span style="color: #999; font-size: 14px;">No image selected</span>
+        </div>
 
         <div class="subscription__form" style="flex-direction: column; align-items: stretch;">
           <select id="availability" required>
@@ -58,9 +51,9 @@
             <option value="No">Not Available</option>
           </select>
         </div>
-        
+
         <div class="subscription__form">
-          <button type="submit">Add Item</button>
+          <button type="submit" id="submitButton">Add Item</button>
         </div>
       </form>
     </div>
