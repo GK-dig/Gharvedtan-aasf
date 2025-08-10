@@ -6,6 +6,7 @@
   <title>Signup | GharVEDtan</title>
   <link rel="stylesheet" href="signup.css" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
   <header>
@@ -25,188 +26,61 @@
       <h2 data-aos="flip-down">Signup</h2>
 
       <div class="subscription__form" data-aos="fade-up">
-        <input type="text" id="signupName" placeholder=" Enter Name" />
+        <input type="text" id="signupName" placeholder="Enter Name" required />
       </div>
 
       <div class="subscription__form" data-aos="fade-up">
-        <input type="password" id="signupPass" placeholder="Enter Password" />
+        <input type="password" id="signupPass" placeholder="Enter Password" required />
       </div>
+      
       <div class="subscription__form" data-aos="fade-up">
-        <input type="password" id="signupRepass" placeholder="Re-enter password" />
+        <input type="password" id="signupRepass" placeholder="Re-enter password" required />
       </div>
-<div class="subscription__form" style="flex-direction: column; align-items: stretch;">
 
-  <div id="city-display-container">
-    <p id="selected-city-display" style="color: #ffffffc4; font-size: 24px; font-weight: 500;margin-top: 0%;">
-       Selected City:
-      <span id="city-name">None</span>
-      <button id="clear-city-btn" title="Clear City" 
-      style="margin-left: 8px;
-       font-size: 18px; 
-       background: none; 
-       color: #ffffff4a; 
-       cursor: pointer;">
-        Clear Selection
-      </button>
-    </p>
-  </div>
+      <div class="form-group" data-aos="fade-up">
+        <div class="location-selector">
+          <p class="location-display">
+            Selected Location: <span id="city-name">None</span>
+            <button type="button" id="clear-city-btn" class="btn-clear" title="Clear Selection">
+              <i class="fas fa-times"></i>
+            </button>
+          </p>
+          <div id="location-details" style="display: none; font-size: 0.8em; margin-top: 5px;"></div>
+          <select id="city-dropdown" class="form-select" required>
+            <option value="" disabled selected>Select your city</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Chennai">Chennai</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Pune">Pune</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+          </select>
+          <button type="button" id="detect-location-btn" class="btn-secondary">
+            <i class="fas fa-location-arrow"></i> Detect My Location
+          </button>
+        </div>
+      </div>
 
-  <select id="city-dropdown">
-    <option value="" disabled selected>Select your city</option>
-    <option value="New Delhi">New Delhi</option>
-<option value="South Delhi">South Delhi</option>
-<option value="North Delhi">North Delhi</option>
-<option value="East Delhi">East Delhi</option>
-<option value="West Delhi">West Delhi</option>
-<option value="Central Delhi">Central Delhi</option>
-<option value="Rohini">Rohini</option>
-<option value="Dwarka">Dwarka</option>
-<option value="Karol Bagh">Karol Bagh</option>
-<option value="Lajpat Nagar">Lajpat Nagar</option>
-<option value="Saket">Saket</option>
-<option value="Vasant Kunj">Vasant Kunj</option>
-<option value="Mayur Vihar">Mayur Vihar</option>
-<option value="Janakpuri">Janakpuri</option>
-<option value="Pitampura">Pitampura</option>
-<option value="Shahdara">Shahdara</option>
-<option value="Connaught Place">Connaught Place</option>
-<option value="Ahmedabad">Ahmedabad</option>
-<option value="Amritsar">Amritsar</option>
-<option value="Agra">Agra</option>
-<option value="Ajmer">Ajmer</option>
-<option value="Allahabad">Allahabad</option>
-<option value="Bangalore">Bangalore</option>
-<option value="Bhubaneswar">Bhubaneswar</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Chennai">Chennai</option>
-<option value="Coimbatore">Coimbatore</option>
-<option value="Dehradun">Dehradun</option>
-<option value="Dhanbad">Dhanbad</option>
-<option value="Ernakulam">Ernakulam</option>
-<option value="Faridabad">Faridabad</option>
-<option value="Ghaziabad">Ghaziabad</option>
-<option value="Goa">Goa</option>
-<option value="Guwahati">Guwahati</option>
-<option value="Hisar">Hisar</option>
-<option value="Hyderabad">Hyderabad</option>
-<option value="Imphal">Imphal</option>
-<option value="Jalandhar">Jalandhar</option>
-<option value="Jammu">Jammu</option>
-<option value="Jhansi">Jhansi</option>
-<option value="Kanpur">Kanpur</option>
-<option value="Kochi">Kochi</option>
-<option value="Kolkata">Kolkata</option>
-<option value="Lucknow">Lucknow</option>
-<option value="Ludhiana">Ludhiana</option>
-<option value="Madurai">Madurai</option>
-<option value="Mangalore">Mangalore</option>
-<option value="Meerut">Meerut</option>
-<option value="Mysore">Mysore</option>
-<option value="Noida">Noida</option>
-<option value="Patna">Patna</option>
-<option value="Prayagraj">Prayagraj</option>
-<option value="Raipur">Raipur</option>
-<option value="Ranchi">Ranchi</option>
-<option value="Shimla">Shimla</option>
-<option value="Siliguri">Siliguri</option>
-<option value="Srinagar">Srinagar</option>
-<option value="Surat">Surat</option>
-<option value="Tirupati">Tirupati</option>
-<option value="Trivandrum">Trivandrum</option>
-<option value="Vadodara">Vadodara</option>
-<option value="Varanasi">Varanasi</option>
-<option value="Vijayawada">Vijayawada</option>
-<option value="Visakhapatnam">Visakhapatnam</option>
-<option value="Bhopal">Bhopal</option>
-<option value="Indore">Indore</option>
-<option value="Gwalior">Gwalior</option>
-<option value="Jabalpur">Jabalpur</option>
-<option value="Ujjain">Ujjain</option>
-<option value="Sagar">Sagar</option>
-<option value="Ratlam">Ratlam</option>
-<option value="Dewas">Dewas</option>
-<option value="Rewa">Rewa</option>
-<option value="Satna">Satna</option>
-<option value="Khandwa">Khandwa</option>
-<option value="Burhanpur">Burhanpur</option>
-<option value="Chhindwara">Chhindwara</option>
-<option value="Morena">Morena</option>
-<option value="Bhind">Bhind</option>
-<option value="Katni">Katni</option>
-<option value="Hoshangabad">Hoshangabad</option>
-<option value="Vidisha">Vidisha</option>
-<option value="Betul">Betul</option>
-<option value="Sehore">Sehore</option>
-<option value="Mandsaur">Mandsaur</option>
-<option value="Neemuch">Neemuch</option>
-<option value="Damoh">Damoh</option>
-<option value="Shahdol">Shahdol</option>
-<option value="Seoni">Seoni</option>
-<option value="Dindori">Dindori</option>
-<option value="Singrauli">Singrauli</option>
-<option value="Raisen">Raisen</option>
-<option value="Mandla">Mandla</option>
-<option value="Narsinghpur">Narsinghpur</option>
-<option value="Anuppur">Anuppur</option>
-<option value="Tikamgarh">Tikamgarh</option>
-<option value="Panna">Panna</option>
-<option value="Sidhi">Sidhi</option>
-<option value="Mumbai">Mumbai</option>
-<option value="Pune">Pune</option>
-<option value="Nagpur">Nagpur</option>
-<option value="Nashik">Nashik</option>
-<option value="Aurangabad">Aurangabad</option>
-<option value="Solapur">Solapur</option>
-<option value="Thane">Thane</option>
-<option value="Navi Mumbai">Navi Mumbai</option>
-<option value="Kolhapur">Kolhapur</option>
-<option value="Amravati">Amravati</option>
-<option value="Latur">Latur</option>
-<option value="Jalgaon">Jalgaon</option>
-<option value="Nanded">Nanded</option>
-<option value="Satara">Satara</option>
-<option value="Ahmednagar">Ahmednagar</option>
-<option value="Sangli">Sangli</option>
-<option value="Akola">Akola</option>
-<option value="Chandrapur">Chandrapur</option>
-<option value="Dhule">Dhule</option>
-<option value="Beed">Beed</option>
-<option value="Parbhani">Parbhani</option>
-<option value="Jalna">Jalna</option>
-<option value="Osmanabad">Osmanabad</option>
-<option value="Wardha">Wardha</option>
-<option value="Gondia">Gondia</option>
-<option value="Bhandara">Bhandara</option>
-<option value="Yavatmal">Yavatmal</option>
-<option value="Hingoli">Hingoli</option>
-<option value="Ratnagiri">Ratnagiri</option>
-<option value="Sindhudurg">Sindhudurg</option>
-<option value="Palghar">Palghar</option>
-<option value="Washim">Washim</option>
-  </select>
-
-  <button type="button" id="detect-location-btn" onclick="detectLocation()"> Auto Detect</button>
-  
-</div>
-<div class="subscription__form" data-aos="fade-up">
-        <input type="number" id="signupPhone" placeholder="Enter PhoneNumber" />
+      <div class="subscription__form" data-aos="fade-up">
+        <input type="tel" id="signupPhone" placeholder="Enter Phone Number" required />
         <div id="recaptcha-container"></div>
-         <button onclick="sendOTP()">Get OTP</button>
+        <button type="button" id="send-otp-btn">Get OTP</button>
       </div>
       
       <div class="subscription__form" data-aos="fade-up">
-        <input type="text" id="otpInput" placeholder="Enter OTP" />
-         <button onclick="verifyOTP()">Verify & Signup</button>
+        <input type="text" id="otpInput" placeholder="Enter OTP" required disabled />
+        <button type="button" id="verify-btn" disabled>Verify & Signup</button>
       </div>
-       <p class="divider">or sign up with</p>
-      <div class="subscription__form" data-aos="fade-up" style="flex-direction: column; align-items: stretch";>
       
-        <button type="button1" onclick="googleSignIn()">Google</button>
-</div>
-
+      <p class="divider">or sign up with</p>
+      
+      <div class="subscription__form" data-aos="fade-up" style="flex-direction: column; align-items: stretch;">
+        <button type="button" id="google-signin-btn">Google</button>
+      </div>
     </div>
   </section>
-
 
   <footer class="footer flex-between">
     <h3 class="footer__logo"><span>GharVED</span>tan</h3>
@@ -217,68 +91,334 @@
       <li><a href="#policies">Terms & Conditions</a></li>
     </ul>
   </footer>
-  <script>
-  const dropdown = document.getElementById("city-dropdown");
-  const cityDisplay = document.getElementById("city-name");
-  const clearBtn = document.getElementById("clear-city-btn");
-  const detectBtn = document.getElementById("detect-location-btn");
-
-  function showControls() {
-    dropdown.selectedIndex = 0;
-    dropdown.style.display = "block";
-    detectBtn.style.display = "block";
-  }
-
-  function hideControls() {
-    dropdown.style.display = "none";
-    detectBtn.style.display = "none";
-  }
-
-  dropdown.addEventListener("change", function () {
-    const selected = this.value;
-    cityDisplay.textContent = selected;
-    hideControls();
-  });
-
-  clearBtn.addEventListener("click", function () {
-    cityDisplay.textContent = "None";
-    showControls();
-  });
-
-  function detectLocation() {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(success, error);
-
-    function success(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-        .then(res => res.json())
-        .then(data => {
-          const city = data.address.city || data.address.town || data.address.village || "Unknown";
-          cityDisplay.textContent = city;
-          hideControls();
-          console.log("Auto-detected city:", city);
-        })
-        .catch(() => {
-          alert("Could not determine city.");
-        });
-    }
-
-    function error(err) {
-      alert("Please allow location access.");
-      console.warn(`Geolocation error (${err.code}): ${err.message}`);
-    }
-  }
-</script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <script type="module" src="signup.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { 
+      getAuth, 
+      RecaptchaVerifier, 
+      signInWithPhoneNumber, 
+      GoogleAuthProvider, 
+      signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc 
+    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
+      authDomain: "gharvedtan-auth.firebaseapp.com",
+      projectId: "gharvedtan-auth",
+      storageBucket: "gharvedtan-auth.appspot.com",
+      messagingSenderId: "32502650170",
+      appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // Global variables
+    let confirmationResult = null;
+    let recaptchaVerifier = null;
+    let detectedLocationData = null;
+
+    // DOM Elements
+    const signupName = document.getElementById('signupName');
+    const signupPass = document.getElementById('signupPass');
+    const signupRepass = document.getElementById('signupRepass');
+    const signupPhone = document.getElementById('signupPhone');
+    const otpInput = document.getElementById('otpInput');
+    const verifyBtn = document.getElementById('verify-btn');
+    const sendOtpBtn = document.getElementById('send-otp-btn');
+    const cityDropdown = document.getElementById('city-dropdown');
+    const cityName = document.getElementById('city-name');
+    const clearCityBtn = document.getElementById('clear-city-btn');
+    const detectLocationBtn = document.getElementById('detect-location-btn');
+    const locationDetails = document.getElementById('location-details');
+    const googleSigninBtn = document.getElementById('google-signin-btn');
+
+    // Initialize AOS animations
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+    });
+
+    // Initialize reCAPTCHA
+    function initializeRecaptcha() {
+      recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+        size: 'invisible',
+        callback: () => {
+          sendOTP();
+        }
+      }, auth);
+    }
+
+    // Send OTP function
+    async function sendOTP() {
+      const phone = signupPhone.value.trim();
+      
+      if (phone.length !== 10) {
+        alert('Please enter a valid 10-digit phone number');
+        return;
+      }
+
+      try {
+        if (!recaptchaVerifier) {
+          initializeRecaptcha();
+        }
+
+        const fullPhone = `+91${phone}`;
+        confirmationResult = await signInWithPhoneNumber(auth, fullPhone, recaptchaVerifier);
+        
+        otpInput.disabled = false;
+        verifyBtn.disabled = false;
+        sendOtpBtn.textContent = 'Resend OTP';
+        alert('OTP sent successfully!');
+      } catch (error) {
+        console.error('OTP Error:', error);
+        alert(`Failed to send OTP: ${error.message}`);
+      }
+    }
+
+    // Verify OTP function
+    async function verifyOTP() {
+      const otp = otpInput.value.trim();
+      const name = signupName.value.trim();
+      const phone = signupPhone.value.trim();
+      const password = signupPass.value;
+      const repass = signupRepass.value;
+      const city = cityName.textContent === 'None' ? '' : cityName.textContent;
+
+      if (!confirmationResult) {
+        alert('Please send OTP first');
+        return;
+      }
+
+      if (!name || !phone || !password || !repass || !city) {
+        alert('All fields are required');
+        return;
+      }
+
+      if (password !== repass) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      try {
+        const result = await confirmationResult.confirm(otp);
+        const user = result.user;
+
+        const userData = {
+          name,
+          phone,
+          password,
+          location: detectedLocationData || {
+            display: city,
+            coordinates: null,
+            address: null
+          },
+          uid: user.uid,
+          createdAt: new Date()
+        };
+
+        await setDoc(doc(db, 'users', user.uid), userData);
+        
+        sessionStorage.setItem('loggedInUser', JSON.stringify({
+          name,
+          phone,
+          uid: user.uid,
+          location: userData.location.display,
+          coordinates: userData.location.coordinates
+        }));
+
+        alert('Signup successful!');
+        window.location.href = '../index.html';
+      } catch (error) {
+        console.error('Verification Error:', error);
+        alert(`OTP verification failed: ${error.message}`);
+      }
+    }
+
+    // Google Sign-In function
+    async function googleSignIn() {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+
+        const userData = {
+          name: user.displayName || 'Anonymous',
+          phone: user.phoneNumber || 'Not provided',
+          email: user.email || 'Not provided',
+          location: detectedLocationData || {
+            display: cityName.textContent === 'None' ? '' : cityName.textContent,
+            coordinates: null,
+            address: null
+          },
+          uid: user.uid,
+          createdAt: new Date()
+        };
+
+        await setDoc(doc(db, 'users', user.uid), userData);
+
+        sessionStorage.setItem('loggedInUser', JSON.stringify({
+          name: userData.name,
+          phone: userData.phone,
+          email: userData.email,
+          uid: user.uid,
+          location: userData.location.display,
+          coordinates: userData.location.coordinates
+        }));
+
+        alert('Google Sign-In successful!');
+        window.location.href = '../index.html';
+      } catch (error) {
+        console.error('Google Sign-In Error:', error);
+        alert('Google Sign-In failed. Please try again.');
+      }
+    }
+
+    // Enhanced Location Detection with precise coordinates
+    async function detectLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+
+      // Show loading state
+      detectLocationBtn.disabled = true;
+      detectLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detecting...';
+      cityName.textContent = "Detecting your location...";
+
+      try {
+        // Get high-accuracy position
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            resolve, 
+            reject, 
+            {
+              enableHighAccuracy: true,
+              timeout: 15000,
+              maximumAge: 0
+            }
+          );
+        });
+
+        const { latitude, longitude } = position.coords;
+        
+        // Fetch detailed address from Nominatim
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+        );
+        
+        if (!response.ok) throw new Error('Location service failed');
+        
+        const data = await response.json();
+        const address = data.address;
+        
+        // Construct detailed address string
+        const addressComponents = [
+          address.house_number,
+          address.road,
+          address.neighbourhood,
+          address.suburb,
+          address.city_district,
+          address.city || address.town || address.village,
+          address.state
+        ].filter(Boolean);
+        
+        const locationText = addressComponents.join(', ') || "Your current location";
+        
+        // Store complete location data with coordinates
+        detectedLocationData = {
+          display: locationText,
+          coordinates: { 
+            latitude: latitude, 
+            longitude: longitude,
+            accuracy: position.coords.accuracy
+          },
+          address: address,
+          timestamp: new Date()
+        };
+        
+        // Update UI
+        cityName.textContent = locationText;
+        cityDropdown.style.display = 'none';
+        locationDetails.style.display = 'block';
+        locationDetails.innerHTML = `
+          <div>Latitude: ${latitude.toFixed(6)}</div>
+          <div>Longitude: ${longitude.toFixed(6)}</div>
+          <div>Accuracy: ${position.coords.accuracy.toFixed(2)} meters</div>
+        `;
+        
+      } catch (error) {
+        console.error("Location detection error:", error);
+        cityName.textContent = "None";
+        locationDetails.style.display = 'none';
+        alert("Could not determine your location. Please try again or select manually.");
+      } finally {
+        detectLocationBtn.innerHTML = '<i class="fas fa-location-arrow"></i> Detect My Location';
+        detectLocationBtn.disabled = false;
+      }
+    }
+
+    // City selection handlers
+    function setupCitySelection() {
+      cityDropdown.addEventListener('change', () => {
+        cityName.textContent = cityDropdown.value;
+        cityDropdown.style.display = 'none';
+        locationDetails.style.display = 'none';
+        detectedLocationData = null; // Clear detected data when manually selecting
+      });
+
+      clearCityBtn.addEventListener('click', () => {
+        cityName.textContent = 'None';
+        cityDropdown.style.display = 'block';
+        locationDetails.style.display = 'none';
+        detectedLocationData = null; // Clear detected data
+      });
+    }
+
+    // Form validation
+    function setupFormValidation() {
+      const validateForm = () => {
+        const isFormValid = signupName.value.trim() && 
+                          signupPass.value && 
+                          signupRepass.value && 
+                          signupPhone.value.trim().length === 10 &&
+                          cityName.textContent !== 'None';
+        
+        sendOtpBtn.disabled = !isFormValid;
+      };
+
+      [signupName, signupPass, signupRepass, signupPhone].forEach(field => {
+        field.addEventListener('input', validateForm);
+      });
+
+      signupPhone.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+      });
+
+      validateForm();
+    }
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeRecaptcha();
+      setupCitySelection();
+      setupFormValidation();
+      
+      // Add event listeners
+      sendOtpBtn.addEventListener('click', sendOTP);
+      verifyBtn.addEventListener('click', verifyOTP);
+      googleSigninBtn.addEventListener('click', googleSignIn);
+      detectLocationBtn.addEventListener('click', detectLocation);
+    });
+  </script>
 </body>
 </html>
