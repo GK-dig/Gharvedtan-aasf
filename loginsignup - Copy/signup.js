@@ -116,24 +116,27 @@ async function verifyOTP() {
     const result = await confirmationResult.confirm(otp);
     const user = result.user;
 
-    const userData = {
+    const sellerData = {
       name,
       phone,
       password,
+      city,
       uid: user.uid,
       createdAt: new Date()
     };
 
-    await setDoc(doc(db, 'users', user.uid), userData);
+    await setDoc(doc(db, 'sellers', user.uid), sellerData); // Store seller in 'sellers' collection
     
-    sessionStorage.setItem('loggedInUser', JSON.stringify({
+    // Save seller data in sessionStorage
+    sessionStorage.setItem('loggedInSeller', JSON.stringify({
       name,
       phone,
-      uid: user.uid
+      uid: user.uid,
+      city
     }));
 
     alert('Signup successful!');
-    window.location.href = '/index.html';
+    window.location.href = '/index.html'; // Redirect to home or dashboard
   } catch (error) {
     console.error('Verification Error:', error);
     alert(`OTP verification failed: ${error.message}`);
@@ -146,7 +149,7 @@ async function googleSignIn() {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
-    const userData = {
+    const sellerData = {
       name: user.displayName || 'Anonymous',
       phone: user.phoneNumber || 'Not provided',
       email: user.email || 'Not provided',
@@ -154,17 +157,17 @@ async function googleSignIn() {
       createdAt: new Date()
     };
 
-    await setDoc(doc(db, 'users', user.uid), userData);
+    await setDoc(doc(db, 'sellers', user.uid), sellerData); // Store seller in 'sellers' collection
 
-    sessionStorage.setItem('loggedInUser', JSON.stringify({
-      name: userData.name,
-      phone: userData.phone,
-      email: userData.email,
+    sessionStorage.setItem('loggedInSeller', JSON.stringify({
+      name: sellerData.name,
+      phone: sellerData.phone,
+      email: sellerData.email,
       uid: user.uid
     }));
 
     alert('Google Sign-In successful!');
-    window.location.href = '../index.html';
+    window.location.href = '../index.html'; // Redirect to home or dashboard
   } catch (error) {
     console.error('Google Sign-In Error:', error);
     alert('Google Sign-In failed. Please try again.');

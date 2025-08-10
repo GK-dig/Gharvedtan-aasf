@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
-  getAuth, 
-  signInWithEmailAndPassword
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { 
   getFirestore, 
@@ -35,21 +36,21 @@ const loginButton = document.getElementById('loginButton');
 // Initialize animations
 AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
 
-// Login function with better error handling
+// Login function with phone number and password (no OTP)
 const loginUser = async (phoneNumber, password) => {
   try {
     console.log(`Attempting login with phone: ${phoneNumber}`);
     
     // Check if phone number exists in sellers collection
     const sellersRef = collection(db, "sellers");
-    const q = query(sellersRef, where("phoneNumber", "==", phoneNumber));
+    const q = query(sellersRef, where("mobile", "==", phoneNumber));
     
     const querySnapshot = await getDocs(q);
     
     if (querySnapshot.empty) {
       console.log("No matching documents found");
       alert("No account found with this phone number. Please check your number or register.");
-      return;
+      return false;
     }
     
     // Get the first matching seller
@@ -57,16 +58,28 @@ const loginUser = async (phoneNumber, password) => {
     const sellerData = sellerDoc.data();
     console.log("Found seller data:", sellerData);
     
-    if (!sellerData.email) {
-      throw new Error("Seller account missing email address");
+    // Verify password
+    if (sellerData.password !== password) {
+      alert("Incorrect password");
+      return false;
     }
     
-    await signInWithEmailAndPassword(auth, sellerData.email, password);
-    window.location.href = "./dashboard.html";
+    // Store user data in session storage
+    sessionStorage.setItem('user', JSON.stringify({
+      uid: sellerDoc.id, // Using Firestore document ID as UID
+      phoneNumber: sellerData.mobile,
+      displayName: sellerData.name || '',
+      // Add any other relevant seller data you want to store
+      ...sellerData // Spread all seller data into the session storage
+    }));
+    
+    console.log("Login successful, user data stored in session storage");
+    return true;
     
   } catch (error) {
     console.error("Login failed:", error);
     alert(`Login failed: ${error.message}`);
+    return false;
   }
 };
 
@@ -82,5 +95,28 @@ loginButton.addEventListener('click', async (e) => {
     return;
   }
   
-  await loginUser(phoneNumber, password);
+  // Show loading state
+  loginButton.disabled = true;
+  loginButton.textContent = "Logging in...";
+
+  const loginSuccess = await loginUser(phoneNumber, password);
+  
+  if (loginSuccess) {
+    // Redirect to dashboard after successful login
+   window.location.href = "/addmenu/addmenu.html";
+
+
+  } else {
+    // Reset button state if login fails
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
+  }
+});
+
+// Optional: Add enter key functionality
+passwordInput.addEventListener('keypress', async (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    loginButton.click();
+  }
 });
