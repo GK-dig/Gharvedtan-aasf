@@ -213,7 +213,49 @@
   cursor: pointer;
   outline: none;
 }
+#city-dropdown.form-select {
+  background-color: #d46c6c; /* Professional light red */
+  color: white; /* White text */
+  border: 1px solid #dd5959; /* Slightly darker border */
+  border-radius: 4px; /* Subtle rounding */
+  padding: 8px 12px; /* Comfortable padding */
+  font-size: 14px; /* Standard font size */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
 
+/* Hover state */
+#city-dropdown.form-select:hover {
+  background-color: #f57979;
+  border-color: #ff3d3d;
+}
+
+/* Focus state */
+#city-dropdown.form-select:focus {
+  background-color: #da8282;
+  border-color: #f66666;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.25);
+  outline: none;
+}
+
+/* Placeholder text styling */
+#city-dropdown.form-select option[disabled][selected] {
+  color: rgba(255, 255, 255, 0.7); /* Slightly transparent white */
+}
+
+/* Regular options styling */
+#city-dropdown.form-select option {
+  background: #e07a7a; /* Match dropdown background */
+  color: white; /* White text for options */
+}
+
+/* Dropdown arrow styling */
+#city-dropdown.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
 @media (max-width: 768px) {
   .subscription {
     padding: 2rem 1rem;
