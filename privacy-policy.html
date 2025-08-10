@@ -5,265 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy | Your Platform Name</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-       :root {
-  /* Color Scheme */
-  --primary: #b1454a; /* Updated to match your brand's primary color */
-  --secondary: #121212; /* Updated to match your brand's secondary color */
-  --text: #333333;
-  --text-light: #555555;
-  --bg: #fff0de; /* Updated to match your --color-creamson */
-  --card: #ffffff;
-  --border: rgba(177, 69, 74, 0.1); /* Using primary color with opacity */
-  --highlight: rgba(177, 69, 74, 0.05); /* For highlighted sections */
-  
-  /* Typography */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif; /* Updated to match your brand */
-  
-  /* Spacing */
-  --space-unit: 1rem;
-  --space-xs: calc(0.5 * var(--space-unit));
-  --space-sm: calc(0.75 * var(--space-unit));
-  --space-md: calc(1.25 * var(--space-unit));
-  --space-lg: calc(2 * var(--space-unit));
-  --space-xl: calc(3 * var(--space-unit));
-  
-  /* Effects */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --transition: all 0.3s ease-in-out;
-}
-
-/* Base Styles */
-body {
-  font-family: var(--font-body);
-  color: var(--text);
-  line-height: 1.6;
-  background-color: var(--bg);
-  background-image: url("../assets/overlay-pattern.png");
-  background-repeat: repeat;
-  background-size: auto;
-  background-position: top left;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--space-lg);
-}
-
-/* Header Styles */
-.privacy-header {
-  background-color: var(--card);
-  padding: var(--space-xl) 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: var(--space-xl);
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
-    url('../assets/overlay-pattern.png');
-}
-
-.privacy-header h1 {
-  font-family: var(--font-heading);
-  font-size: 2.75rem;
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-  color: var(--secondary);
-  position: relative;
-  display: inline-block;
-}
-
-.privacy-header h1::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background-color: var(--primary);
-}
-
-.privacy-header p {
-  color: var(--text-light);
-  max-width: 600px;
-  margin: 0 auto;
-  font-size: 1.125rem;
-}
-
-/* Content Styles */
-.privacy-content {
-  background-color: var(--card);
-  padding: var(--space-xl);
-  margin: var(--space-xl) auto;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  z-index: 1;
-}
-
-.privacy-section {
-  margin-bottom: var(--space-lg);
-  position: relative;
-}
-
-.privacy-section h2 {
-  font-family: var(--font-heading);
-  color: var(--secondary);
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: var(--space-md);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  position: relative;
-  padding-left: var(--space-md);
-}
-
-.privacy-section h2::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 24px;
-  height: 24px;
-  background-color: var(--primary);
-  border-radius: 4px;
-}
-
-.privacy-section p {
-  color: var(--text-light);
-  margin-bottom: var(--space-md);
-  font-size: 1.0625rem;
-  line-height: 1.8;
-}
-
-.privacy-section ul {
-  padding-left: var(--space-md);
-  margin: var(--space-md) 0;
-}
-
-.privacy-section li {
-  color: var(--text-light);
-  margin-bottom: var(--space-sm);
-  position: relative;
-  padding-left: var(--space-md);
-  line-height: 1.7;
-}
-
-.privacy-section li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.65em;
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary);
-  border-radius: 50%;
-}
-
-/* Highlighted Section */
-.privacy-section:last-child {
-  background-color: var(--highlight);
-  padding: var(--space-md);
-  border-radius: 8px;
-  border-left: 4px solid var(--primary);
-}
-
-/* Footer Styles */
-.privacy-footer {
-  text-align: center;
-  padding: var(--space-lg) 0;
-  color: var(--text-light);
-  border-top: 1px solid var(--border);
-  font-size: 0.9375rem;
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-  :root {
-    --space-unit: 0.875rem;
-  }
-  
-  .privacy-header {
-    padding: var(--space-lg) 0;
-  }
-  
-  .privacy-header h1 {
-    font-size: 2.25rem;
-  }
-  
-  .privacy-content {
-    padding: var(--space-lg);
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 var(--space-md);
-  }
-  
-  .privacy-header h1 {
-    font-size: 2rem;
-  }
-  
-  .privacy-header p {
-    font-size: 1rem;
-  }
-  
-  .privacy-content {
-    padding: var(--space-md);
-    margin: var(--space-lg) auto;
-  }
-  
-  .privacy-section h2 {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .privacy-header {
-    padding: var(--space-lg) 0 var(--space-md);
-  }
-  
-  .privacy-header h1 {
-    font-size: 1.75rem;
-  }
-  
-  .privacy-section h2 {
-    padding-left: var(--space-lg);
-  }
-  
-  .privacy-section h2::before {
-    width: 20px;
-    height: 20px;
-  top: 2px;
-  left: -4px;
-  }
-  
-  .privacy-section li {
-    padding-left: var(--space-lg);
-  }
-}
+    <link rel="stylesheet" href="./terms-and-conditions.css"
     </style>
 </head>
 <body>
-    <header class="privacy-header">
+  <header>
+      <nav class="header__nav">
+        <div class="header__logo">
+          <h4 data-aos="fade-down">Gharvedtan</h4>
+          <div class="header__logo-overlay"></div>
+        </div>
+
+        <ul class="header__menu" data-aos="fade-down">
+          <li>
+            <a href="./index.html">Home</a>
+          </li>
+        </ul>
+
+        <ul class="header__menu-mobile" data-aos="fade-down">
+          <li>
+            <img src="assets/menu.svg" alt="menu" />
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <header class="terms-header">
         <div class="container">
             <h1>Our Privacy Promise</h1>
-            <p>How we protect and honor your personal information</p>
+            <p class="subtitle">How we protect and honor your personal information</p>
         </div>
-    </header>
-    
-    <main class="container">
+    </header> 
+  <main class="container">
         <div class="privacy-content">
-            <section class="privacy-section">
+            <section class="legal-details">
                 <h2>Information We Collect</h2>
                 <p>We only gather what's necessary to create your personalized experience:</p>
                 <ul>
@@ -273,7 +48,7 @@ body {
                 </ul>
             </section>
             
-            <section class="privacy-section">
+            <section class="legal-details">
                 <h2>How We Use Your Data</h2>
                 <p>Your information helps us:</p>
                 <ul>
@@ -283,7 +58,7 @@ body {
                 </ul>
             </section>
             
-            <section class="privacy-section">
+            <section class="legal-details">
                 <h2>Your Rights</h2>
                 <p>You have full control over your information:</p>
                 <ul>
@@ -293,16 +68,47 @@ body {
                 </ul>
             </section>
             
-            <section class="privacy-section">
+            <section class="legal-details">
                 <h2>Last Updated</h2>
                 <p>January 1, 2023</p>
                 <p>We'll notify you of any significant changes to how we handle your data.</p>
             </section>
         </div>
     </main>
-    
-    <footer class="privacy-footer">
-       
+    <footer class="footer flex-between">
+      <h3 class="footer__logo">
+        <span>GharVED</span>tan
+      </h3>
+
+      <ul class="footer__nav">
+        <li><a href="/terms-and-conditions.html">Terms & Conditions</a></li>
+        <li><a href="/contact-us.html">Contact Us</a></li>
+        <li><a href="/community-guidelines.html">Community Guidelines</a></li>
+        <li>
+    </li>
+      </ul>
+
+   <ul class="footer__social">
+  <li class="flex-center">
+    <a href="https://www.facebook.com/profile.php?id=61579207825053" target="_blank" rel="noopener noreferrer">
+      <img src="assets/facebook.svg" alt="facebook" />
+    </a>
+  </li>
+  <li class="flex-center">
+    <a href="https://www.instagram.com/gharvedtan/" target="_blank" rel="noopener noreferrer">
+      <img src="assets/instagram.svg" alt="instagram" />
+    </a>
+  </li>
+  <li class="flex-center">
+    <a href="https://x.com/gharvedtan" target="_blank" rel="noopener noreferrer">
+      <img src="assets/twitter.svg" alt="twitter" />
+    </a>
+  </li>
+  
+</ul>
+    <div class="container">
+        <p>© 2023 GharVEDtan. All rights reserved. Made with  and memories.</p>
+    </div>
     </footer>
 </body>
 </html>
