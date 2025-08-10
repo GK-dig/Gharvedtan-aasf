@@ -1,6 +1,5 @@
-import { db, storage } from '../firebase.js';
+import { db } from '../firebase.js';
 import { collection, getDocs, where, query, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-import { ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
 
 // DOM Elements
 const addMenuForm = document.getElementById('addMenuForm');
@@ -71,8 +70,7 @@ addMenuForm.addEventListener('submit', async (e) => {
 
     // Check for duplicates (case insensitive)
     const q = query(collection(db, "items"), 
-      where("name", ">=", itemName.toLowerCase()),
-      where("name", "<=", itemName.toLowerCase() + '\uf8ff')
+      where("searchName", "==", itemName.toLowerCase())
     );
     
     const querySnapshot = await getDocs(q);
@@ -80,33 +78,31 @@ addMenuForm.addEventListener('submit', async (e) => {
       throw new Error('An item with this name already exists!');
     }
 
-    // Upload image to Firebase Storage
-    const storagePath = `menu-images/${Date.now()}_${imageFile.name}`;
-    const storageRef = ref(storage, storagePath);
-    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    // ⭐ NEW LOGIC: Upload image to your Node.js server
+    const formData = new FormData();
+    formData.append('image', imageFile);
 
-    // Wait for upload to complete
-    await new Promise((resolve, reject) => {
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          submitButton.textContent = `Uploading ${progress}%`;
-        },
-        (error) => reject(error),
-        () => resolve()
-      );
+    const response = await fetch('http://localhost:3000/upload', {
+      method: 'POST',
+      body: formData
     });
 
-    // Get download URL
-    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Image upload failed: ${errorText}`);
+    }
 
-    // Save to Firestore
+    const data = await response.json();
+    const downloadURL = data.imageUrl; // Get the URL from your server's response
+
+    // ⭐ END NEW LOGIC
+
+    // Save to Firestore with the new URL
     await addDoc(collection(db, "items"), {
       name: itemName,
       price: price,
       region: region,
-      photoUrl: downloadURL,
+      photoUrl: downloadURL, // Store the Cloudinary URL here
       availability: availability,
       rating: rating,
       type: type,
@@ -128,7 +124,7 @@ addMenuForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Helper functions
+// Helper functions (unchanged)
 function resetForm() {
   addMenuForm.reset();
   imagePreview.innerHTML = '<span class="no-image">No image selected</span>';
