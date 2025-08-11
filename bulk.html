@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bulk Upload Sellers to Firestore</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;max-width:900px;margin:32px auto;padding:16px}
+    h1{font-size:20px}
+    label{display:block;margin:12px 0 6px}
+    input, button, select, textarea{padding:8px;border:1px solid #ccc;border-radius:6px;width:100%;box-sizing:border-box}
+    button{cursor:pointer}
+    pre{background:#111;color:#eee;padding:12px;border-radius:6px;overflow:auto}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .muted{color:#666;font-size:13px}
+  </style>
+</head>
+<body>
+  <h1>Bulk Upload Sellers (Paste JSON) → Firestore</h1>
+  <p class="muted">Paste your JSON array of seller objects below. Then click "Start Upload" to send them to Firestore.</p>
+
+  <label for="collection">Firestore collection name</label>
+  <input id="collection" value="items" />
+
+  <label for="jsonInput">Paste JSON data here</label>
+  <textarea id="jsonInput" rows="10" placeholder='[ { "name": "..." }, { ... } ]'></textarea>
+
+  <div class="row" style="margin-top:12px">
+    <button id="upload">Start Upload</button>
+    <button id="clear">Clear Log</button>
+  </div>
+
+  <label for="status">Status / Log</label>
+  <textarea id="status" rows="10" readonly style="font-family:monospace"></textarea>
+
+  <!-- Firebase JS SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
+      authDomain: "gharvedtan-auth.firebaseapp.com",
+      projectId: "gharvedtan-auth",
+      storageBucket: "gharvedtan-auth.firebasestorage.app",
+      messagingSenderId: "32502650170",
+      appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const uploadBtn = document.getElementById('upload');
+    const clearBtn = document.getElementById('clear');
+    const status = document.getElementById('status');
+    const collectionInput = document.getElementById('collection');
+    const jsonInput = document.getElementById('jsonInput');
+
+    function log(line){
+      const now = new Date().toISOString();
+      status.value += `${now} - ${line}\n`;
+      status.scrollTop = status.scrollHeight;
+    }
+
+    clearBtn.addEventListener('click', ()=> status.value = '');
+
+    uploadBtn.addEventListener('click', async ()=>{
+      status.value = '';
+      const text = jsonInput.value.trim();
+      if(!text){ log('No JSON pasted.'); return; }
+      const collectionName = collectionInput.value.trim() || 'items';
+
+      let data;
+      try{
+        data = JSON.parse(text);
+      }catch(e){ log('Failed to parse JSON: ' + e.message); return; }
+
+      if(!Array.isArray(data)){
+        log('JSON root is not an array. It should be an array of objects.');
+        return;
+      }
+
+      log(`Parsed ${data.length} entries. Starting upload to collection: ${collectionName}`);
+
+      let success = 0, failed = 0;
+      for(let i=0;i<data.length;i++){
+        const entry = data[i];
+        try{
+          if(entry.location){
+            const loc = entry.location;
+            if(typeof loc.latitude === 'string') loc.latitude = parseFloat(loc.latitude);
+            if(typeof loc.longitude === 'string') loc.longitude = parseFloat(loc.longitude);
+          }
+          await addDoc(collection(db, collectionName), entry);
+          log(`✓ [${i+1}] uploaded`);
+          success++;
+        }catch(err){
+          log(`✗ [${i+1}] failed: ${err.message}`);
+          failed++;
+        }
+      }
+
+      log(`Done. Success: ${success}. Failed: ${failed}.`);
+    });
+  </script>
+</body>
+</html>
