@@ -1,9 +1,5 @@
 import { db } from '../firebase.js';
 import { collection, getDocs, where, query, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
-
-// Initialize Firebase Storage
-const storage = getStorage(app);
 
 // DOM Elements
 const addMenuForm = document.getElementById('addMenuForm');
@@ -17,11 +13,13 @@ const submitButton = document.getElementById('submitButton');
 
 // Constants
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dew4c5d4k/upload"; // Replace with your Cloud name
+const UPLOAD_PRESET = "vtcjagi4"; 
 
 // Show image preview when file is selected
-imageUploadInput.addEventListener('change', function() {
+imageUploadInput.addEventListener('change', function () {
   const file = this.files[0];
-  
+
   if (file && ACCEPTED_IMAGE_TYPES.includes(file.type)) {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -37,7 +35,7 @@ imageUploadInput.addEventListener('change', function() {
 // Form submission handler
 addMenuForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   submitButton.disabled = true;
   submitButton.textContent = 'Uploading...';
 
@@ -48,7 +46,7 @@ addMenuForm.addEventListener('submit', async (e) => {
     const region = regionInput.value;
     const availability = availabilityInput.value;
     const imageFile = imageUploadInput.files[0];
-    
+
     // Optional fields
     const rating = document.getElementById('rating')?.value ? parseFloat(document.getElementById('rating').value) : 0;
     const type = document.getElementById('type')?.value || '';
@@ -75,29 +73,42 @@ addMenuForm.addEventListener('submit', async (e) => {
       throw new Error('An item with this name already exists!');
     }
 
-    // Upload image to Firebase Storage
-    const storageRef = ref(storage, `menuImages/${Date.now()}-${imageFile.name}`);
-    await uploadBytes(storageRef, imageFile);
-    const downloadURL = await getDownloadURL(storageRef);
+    // Upload image to Cloudinary
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", UPLOAD_PRESET); // Unsigned preset
+
+    const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const cloudinaryData = await response.json();
+
+    if (!response.ok || !cloudinaryData.secure_url) {
+      throw new Error(cloudinaryData.message || "Image upload to Cloudinary failed");
+    }
+
+    const photoUrl = cloudinaryData.secure_url;
 
     // Save to Firestore
     await addDoc(collection(db, "items"), {
       name: itemName,
       price: price,
       region: region,
-      photoUrl: downloadURL,
+      photoUrl: photoUrl,
       availability: availability,
       rating: rating,
       type: type,
       sellerName: sellerName,
       createdAt: new Date().toISOString(),
-      searchName: itemName.toLowerCase()
+      searchName: itemName.toLowerCase(),
     });
 
     // Success
     showSuccessMessage('Item added successfully!');
     resetForm();
-    
+
   } catch (error) {
     console.error("Error:", error);
     showErrorMessage(`Error: ${error.message}`);
