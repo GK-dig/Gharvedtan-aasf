@@ -280,7 +280,6 @@ canvas.style.height = `${displayHeight}px`;
         if (player.col === this.cols - 1 && player.row === this.rows - 1 && gameActive && !messageShown) {
             gameActive = false;
             clearInterval(timerInterval);
-            playWinSound();
             showMessage("Congratulations! You delivered all packages in " + formatTime(gameTime), "win");
             messageShown = true;  
         }
@@ -300,7 +299,7 @@ function updateGameTime() {
         gameTime++;
         updateTimer();
 
-        if (gameTime >= 300 && !messageShown) {
+        if (gameTime >= 200 && !messageShown) {
             gameActive = false;
             clearInterval(timerInterval);
             playLoseSound();
@@ -321,6 +320,7 @@ function formatTime(seconds) {
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
 }
+// ... (previous game.js code remains the same until showMessage function)
 
 function showMessage(text, type) {
     const message = document.getElementById('message');
@@ -329,8 +329,23 @@ function showMessage(text, type) {
     content.className = type;
     message.classList.remove('hidden');
     message.classList.add('show');
+    
+    // Add a button to claim reward if player won
+    if (type === "win") {
+        const button = document.createElement('button');
+        button.textContent = 'Claim Your Free Delivery!';
+        button.onclick = function() {
+            // Store the reward in sessionStorage
+            sessionStorage.setItem('deliveryReward', 'true');
+            // Redirect to coupon page
+            window.location.href = 'coupon.html';
+        };
+        content.appendChild(document.createElement('br'));
+        content.appendChild(button);
+    }
 }
 
+// ... (rest of the game.js code remains the same)
 function hideMessage() {
     document.getElementById('message').classList.add('hidden');
 }
@@ -430,9 +445,6 @@ function playDeliverySound() {
     audio.delivery.play();
 }
 
-function playWinSound() {
-    audio.win.play();
-}
 
 function playLoseSound() {
     audio.lose.play();
