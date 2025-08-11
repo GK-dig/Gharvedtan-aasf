@@ -1,4 +1,3 @@
-// cart.js - Fully Integrated & Fixed
 import { db } from '../firebase.js';
 import { 
   doc, 
@@ -62,7 +61,7 @@ async function loadCart(userId) {
         .map(item => ({
           id: item.id,
           name: item.name,
-          price: Math.max(0, parseFloat(item.price) || 0), // ✅ Safer price
+          price: Math.max(0, parseFloat(item.price) || 0),
           quantity: item.quantity > 0 ? item.quantity : 1,
           sellerName: item.sellerName || 'Unknown Seller',
           photoUrl: item.photoUrl?.trim() || null
@@ -137,10 +136,15 @@ function attachEventListeners() {
     btn.addEventListener('click', handleRemove);
   });
 
-  // ✅ Clear Cart Button
   if (clearCartBtn) {
     clearCartBtn.removeEventListener('click', handleClearCart);
     clearCartBtn.addEventListener('click', handleClearCart);
+  }
+
+  // Updated checkout button handler
+  if (checkoutBtn) {
+    checkoutBtn.removeEventListener('click', handleCheckout);
+    checkoutBtn.addEventListener('click', handleCheckout);
   }
 }
 
@@ -174,7 +178,6 @@ const handleRemove = async (e) => {
   await removeItem(itemId, user.uid);
 };
 
-// ✅ Clear Cart Handler
 const handleClearCart = async () => {
   const user = getLoggedInUser();
   if (!user) return;
@@ -199,17 +202,89 @@ const handleClearCart = async () => {
   }
 };
 
+// NEW: Checkout handler with Razorpay integration
+const handleCheckout = async (e) => {
+  e.preventDefault();
+  const user = getLoggedInUser();
+  if (!user || !cartData?.items || cartData.items.length === 0) return;
+
+  const totalAmount = parseFloat(totalElement.textContent.replace(/[^\d.]/g, ''));
+  
+  const options = {
+    key: "rzp_test_So0Z8L6zsfTX4h",
+    amount: Math.round(totalAmount * 100), // Razorpay expects amount in paise
+    currency: "INR",
+    name: "My Test Store",
+    description: "Order Payment",
+    image: "https://your-logo-url.com/logo.png",
+    handler: async function(response) {
+      // Payment successful
+      await handleSuccessfulPayment(response, user.uid, totalAmount);
+    },
+    prefill: {
+      name: user.name || "Customer",
+      email: user.email || "customer@example.com",
+      contact: user.phoneNumber || "9999999999"
+    },
+    theme: {
+      color: "#3399cc"
+    }
+  };
+
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+};
+
+// NEW: Handle successful payment and game prompt
+async function handleSuccessfulPayment(response, userId, amount) {
+  try {
+    // Save order details
+    const order = {
+      paymentId: response.razorpay_payment_id,
+      amount: amount,
+      items: cartData.items,
+      date: new Date().toISOString(),
+      status: "completed"
+    };
+
+    // In a real app, you would save this to your database
+    console.log("Order completed:", order);
+    
+    // Clear the cart after successful payment
+    const cartRef = doc(db, "carts", userId);
+    await updateDoc(cartRef, {
+      items: [],
+      total: 0,
+      updatedAt: new Date()
+    });
+
+    // Ask user if they want to play the game
+    const playGame = confirm('Payment successful! Would you like to play a game and earn discounts on your next order?');
+    
+    if (playGame) {
+      // Redirect to game page
+      window.location.href = '../game/index.html';
+    } else {
+      // Redirect to order confirmation or home page
+      window.location.href = '../index.html';
+    }
+  } catch (error) {
+    console.error("Error handling successful payment:", error);
+    alert("Payment was successful but we encountered an error. Please contact support.");
+  }
+}
+
 function getLoggedInUser() {
   const userStr = sessionStorage.getItem('loggedInUser');
   const user = userStr ? JSON.parse(userStr) : null;
   if (!user || !user.uid) {
     alert("You must be logged in.");
     redirectToLogin();
+    return null;
   }
   return user;
 }
 
-// Update quantity
 async function updateQuantity(itemId, change, userId) {
   try {
     const cartRef = doc(db, "carts", userId);
@@ -241,7 +316,6 @@ async function updateQuantity(itemId, change, userId) {
   }
 }
 
-// Remove item
 async function removeItem(itemId, userId) {
   try {
     const cartRef = doc(db, "carts", userId);
@@ -261,7 +335,6 @@ async function removeItem(itemId, userId) {
   }
 }
 
-// ✅ FIXED: Recalculate subtotal from items
 function updateSummary() {
   const subtotal = cartData.items.reduce((sum, item) => {
     return sum + (item.price * item.quantity);
@@ -276,7 +349,6 @@ function updateSummary() {
   totalElement.textContent = `₹${total.toFixed(2)}`;
   checkoutBtn.disabled = itemCount === 0;
 
-  // ✅ Update clear button state
   if (clearCartBtn) {
     clearCartBtn.disabled = itemCount === 0;
     clearCartBtn.style.opacity = itemCount === 0 ? "0.5" : "1";
@@ -284,7 +356,6 @@ function updateSummary() {
   }
 }
 
-// Show empty cart UI
 function showEmptyCart() {
   cartItemsContainer.innerHTML = `
     <div class="empty-cart">
@@ -306,7 +377,6 @@ function showEmptyCart() {
   }
 }
 
-// Show error state
 function showErrorState() {
   cartItemsContainer.innerHTML = `
     <div class="error-state">
@@ -319,9 +389,3 @@ function showErrorState() {
   checkoutBtn.disabled = true;
   if (clearCartBtn) clearCartBtn.disabled = true;
 }
-
-// Checkout handler
-checkoutBtn.addEventListener('click', () => {
-  if (checkoutBtn.disabled) return;
-  alert("Proceeding to checkout!");
-});

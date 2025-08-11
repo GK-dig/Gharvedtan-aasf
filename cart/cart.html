@@ -50,36 +50,8 @@
       </div>
     </div>
   </div>
-  <script>
-        document.getElementById('checkoutBtn').onclick = function (e) {
-          totalAmount = parseInt(document.getElementById('total').innerText.replace(/[^\d]/g, '')) ;
-          const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-            var options = {
-                "key": "rzp_test_So0Z8L6zsfTX4h", // REPLACE with your Razorpay Test API Key
-               "amount": totalAmount,
-                "currency": "INR",
-                "name": "My Test Store",
-                "description": "Testing payment gateway",
-                "image": "https://your-logo-url.com/logo.png", // Optional
-                "handler": function (response) {
-                    alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-                },
-                "prefill": {
-                    "name": "Test User",
-                    "email": "test@example.com",
-                    "contact": loggedInUser.phoneNumber,
-                },
-                "theme": {
-                    "color": "#3399cc"
-                }
-            };
-
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
-            e.preventDefault();
-        }
-    </script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script type="module" src="cart.js"></script>
 </body>
 </html>

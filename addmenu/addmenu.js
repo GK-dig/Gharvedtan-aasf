@@ -1,5 +1,9 @@
 import { db } from '../firebase.js';
 import { collection, getDocs, where, query, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
+
+// Initialize Firebase Storage
+const storage = getStorage(app);
 
 // DOM Elements
 const addMenuForm = document.getElementById('addMenuForm');
@@ -34,7 +38,6 @@ imageUploadInput.addEventListener('change', function() {
 addMenuForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   
-  // Disable button during processing
   submitButton.disabled = true;
   submitButton.textContent = 'Uploading...';
 
@@ -55,64 +58,44 @@ addMenuForm.addEventListener('submit', async (e) => {
     if (!itemName || itemName.length < 2) {
       throw new Error('Item name must be at least 2 characters');
     }
-    
     if (isNaN(price) || price <= 0) {
       throw new Error('Please enter a valid price');
     }
-    
     if (!imageFile) {
       throw new Error('Please select an image');
     }
-    
     if (!ACCEPTED_IMAGE_TYPES.includes(imageFile.type)) {
       throw new Error('Only JPEG, PNG images are allowed');
     }
 
-    // Check for duplicates (case insensitive)
-    const q = query(collection(db, "items"), 
-      where("searchName", "==", itemName.toLowerCase())
-    );
-    
+    // Check for duplicates
+    const q = query(collection(db, "items"), where("searchName", "==", itemName.toLowerCase()));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       throw new Error('An item with this name already exists!');
     }
 
-    // ⭐ NEW LOGIC: Upload image to your Node.js server
-    const formData = new FormData();
-    formData.append('image', imageFile);
+    // Upload image to Firebase Storage
+    const storageRef = ref(storage, `menuImages/${Date.now()}-${imageFile.name}`);
+    await uploadBytes(storageRef, imageFile);
+    const downloadURL = await getDownloadURL(storageRef);
 
-    const response = await fetch('http://localhost:3000/upload', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Image upload failed: ${errorText}`);
-    }
-
-    const data = await response.json();
-    const downloadURL = data.imageUrl; // Get the URL from your server's response
-
-    // ⭐ END NEW LOGIC
-
-    // Save to Firestore with the new URL
+    // Save to Firestore
     await addDoc(collection(db, "items"), {
       name: itemName,
       price: price,
       region: region,
-      photoUrl: downloadURL, // Store the Cloudinary URL here
+      photoUrl: downloadURL,
       availability: availability,
       rating: rating,
       type: type,
       sellerName: sellerName,
       createdAt: new Date().toISOString(),
-      searchName: itemName.toLowerCase() // For case-insensitive search
+      searchName: itemName.toLowerCase()
     });
 
     // Success
-    showSuccessMessage('✅ Item added successfully!');
+    showSuccessMessage('Item added successfully!');
     resetForm();
     
   } catch (error) {
@@ -124,7 +107,7 @@ addMenuForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Helper functions (unchanged)
+// Helper functions
 function resetForm() {
   addMenuForm.reset();
   imagePreview.innerHTML = '<span class="no-image">No image selected</span>';
