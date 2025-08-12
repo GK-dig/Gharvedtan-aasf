@@ -325,12 +325,19 @@ async function handleSubmit(event) {
         });
 
         console.log("Document written with ID: ", docRef.id);
-        showStatus(locationStatus, 'Form submitted and data saved successfully!', 'success');
-        alert('Form submitted successfully!');
+        showStatus(locationStatus, 'Registration successful! Redirecting to menu setup...', 'success');
+        
+        // Store the seller ID in sessionStorage for use in addmenu.html
+        sessionStorage.setItem('sellerId', docRef.id);
+        
+        // Redirect after 2 seconds to allow user to see success message
+        setTimeout(() => {
+            window.location.href = 'addmenu/addmenu.html';
+        }, 2000);
+        
     } catch (error) {
         console.error("Error adding document: ", error);
         showStatus(locationStatus, 'There was an error saving your data. Please try again.', 'error');
     }
 }
-
 initEventListeners();

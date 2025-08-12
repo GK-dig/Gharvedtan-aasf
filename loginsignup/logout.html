@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout - Gharvedtan</title>
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary-color: #de5f5f; /* Replace with your actual primary color */
+      --black-400: #222;
+      --black-300: #444;
+      --playfair-display: 'Playfair Display', serif;
+      --plus-jakarta-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--plus-jakarta-sans);
+      background-color: #f4f4f4;
+      background-image: url('../assets/overlay-pattern.png'); 
+    }
+
+    .logout-section {
+      padding: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;  
+      justify-content: center;
+      text-align: center;
+      background-color: var(--primary-color);
+      background-image: url('../assets/logout_bg.png'); /* Optional background image */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin: 50px auto;
+      border-radius: 50px;
+      box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+      max-width: 780px;
+      overflow: hidden;
+    }
+
+    .logout-section h2 {
+      font-size: 48px;
+      font-family: var(--playfair-display);
+      font-weight: 600;
+      line-height: 64px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .logout-section p {
+      font-size: 18px;
+      font-family: var(--plus-jakarta-sans);
+      font-weight: 300;
+      line-height: 28px;
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .logout-btn {
+      padding: 16px 32px;
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: 500;
+      font-family: var(--plus-jakarta-sans);
+      color: #fff;
+      background: var(--black-400);
+      border-radius: 46px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: var(--black-300);
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-section" data-aos="fade-up">
+    <h2>Are you sure you want to log out?</h2>
+    <p>You will be redirected to the main page after logging out.</p>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
+
+  <!-- AOS Animation Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Firebase Logout Script -->
+  <script type="module">
+    AOS.init({ duration: 1000, offset: 100 });
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
+      authDomain: "gharvedtan-auth.firebaseapp.com",
+      projectId: "gharvedtan-auth",
+      storageBucket: "gharvedtan-auth.firebasestorage.app",
+      messagingSenderId: "32502650170",
+      appId: "1:32502650170:web:8268b4c5947d5f04ab6c03"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        // Firebase sign out
+        await signOut(auth);
+
+        // Clear session storage
+        sessionStorage.removeItem("loggedInUser");
+
+        alert("You have been logged out.");
+        window.location.href = "/main.html"; // Redirect to main page
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("Logout failed: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -17,32 +17,27 @@
       <ul class="header__menu" data-aos="fade-down">
         <li><a href="../loginsignup - Copy/work.html">Login</a></li>
         <li><a href="../index.html">Home</a></li>
-             <li>
-            <div class="profile-container">
-          <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
-          <div class="dropdown-menu" id="dropdownMenu">
-            <a href="#">My Orders</a>
-            <a href="#">Logout</a>
+        <li>
+          <div class="profile-container">
+            <img src="../assets/profile.svg" alt="profile" class="profile-icon" id="profileIcon" />
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="#">My Orders</a>
+              <a href="#">Logout</a>
+            </div>
           </div>
-        </div>
-          </li>
+        </li>
       </ul>
     </nav>
   </header>
 
   <section class="subscription flex-center">
     <h2>Register With Us</h2>
-      <div class="subscription__form">
-
-    <button1><a href="../createhomecookpage.html">Add Your Tiffin Service</a></button1>
+    <div class="subscription__form">
+      <button1><a href="../createhomecookpage.html">Add Your Tiffin Service</a></button1>
     </div>
     <div class="subscription__form">
-
-    
-        
-    <button1><a href="../addmenu/addmenu.html">Add Your Menu</a></button1>
+      <button1><a href="#" id="addMenuBtn">Add Your Menu</a></button1>
     </div>
-  
   </section>
 
   <footer class="footer flex-between">
@@ -54,50 +49,67 @@
       <li><a href="#policies">Terms & Conditions</a></li>
     </ul>
   </footer>
-   <script>
-  const profileIcon = document.getElementById("profileIcon");
-  const dropdownMenu = document.getElementById("dropdownMenu");
-  const loginLink = document.querySelector("a[href='../loginsignup-copy/work.html']"); 
 
-  const userData = JSON.parse(localStorage.getItem("loggedInUser"));
+  <script>
+    const profileIcon = document.getElementById("profileIcon");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const loginLink = document.querySelector("a[href='../loginsignup-copy/work.html']"); 
+    const addMenuBtn = document.getElementById("addMenuBtn");
 
-  if (userData) {
-    if (loginLink) loginLink.style.display = "none";
+    const userData = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    dropdownMenu.style.display = "block";
-    dropdownMenu.innerHTML = `
-      <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
-      <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
-      <hr style="margin: 5px 0;">
-      <a href="#">My Orders</a>
-      <a href="#" id="logoutBtn">Logout</a>
-    `;
-
-    profileIcon.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle("show");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
-        dropdownMenu.classList.remove("show");
+    // Function to check login status and handle menu button click
+    function handleAddMenuClick(e) {
+      if (!userData) {
+        e.preventDefault();
+        const shouldLogin = confirm("You need to login or register first. Would you like to login now?");
+        if (shouldLogin) {
+          window.location.href = "../loginsignup - Copy/work.html";
+        }
+      } else {
+        window.location.href = "../addmenu/addmenu.html";
       }
-    });
+    }
 
-    dropdownMenu.addEventListener("click", (e) => {
-      if (e.target.id === "logoutBtn") {
-        localStorage.removeItem("loggedInUser");
-        location.reload(); 
-      }
-    });
-  } else {
-    dropdownMenu.style.display = "none";
-  }
-</script>
+    // Add event listener to the Add Menu button
+    addMenuBtn.addEventListener("click", handleAddMenuClick);
+
+    if (userData) {
+      if (loginLink) loginLink.style.display = "none";
+
+      dropdownMenu.style.display = "block";
+      dropdownMenu.innerHTML = `
+        <p style="padding: 10px 15px; margin: 0;"><strong>${userData.name}</strong></p>
+        <p style="padding: 0 15px 10px; margin: 0; font-size: 14px; color: #555;">${userData.phone}</p>
+        <hr style="margin: 5px 0;">
+        <a href="#">My Orders</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      `;
+
+      profileIcon.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("show");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!dropdownMenu.contains(e.target) && e.target !== profileIcon) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+
+      dropdownMenu.addEventListener("click", (e) => {
+        if (e.target.id === "logoutBtn") {
+          localStorage.removeItem("loggedInUser");
+          location.reload(); 
+        }
+      });
+    } else {
+      dropdownMenu.style.display = "none";
+    }
+  </script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script type="module" src="../js/indexjs.js"></script>
 </body>
 </html>
-
