@@ -5,8 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add New Menu Item</title>
   <link rel="stylesheet" href="addmenu.css" />
-
-  
+  <style>
+    /* Additional styles for the image preview */
+    .image-preview-container {
+      min-height: 200px;
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+      margin: 15px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .image-preview-container:hover {
+      border-color: #aaa;
+    }
+    
+    .image-preview-container.dragover {
+      border-color: #4CAF50;
+      background-color: #f0fff0;
+    }
+    
+    .image-preview-placeholder {
+      color: #999;
+      font-size: 14px;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .image-preview-placeholder i {
+      font-size: 48px;
+      color: #ccc;
+      margin-bottom: 10px;
+      display: block;
+    }
+    
+    .preview-image {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    
+    .image-upload-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .image-upload-hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+  </style>
   <script type="module" src="addmenu.js"></script>
 </head>
 
@@ -18,7 +75,11 @@
         <div class="subscription__form">
           <input type="text" id="itemName" placeholder="Enter item name" required />
         </div>
-
+        
+        <div class="subscription__form">
+          <input type="text" id="sellerName" placeholder="Enter seller name" required />
+        </div>
+        
         <div class="subscription__form">
           <input type="number" id="price" placeholder="Enter item price" required />
         </div>
@@ -34,12 +95,17 @@
         </div>
 
         <div class="subscription__form">
-          <label for="imageUpload">Upload Image:</label>
+          <label for="imageUpload" class="image-upload-label">Upload Image</label>
           <input type="file" id="imageUpload" accept=".png,.jpg,.jpeg" />
+          
         </div>
 
-        <div id="imagePreview" style="min-height: 200px; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9;">
-          <span style="color: #999; font-size: 14px;">No image selected</span>
+        <div id="imagePreview" class="image-preview-container">
+          <div class="image-preview-placeholder">
+            
+            <span>No image selected</span>
+            <div class="image-upload-hint">Drag & drop or click to upload</div>
+          </div>
         </div>
 
         <div class="subscription__form" style="flex-direction: column; align-items: stretch;">

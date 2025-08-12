@@ -4,6 +4,7 @@ import { collection, getDocs, where, query, addDoc } from "https://www.gstatic.c
 // DOM Elements
 const addMenuForm = document.getElementById('addMenuForm');
 const itemNameInput = document.getElementById('itemName');
+const sellerNameInput = document.getElementById('sellerName'); // Added this line
 const priceInput = document.getElementById('price');
 const regionInput = document.getElementById('region');
 const availabilityInput = document.getElementById('availability');
@@ -42,6 +43,7 @@ addMenuForm.addEventListener('submit', async (e) => {
   try {
     // Get form values
     const itemName = itemNameInput.value.trim();
+    const sellerName = sellerNameInput.value.trim(); // Get seller name
     const price = parseFloat(priceInput.value);
     const region = regionInput.value;
     const availability = availabilityInput.value;
@@ -50,11 +52,13 @@ addMenuForm.addEventListener('submit', async (e) => {
     // Optional fields
     const rating = document.getElementById('rating')?.value ? parseFloat(document.getElementById('rating').value) : 0;
     const type = document.getElementById('type')?.value || '';
-    const sellerName = document.getElementById('sellerName')?.value || '';
 
     // Validation
     if (!itemName || itemName.length < 2) {
       throw new Error('Item name must be at least 2 characters');
+    }
+    if (!sellerName || sellerName.length < 2) { // Validate seller name
+      throw new Error('Seller name must be at least 2 characters');
     }
     if (isNaN(price) || price <= 0) {
       throw new Error('Please enter a valid price');
@@ -94,13 +98,13 @@ addMenuForm.addEventListener('submit', async (e) => {
     // Save to Firestore
     await addDoc(collection(db, "items"), {
       name: itemName,
+      sellerName: sellerName, // Added sellerName to the document
       price: price,
       region: region,
       photoUrl: photoUrl,
       availability: availability,
       rating: rating,
       type: type,
-      sellerName: sellerName,
       createdAt: new Date().toISOString(),
       searchName: itemName.toLowerCase(),
     });
