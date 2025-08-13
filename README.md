@@ -13,7 +13,7 @@ neighborhood.
 
 
 
-##  Screenshots
+##  Pages
 
 <p align="center">
   <img src="images/homepage.png" alt="homepage">
@@ -28,7 +28,8 @@ neighborhood.
 ---
 ## Hosted URL 
 Frontend: https://yourprojectname.vercel.app   
-Backend API: https://yourprojectname.onrender.com 
+Backend API: https://yourprojectname.onrender.com
+
 
 ## Features Implemented 
 ### **Frontend**
@@ -78,7 +79,6 @@ launch and report game progress and award points or discounts tied to orders.
 - Reverse geocoding for location detection. 
 #### Firebase Modules Used 
 - javascript 
-// Authentication 
 - getAuth  
 - RecaptchaVerifier
 - signInWithPhoneNumber  
@@ -127,10 +127,12 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 - Firebase Hosting (Assumed, since Firebase is used) 
 - Cloudinary (Image hosting & transformations) 
 
-# Local Setup 
+# Local Setup
+```
 ***Clone the Repository***
 - git clone https://github.com/yourusername/yourrepo.git 
-- cd yourrepo 
+- cd yourrepo
+``` 
 ## Frontend Setup 
 - cd frontend 
 - npm install 
