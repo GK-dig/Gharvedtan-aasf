@@ -1,4 +1,5 @@
-Gharvedtan  
+# Gharvedtan
+
 A trust-based, hyperlocal platform connecting home-cooked meal providers, 
 delivery partners, and everyday users to deliver not just food, but care, 
 connection, and small daily needs. It empowers local home cooks, supports 
@@ -8,8 +9,20 @@ social layer with chats, group orders, and gamified rewards. Verified delivery
 partners are rated on helpfulness and incentivized for multi-tasking. The platform 
 fosters dignity, reduces food waste, fights loneliness, and creates 
 micro-jobs—making every delivery a step toward a kinder, more connected 
-neighborhood. 
+neighborhood.
 
+
+
+##  Screenshots
+
+![Screenshot 1](images/Screenshot%202025-08-11%20233430.png)
+![Screenshot 2](images/Screenshot%202025-08-11%20233453.png)
+![Screenshot 3](images/Screenshot%202025-08-11%20233527.png)
+![Screenshot 4](images/Screenshot%202025-08-11%20233700.png)
+![Screenshot 5](images/Screenshot%202025-08-11%20233719.png)
+![Screenshot 6](images/Screenshot%202025-08-11%20233807.png)
+
+---
 Hosted URL 
 Frontend: https://yourprojectname.vercel.app   
 Backend API: https://yourprojectname.onrender.com   
