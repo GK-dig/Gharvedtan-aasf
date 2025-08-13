@@ -233,7 +233,7 @@
   transition: width 0.3s ease, background-color 0.3s ease;
 }
 
-/* Password strength colors */
+
 .strength-weak {
   background-color: var(--color-error);
   width: 25%;

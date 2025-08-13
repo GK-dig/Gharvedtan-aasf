@@ -184,7 +184,6 @@ body {
   padding: 10px;
 }
 
-/* Image upload styling */
 .image-upload-label {
   font-family: var(--plus-jakarta-sans);
   font-size: 1rem;
@@ -223,7 +222,7 @@ body {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
-/* Image preview container */
+
 .image-preview-container {
   min-height: 200px;
   width: 80%;
@@ -273,7 +272,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Alert notifications */
+
 .alert {
   position: fixed;
   top: 30px;
@@ -315,7 +314,7 @@ body {
   box-shadow: none !important;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .subscription {
     width: 90%;

@@ -1,6 +1,5 @@
 @import url("./css/sections/header.css");
 @import url("./css/style.css");
-/* Terms & Conditions Professional Styles */
 :root {
   --primary-color: #b1454a;
   --secondary-color: #121212;
@@ -67,7 +66,7 @@
             margin: 3rem auto;
         }
  
-/* Base Styles */
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--black-300);
@@ -84,9 +83,8 @@ body {
   justify-content: center;
 }
 
-/* Header Styles */
+
 .terms-header {
-  background-color: var(--primary-color);
   color: var(--color-white);
   padding: 6rem 0 3rem;
   text-align: center;
@@ -140,7 +138,7 @@ body {
   height: 20px;
 }
 
-/* Main Content Styles */
+
 .terms-container {
   padding: 4rem 0;
 }
@@ -193,7 +191,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* List Styles */
+
 .numbered-list, .legal-list {
   counter-reset: item;
   padding-left: 0;
@@ -249,7 +247,7 @@ body {
   transform: rotate(45deg);
 }
 
-/* Legal Details */
+
 .legal-details {
   background-color: rgba(177, 69, 74, 0.05);
   padding: 2rem;
@@ -267,7 +265,7 @@ body {
   font-weight: 600;
 }
 
-/* Closing Message */
+
 .closing-message {
   margin-top: 4rem;
   padding-top: 2rem;
@@ -280,7 +278,7 @@ body {
   line-height: 1.8;
 }
 
-/* Footer Styles */
+
 .terms-footer {
   background-color: var(--secondary-color);
   color: var(--color-white);
@@ -323,7 +321,7 @@ body {
   width: 100%;
 }
 
-/* Responsive Design */
+
 @media screen and (max-width: 992px) {
   .terms-header {
     padding: 5rem 0 2.5rem;

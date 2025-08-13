@@ -1,13 +1,12 @@
 import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-import { db } from './firebase.js'; // Your Firestore config setup
+import { db } from './firebase.js'; 
 
-// State variables
+
 let otpGenerated = null;
 let otpExpirationTime = null;
-let userCoordinates = null; // Declare userCoordinates at the top
-let locationVerified = false; // Declare locationVerified for tracking location status
+let userCoordinates = null; 
+let locationVerified = false; 
 
-// DOM Elements
 const cookNameInput = document.getElementById('cookname');
 const cookMobInput = document.getElementById('cookmob');
 const sendOtpButton = document.getElementById('sendOtpButton');
@@ -61,13 +60,12 @@ function isOtpExpired() {
     return new Date().getTime() > otpExpirationTime;
 }
 
-// Function to check if the mobile number already exists in Firestore
 async function isMobileNumberAlreadyExists(mobileNumber) {
     const sellersRef = collection(db, "sellers");
     const q = query(sellersRef, where("mobile", "==", mobileNumber));
     const querySnapshot = await getDocs(q);
 
-    return !querySnapshot.empty; // Returns true if the number already exists
+    return !querySnapshot.empty; 
 }
 
 function handleSendOtp() {
@@ -298,7 +296,6 @@ async function handleSubmit(event) {
 
     const mobile = cookMobInput.value.trim();
 
-    // Check if the mobile number is already in use
     const isDuplicate = await isMobileNumberAlreadyExists(mobile);
 
     if (isDuplicate) {
@@ -312,7 +309,6 @@ async function handleSubmit(event) {
     const specialties = specialtiesInput.value.trim().split(',').map(s => s.trim());
     const address = cookAddressInput.value.trim();
 
-    // Firestore logic to save data
     try {
         const docRef = await addDoc(collection(db, "sellers"), {
             password,
@@ -321,16 +317,15 @@ async function handleSubmit(event) {
             experience,
             specialties,
             address,
-            location: userCoordinates // save location if needed
+            location: userCoordinates 
         });
 
         console.log("Document written with ID: ", docRef.id);
         showStatus(locationStatus, 'Registration successful! Redirecting to menu setup...', 'success');
         
-        // Store the seller ID in sessionStorage for use in addmenu.html
         sessionStorage.setItem('sellerId', docRef.id);
         
-        // Redirect after 2 seconds to allow user to see success message
+        
         setTimeout(() => {
             window.location.href = 'addmenu/addmenu.html';
         }, 2000);

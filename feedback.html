@@ -59,7 +59,7 @@
     <button type="button" class="tool-btn button" data-cmd="insertOrderedList" title="Numbered list">1.List</button>
   </div>
 
-  <!-- Editable area (now only text) -->
+ 
   <div id="comment" class="editor empty" contenteditable="true"
        data-placeholder="Type here..." aria-label="Feedback"></div>
               <div class="subscription__form" data-aos="fade-up">
@@ -102,14 +102,13 @@
     </footer>
    <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize AOS animations
+ 
   AOS.init({
     duration: 800,
     easing: 'ease-in-out',
     once: true
   });
 
-  // Profile dropdown functionality
   const profileIcon = document.getElementById('profileIcon');
   const dropdownMenu = document.getElementById('dropdownMenu');
   
@@ -119,17 +118,15 @@ document.addEventListener('DOMContentLoaded', function() {
       dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', function() {
       dropdownMenu.style.display = 'none';
     });
   }
 
-  // Feedback editor functionality
+
   const editor = document.getElementById('comment');
   const toolBtns = document.querySelectorAll('.tool-btn');
 
-  // Apply formatting on button click
   toolBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const cmd = btn.dataset.cmd;
@@ -140,34 +137,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Auto-grow editor height
+
   function adjustEditorHeight() {
     editor.style.height = 'auto';
     editor.style.height = editor.scrollHeight + 'px';
   }
 
-  // Placeholder toggle
   function togglePlaceholder() {
     const text = editor.textContent.replace(/\u200B/g, '').trim();
     if (!text) editor.classList.add('empty');
     else editor.classList.remove('empty');
   }
 
-  // Update on input
+
   editor.addEventListener('input', () => {
     adjustEditorHeight();
     togglePlaceholder();
   });
 
-  // Also update placeholder on focus/blur
+
   editor.addEventListener('focus', togglePlaceholder);
   editor.addEventListener('blur', togglePlaceholder);
 
-  // Initialize on load
+  
   adjustEditorHeight();
   togglePlaceholder();
 
-  // Keyboard shortcuts for formatting
+ 
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'i' || e.key === 'u')) {
       setTimeout(() => {
@@ -178,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Enhanced submit feedback function with localStorage
+
 function submitFeedback() {
   const editor = document.getElementById('comment');
   if (!editor) {
@@ -196,14 +192,12 @@ function submitFeedback() {
   }
 
   try {
-    // Create feedback object with timestamp
     const feedback = {
       content: text,
       htmlContent: html,
       timestamp: new Date().toISOString()
     };
 
-    // Get existing feedback or initialize empty array
     let allFeedback = [];
     const storedData = localStorage.getItem('gharvedtan_feedback');
     
@@ -220,22 +214,21 @@ function submitFeedback() {
       }
     }
 
-    // Add new feedback
+   
     allFeedback.push(feedback);
     
-    // Store back to localStorage
+    
     localStorage.setItem('gharvedtan_feedback', JSON.stringify(allFeedback));
     
-    // Verify storage
+    
     const verify = localStorage.getItem('gharvedtan_feedback');
     if (!verify) {
       throw new Error('Failed to verify storage');
     }
 
-    // Success
+    
     alert('Thank you for your feedback! ');
     
-    // Reset editor
     editor.innerHTML = '';
     editor.style.height = 'auto';
     editor.classList.add('empty');
@@ -246,7 +239,7 @@ function submitFeedback() {
   }
 }
 
-// Debug function to check storage
+
 function viewStoredFeedback() {
   try {
     const stored = localStorage.getItem('gharvedtan_feedback');

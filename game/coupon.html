@@ -138,7 +138,6 @@
     </div>
 
     <script>
-        // Create confetti effect
         function createConfetti() {
             const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
             
@@ -155,13 +154,13 @@
             }
         }
         
-        // Check if reward exists
+        
         if (sessionStorage.getItem('deliveryReward') === 'true') {
             createConfetti();
-            // Remove the reward flag so it can't be claimed again
+            
             sessionStorage.removeItem('deliveryReward');
             
-            // Countdown timer
+           
             let seconds = 12;
             const countdownElement = document.getElementById('countdown');
             const countdownInterval = setInterval(() => {
@@ -174,7 +173,7 @@
                 }
             }, 1000);
         } else {
-            // If someone tries to access this page without winning, redirect them immediately
+            
             window.location.href = '../index.html';
         }
     </script>

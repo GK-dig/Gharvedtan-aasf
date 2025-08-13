@@ -320,7 +320,7 @@ function formatTime(seconds) {
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
 }
-// ... (previous game.js code remains the same until showMessage function)
+
 
 function showMessage(text, type) {
     const message = document.getElementById('message');
@@ -330,14 +330,12 @@ function showMessage(text, type) {
     message.classList.remove('hidden');
     message.classList.add('show');
     
-    // Add a button to claim reward if player won
     if (type === "win") {
         const button = document.createElement('button');
         button.textContent = 'Claim Your Free Delivery!';
         button.onclick = function() {
-            // Store the reward in sessionStorage
             sessionStorage.setItem('deliveryReward', 'true');
-            // Redirect to coupon page
+           
             window.location.href = 'coupon.html';
         };
         content.appendChild(document.createElement('br'));
@@ -345,7 +343,7 @@ function showMessage(text, type) {
     }
 }
 
-// ... (rest of the game.js code remains the same)
+
 function hideMessage() {
     document.getElementById('message').classList.add('hidden');
 }

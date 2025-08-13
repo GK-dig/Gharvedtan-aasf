@@ -58,7 +58,7 @@
 
     const userData = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    // Function to check login status and handle menu button click
+    
     function handleAddMenuClick(e) {
       if (!userData) {
         e.preventDefault();
@@ -71,7 +71,7 @@
       }
     }
 
-    // Add event listener to the Add Menu button
+  
     addMenuBtn.addEventListener("click", handleAddMenuClick);
 
     if (userData) {

@@ -9,7 +9,7 @@
 
   <style>
     :root {
-      --primary-color: #de5f5f; /* Replace with your actual primary color */
+      --primary-color: #de5f5f; 
       --black-400: #222;
       --black-300: #444;
       --playfair-display: 'Playfair Display', serif;
@@ -31,7 +31,7 @@
       justify-content: center;
       text-align: center;
       background-color: var(--primary-color);
-      background-image: url('../assets/logout_bg.png'); /* Optional background image */
+      background-image: url('../assets/logout_bg.png'); 
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -87,10 +87,10 @@
     <button id="logoutBtn" class="logout-btn">Logout</button>
   </div>
 
-  <!-- AOS Animation Script -->
+
   <script src="../dist/aos.js"></script>
 
-  <!-- Firebase Logout Script -->
+
   <script type="module">
     AOS.init({ duration: 1000, offset: 100 });
 
@@ -111,14 +111,12 @@
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       try {
-        // Firebase sign out
+      
         await signOut(auth);
-
-        // Clear session storage
         sessionStorage.removeItem("loggedInUser");
 
         alert("You have been logged out.");
-        window.location.href = "/main.html"; // Redirect to main page
+        window.location.href = "/main.html"; 
       } catch (error) {
         console.error("Logout error:", error);
         alert("Logout failed: " + error.message);

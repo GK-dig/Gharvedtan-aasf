@@ -1,4 +1,3 @@
-// Import Firebase modules (this would be in your main HTML file)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { 
   getAuth, 
@@ -13,7 +12,7 @@ import {
   setDoc 
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// Initialize Firebase
+
 const firebaseConfig = {
   apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
   authDomain: "gharvedtan-auth.firebaseapp.com",
@@ -28,12 +27,12 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Global variables
+
 let confirmationResult = null;
 let recaptchaVerifier = null;
 let detectedLocationData = null;
 
-// DOM Elements
+
 const signupName = document.getElementById('signupName');
 const signupPass = document.getElementById('signupPass');
 const signupRepass = document.getElementById('signupRepass');
@@ -47,13 +46,13 @@ const clearCityBtn = document.getElementById('clear-city-btn');
 const detectLocationBtn = document.getElementById('detect-location-btn');
 const locationDetails = document.getElementById('location-details');
 
-// Initialize AOS animations
+
 AOS.init({
   duration: 1000,
   offset: 100,
 });
 
-// Initialize reCAPTCHA
+
 function initializeRecaptcha() {
   recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
     size: 'invisible',
@@ -63,7 +62,6 @@ function initializeRecaptcha() {
   }, auth);
 }
 
-// Send OTP function
 async function sendOTP() {
   const phone = signupPhone.value.trim();
   
@@ -90,7 +88,7 @@ async function sendOTP() {
   }
 }
 
-// Verify OTP function
+
 async function verifyOTP() {
   const otp = otpInput.value.trim();
   const name = signupName.value.trim();
@@ -149,7 +147,7 @@ async function verifyOTP() {
   }
 }
 
-// Google Sign-In function
+
 async function googleSignIn() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -187,20 +185,18 @@ async function googleSignIn() {
   }
 }
 
-// Enhanced Location Detection with precise coordinates
 async function detectLocation() {
   if (!navigator.geolocation) {
     alert("Geolocation is not supported by your browser.");
     return;
   }
 
-  // Show loading state
+
   detectLocationBtn.disabled = true;
   detectLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detecting...';
   cityName.textContent = "Detecting your location...";
 
   try {
-    // Get high-accuracy position
     const position = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         resolve, 
@@ -215,7 +211,7 @@ async function detectLocation() {
 
     const { latitude, longitude } = position.coords;
     
-    // Fetch detailed address from Nominatim
+
     const response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
     );
@@ -225,7 +221,7 @@ async function detectLocation() {
     const data = await response.json();
     const address = data.address;
     
-    // Construct detailed address string
+   
     const addressComponents = [
       address.house_number,
       address.road,
@@ -238,7 +234,7 @@ async function detectLocation() {
     
     const locationText = addressComponents.join(', ') || "Your current location";
     
-    // Store complete location data with coordinates
+ 
     detectedLocationData = {
       display: locationText,
       coordinates: { 
@@ -250,7 +246,6 @@ async function detectLocation() {
       timestamp: new Date()
     };
     
-    // Update UI
     cityName.textContent = locationText;
     cityDropdown.style.display = 'none';
     locationDetails.style.display = 'block';
@@ -271,24 +266,23 @@ async function detectLocation() {
   }
 }
 
-// City selection handlers
+
 function setupCitySelection() {
   cityDropdown.addEventListener('change', () => {
     cityName.textContent = cityDropdown.value;
     cityDropdown.style.display = 'none';
     locationDetails.style.display = 'none';
-    detectedLocationData = null; // Clear detected data when manually selecting
+    detectedLocationData = null; 
   });
 
   clearCityBtn.addEventListener('click', () => {
     cityName.textContent = 'None';
     cityDropdown.style.display = 'block';
     locationDetails.style.display = 'none';
-    detectedLocationData = null; // Clear detected data
+    detectedLocationData = null; 
   });
 }
 
-// Form validation
 function setupFormValidation() {
   const validateForm = () => {
     const isFormValid = signupName.value.trim() && 
@@ -311,14 +305,13 @@ function setupFormValidation() {
   validateForm();
 }
 
-// Initialize the app
+
 document.addEventListener('DOMContentLoaded', () => {
   initializeRecaptcha();
   setupCitySelection();
   setupFormValidation();
 });
 
-// Expose functions to window for HTML onclick handlers
 window.sendOTP = sendOTP;
 window.verifyOTP = verifyOTP;
 window.googleSignIn = googleSignIn;

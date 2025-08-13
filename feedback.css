@@ -29,10 +29,10 @@
   width: 100%;
 }
 #comment{
-    width: 500px;           /* Field width */
-    min-height: 40px;       /* Starting height */
-    resize: none;           /* Prevent manual resize handle */
-    overflow: hidden;       /* Hide scrollbars */
+    width: 500px;          
+    min-height: 40px;       
+    resize: none;         
+    overflow: hidden;       
       box-sizing: border-box;
   padding: 1rem;
   font-size: 1rem;
@@ -46,8 +46,8 @@
 }
 
 textarea::placeholder {
-        color: rgb(255, 255, 255);  /* Change this to your desired color */
-        opacity: 1;  /* Make sure color is fully visible */
+        color: rgb(255, 255, 255);  
+        opacity: 1;  
     }
 
 
@@ -67,7 +67,7 @@ textarea::placeholder {
 
   .editor {
     width: 100%;
-    max-width: 700px;        /* adjust */
+    max-width: 700px;       
     min-height: 60px;
     padding: 10px;
     border-radius: 8px;
@@ -75,30 +75,29 @@ textarea::placeholder {
     box-sizing: border-box;
     font-size: 15px;
     line-height: 1.4;
-    overflow: hidden; /* hide scrollbars (we auto-resize) */
+    overflow: hidden; 
     background: #fff;
-    white-space: pre-wrap; /* preserve wrap */
+    white-space: pre-wrap; 
   }
 
-  /* Fake placeholder: only shown when we add .empty */
   .editor.empty::before {
     content: attr(data-placeholder);
-    color: #ffffff79;          /* placeholder color */
+    color: #ffffff79;         
     pointer-events: none;
     display: block;
     opacity: 1;
   }
   .subscription__form button {
-  width: 100%; /* Full width */
-  padding: 15px; /* Adjust padding to make the button taller */
-  border-radius: 30px; /* Rounded corners */
-  background-color: #3d3b60; /* Dark background color */
-  color: white; /* White text color */
-  font-size: 16px; /* Font size */
-  border: none; /* Remove the border */
-  cursor: pointer; /* Pointer cursor */
+  width: 100%; 
+  padding: 15px;
+  border-radius: 30px; 
+  background-color: #3d3b60; 
+  color: white; 
+  font-size: 16px;
+  border: none; 
+  cursor: pointer; 
 }
 
 .subscription__form button:hover {
-  background-color: #2a2a49; /* Darker background on hover */
+  background-color: #2a2a49; 
 }

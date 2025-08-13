@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Add these before your script -->
+  
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -81,17 +81,15 @@
             <input type="text" id="specialties" placeholder="e.g., Italian, Vegan, Desserts" required>
         </div>
         
-        <!-- Location Section -->
+        
         <div class="form-group">
             <label for="cookaddress">Your Location</label>
             <input type="text" id="cookaddress" placeholder="Your location will appear here" readonly>
             <button id="detect-location-btn">Detect My Location</button>
             <div id="location-status"></div>
 
-            <!-- Container for displaying coordinates -->
             <div id="coordinates-display" style="margin-top: 10px; font-size: 14px;"></div>
 
-            <!-- Map Container -->
             <div id="map-container" style="height: 200px; width: 100%; margin-top: 15px; display: none;">
                 <iframe id="osm-map" src="" width="100%" height="100%" style="border: 0;"></iframe>
             </div>

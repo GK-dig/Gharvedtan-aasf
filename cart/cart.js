@@ -7,7 +7,7 @@ import {
   increment
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// DOM Elements
+
 const cartItemsContainer = document.getElementById('cartItems');
 const itemCountElement = document.getElementById('itemCount');
 const subtotalElement = document.getElementById('subtotal');
@@ -17,7 +17,7 @@ const clearCartBtn = document.getElementById('clearCartBtn');
 
 let cartData = null;
 
-// Initialize on page load
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const loggedInUserStr = sessionStorage.getItem('loggedInUser');
@@ -141,14 +141,14 @@ function attachEventListeners() {
     clearCartBtn.addEventListener('click', handleClearCart);
   }
 
-  // Updated checkout button handler
+  
   if (checkoutBtn) {
     checkoutBtn.removeEventListener('click', handleCheckout);
     checkoutBtn.addEventListener('click', handleCheckout);
   }
 }
 
-// Handler functions
+
 const handleDecrease = async (e) => {
   const itemId = e.target.dataset.id;
   const user = getLoggedInUser();
@@ -202,7 +202,7 @@ const handleClearCart = async () => {
   }
 };
 
-// NEW: Checkout handler with Razorpay integration
+
 const handleCheckout = async (e) => {
   e.preventDefault();
   const user = getLoggedInUser();
@@ -212,13 +212,13 @@ const handleCheckout = async (e) => {
   
   const options = {
     key: "rzp_test_So0Z8L6zsfTX4h",
-    amount: Math.round(totalAmount * 100), // Razorpay expects amount in paise
+    amount: Math.round(totalAmount * 100), 
     currency: "INR",
     name: "My Test Store",
     description: "Order Payment",
     image: "https://your-logo-url.com/logo.png",
     handler: async function(response) {
-      // Payment successful
+
       await handleSuccessfulPayment(response, user.uid, totalAmount);
     },
     prefill: {
@@ -235,10 +235,10 @@ const handleCheckout = async (e) => {
   rzp1.open();
 };
 
-// NEW: Handle successful payment and game prompt
+
 async function handleSuccessfulPayment(response, userId, amount) {
   try {
-    // Save order details
+ 
     const order = {
       paymentId: response.razorpay_payment_id,
       amount: amount,
@@ -247,10 +247,9 @@ async function handleSuccessfulPayment(response, userId, amount) {
       status: "completed"
     };
 
-    // In a real app, you would save this to your database
+    
     console.log("Order completed:", order);
     
-    // Clear the cart after successful payment
     const cartRef = doc(db, "carts", userId);
     await updateDoc(cartRef, {
       items: [],
@@ -258,14 +257,13 @@ async function handleSuccessfulPayment(response, userId, amount) {
       updatedAt: new Date()
     });
 
-    // Ask user if they want to play the game
     const playGame = confirm('Payment successful! Would you like to play a game and earn discounts on your next order?');
     
     if (playGame) {
-      // Redirect to game page
+     
       window.location.href = '../game/index.html';
     } else {
-      // Redirect to order confirmation or home page
+      
       window.location.href = '../index.html';
     }
   } catch (error) {
