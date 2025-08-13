@@ -25,8 +25,9 @@ neighborhood.
 
 ---
 ## Hosted URL 
+```
 gharvedtan-aasf-one.vercel.app
-
+```
 
 ## Features Implemented 
 ### **Frontend**
