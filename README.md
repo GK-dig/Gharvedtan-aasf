@@ -108,6 +108,11 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 - Cloudinary (Image hosting & transformations) 
 
 # Local Setup
+```
+Clone the Repository 
+git clone https://github.com/yourusername/yourrepo.git 
+cd yourrepo
+```
 
 ### Team Members 
 - ***Tanishqa Sharma***  
