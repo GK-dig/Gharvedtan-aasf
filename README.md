@@ -110,8 +110,8 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 # Local Setup
 ```
 Clone the Repository 
-git clone https://github.com/yourusername/yourrepo.git 
-cd yourrepo
+git clone https://github.com/GK-dig/Gharvedtan-aasf.git 
+cd Gharvedtan-aasf//
 ```
 
 ### Team Members 
