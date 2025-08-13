@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   } else if (dropdownMenu) {
     dropdownMenu.innerHTML = `
-      <a href="/loginsignup/work.html">Login / Signup</a>
+      <a href="loginsignup/work.html">Login / Signup</a>
     `;
   }
 
