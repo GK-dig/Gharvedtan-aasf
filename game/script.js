@@ -92,7 +92,7 @@ class Maze {
 
     
 const dpr = window.devicePixelRatio || 1;
-const resolutionFactor = 2;  
+const resolutionFactor = 16;  
 
 const displayWidth = this.cols * this.cellSize;
 const displayHeight = this.rows * this.cellSize;
