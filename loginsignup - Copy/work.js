@@ -103,7 +103,7 @@ loginButton.addEventListener('click', async (e) => {
   
   if (loginSuccess) {
     // Redirect to dashboard after successful login
-   window.location.href = "/addmenu/addmenu.html";
+   window.location.href = "../addmenu/addmenu.html";
 
 
   } else {
