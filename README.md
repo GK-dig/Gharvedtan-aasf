@@ -25,8 +25,7 @@ neighborhood.
 
 ---
 ## Hosted URL 
-Frontend: https://yourprojectname.vercel.app   
-Backend API: https://yourprojectname.onrender.com
+gharvedtan-aasf-one.vercel.app
 
 
 ## Features Implemented 
