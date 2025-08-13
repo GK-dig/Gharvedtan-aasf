@@ -12,7 +12,6 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDImyxdSlB0Yr0PdMx32nVccGt7n3zMWZw",
   authDomain: "gharvedtan-auth.firebaseapp.com",
@@ -62,7 +61,13 @@ const loginUser = async (phoneNumber, password) => {
       alert("Incorrect password");
       return false;
     }
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
     
+    if (loggedInUser) {
+      alert("Please log out as user, to log in as seller");
+      window.location.href = "../index.html";  
+      return;  
+    }
 
     sessionStorage.setItem('user', JSON.stringify({
       uid: sellerDoc.id, 
