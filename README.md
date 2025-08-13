@@ -26,7 +26,7 @@ neighborhood.
 ---
 ## Hosted URL 
 ```
-gharvedtan-aasf-one.vercel.app
+gharvedtan-aasf-brown.vercel.app
 ```
 
 ## Features Implemented 
