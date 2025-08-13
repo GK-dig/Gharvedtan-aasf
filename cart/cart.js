@@ -64,7 +64,8 @@ async function loadCart(userId) {
           price: Math.max(0, parseFloat(item.price) || 0),
           quantity: item.quantity > 0 ? item.quantity : 1,
           sellerName: item.sellerName || 'Unknown Seller',
-          photoUrl: item.photoUrl?.trim() || null
+          photoUrl: item.photoUrl?.trim()|| null,
+           
         }));
 
       renderCart();
@@ -92,7 +93,7 @@ function renderCart() {
 
     itemElement.innerHTML = `
       <img 
-        src="${item.photoUrl || '../assets/default-food.png'}" 
+        src="${item.photoUrl || '../menu/assets/default-food.png'}" 
         alt="${item.name}" 
         class="cart-item-image"
         onerror="this.onerror=null; this.src='../assets/default-food.png';">
@@ -357,7 +358,7 @@ function updateSummary() {
 function showEmptyCart() {
   cartItemsContainer.innerHTML = `
     <div class="empty-cart">
-      <img src="../assets/empty-cart.svg" alt="Empty cart">
+      <img src="../assets/cart_empty.png" alt="Empty cart">
       <h3>Your cart is empty</h3>
       <p>Looks like you haven't added anything to your cart yet</p>
       <a href="../index.html" class="btn-primary">Browse Menu</a>
