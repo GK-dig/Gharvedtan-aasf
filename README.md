@@ -69,14 +69,16 @@ launch and report game progress and award points or discounts tied to orders.
 - Firebase (Backend-as-a-Service) 
 - Firebase Authentication (Phone, Google) 
 - Firestore Database (NoSQL) 
-- Cloud Storage (for images) 
+- Cloud Storage (for images)
+  
 #### Frontend Libraries & Frameworks 
 - Razorpay 
 - Payment gateway integration (for checkout). 
 - Cloudinary 
 - Image upload, optimization, and CDN delivery. 
 - Nominatim (OpenStreetMap API) 
-- Reverse geocoding for location detection. 
+- Reverse geocoding for location detection.
+- 
 #### Firebase Modules Used 
 - javascript 
 - getAuth  
@@ -85,8 +87,6 @@ launch and report game progress and award points or discounts tied to orders.
 - GoogleAuthProvider  
 - signInWithPopup 
 - onAuthStateChanged  
-
- 
 -  getFirestore  
 - doc  
 - setDoc  
@@ -103,7 +103,8 @@ launch and report game progress and award points or discounts tied to orders.
 - CSS Animations & Keyframes 
 Used for transitions (e.g., coupon fade-in, confetti effects). 
 - Flexbox & Grid Layout 
-- Responsive Design  
+- Responsive Design
+- 
 #### Game Development (Delivery Game) 
 - HTML5 Canvas 
 - Maze rendering, player movement, and collision detection. 
@@ -116,50 +117,25 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 - Session Storage 
 - Storing user login state, rewards, and cart data. 
 - Geolocation API 
-- Detecting user location. 
+- Detecting user location.
+- 
 #### External APIs & Services 
 - Cloudinary for Image uploads 
 (https://api.cloudinary.com/v1_1/dew4c5d4k/upload) 
 - Reverse geocoding 
 (https://nominatim.openstreetmap.org/reverse) 
-- Razorpay for Payment processing (rzp_test_So0Z8L6zsfTX4h) 
+- Razorpay for Payment processing (rzp_test_So0Z8L6zsfTX4h)
+  
 #### Backend & Hosting 
 - Firebase Hosting (Assumed, since Firebase is used) 
 - Cloudinary (Image hosting & transformations) 
 
 # Local Setup
-```
-***Clone the Repository***
-- git clone https://github.com/yourusername/yourrepo.git 
-- cd yourrepo
-``` 
-## Frontend Setup 
-- cd frontend 
-- npm install 
-- Create .env file with your Firebase config: 
-- REACT_APP_FIREBASE_API_KEY=your_api_key 
-- REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain 
-- REACT_APP_FIREBASE_PROJECT_ID=your_project_id 
-- REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket 
-- REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id 
-- REACT_APP_FIREBASE_APP_ID=your_app_id 
-### ***Start frontend locally:*** 
-- npm start 
-## Backend Setup  
-- cd ../backend 
-- npm install 
-- Create .env file with your backend environment variables: 
-- MONGO_URI=your_mongodb_atlas_connection
-- PORT=5000 
-### Start backend locally: 
-- npm run dev 
-- Run the Project 
-- *Backend: http://localhost:5000*
-- *Frontend: http://localhost:3000*
 
 ### Team Members 
 - ***Tanishqa Sharma***  
 - ***Pund Vedshree Raju***
-- ***Gargi Kalia*** 
+- ***Gargi Kalia***
+  
 ### Demo Video 
 [Watchout the demo video  ](https://drive.google.com/file/d/1EzjH_UuTbMbYN_eN7KMJxCkYZTAIuih3/view?usp=drive_link)
