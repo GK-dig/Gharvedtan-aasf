@@ -15,12 +15,15 @@ neighborhood.
 
 ##  Screenshots
 
-![Screenshot 1](images/Screenshot%202025-08-11%20233430.png)
-![Screenshot 2](images/Screenshot%202025-08-11%20233453.png)
-![Screenshot 3](images/Screenshot%202025-08-11%20233527.png)
-![Screenshot 4](images/Screenshot%202025-08-11%20233700.png)
-![Screenshot 5](images/Screenshot%202025-08-11%20233719.png)
-![Screenshot 6](images/Screenshot%202025-08-11%20233807.png)
+<p align="center">
+  <img src="images/Screenshot%202025-08-11%20233430.png" alt="Screenshot 1" width="300">
+  <img src="images/Screenshot%202025-08-11%20233453.png" alt="Screenshot 2" width="300">
+  <img src="images/Screenshot%202025-08-11%20233527.png" alt="Screenshot 3" width="300">
+  <img src="images/Screenshot%202025-08-11%20233700.png" alt="Screenshot 4" width="300">
+  <img src="images/Screenshot%202025-08-11%20233719.png" alt="Screenshot 5" width="300">
+  <img src="images/Screenshot%202025-08-11%20233807.png" alt="Screenshot 6" width="300">
+</p>
+
 
 ---
 Hosted URL 
