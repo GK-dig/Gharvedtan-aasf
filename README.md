@@ -12,7 +12,6 @@ micro-jobs—making every delivery a step toward a kinder, more connected
 neighborhood.
 
 
-
 ##  Pages
 
 <p align="center">
@@ -78,7 +77,7 @@ launch and report game progress and award points or discounts tied to orders.
 - Image upload, optimization, and CDN delivery. 
 - Nominatim (OpenStreetMap API) 
 - Reverse geocoding for location detection.
-- 
+ 
 #### Firebase Modules Used 
 - javascript 
 - getAuth  
