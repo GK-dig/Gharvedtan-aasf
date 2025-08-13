@@ -42,6 +42,7 @@
             background-repeat: repeat-x;
             background-position: bottom;
             border-bottom: 1px solid var(--border);
+            color:black
         }
         
         .contact-header h1 {
@@ -49,6 +50,8 @@
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             color: var(--text);
+
+            
         }
         
         .contact-header p {
@@ -94,6 +97,7 @@ body {
     url('../assets/overlay-pattern.png');
   background-size: cover;
   background-position: center;
+  color: black;
 }
 
 .terms-header h1 {
