@@ -75,26 +75,6 @@ launch and report game progress and award points or discounts tied to orders.
 - Image upload, optimization, and CDN delivery. 
 - Nominatim (OpenStreetMap API) 
 - Reverse geocoding for location detection.
- 
-#### Firebase Modules Used 
-- javascript 
-- getAuth  
-- RecaptchaVerifier
-- signInWithPhoneNumber  
-- GoogleAuthProvider  
-- signInWithPopup 
-- onAuthStateChanged  
--  getFirestore  
-- doc  
-- setDoc  
-- getDoc
-- updateDoc  
-- collection  
-- query  
-- where 
-- getDocs
-- arrayUnion  
-- arrayRemove
 
 #### UI & Styling 
 - CSS Animations & Keyframes 
