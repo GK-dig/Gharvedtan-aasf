@@ -16,12 +16,12 @@ neighborhood.
 ##  Screenshots
 
 <p align="center">
-  <img src="/images/homepage.png" alt="homepage">
-  <img src="/images/aboutus.png" alt="AboutUs" width="300">
-  <img src="/images/discovermore.png" alt="DiscoverMore" width="300">
-  <img src="/images/game.png" alt="game" width="300">
-  <img src="/images/signin.png" alt="Signin" width="300">
-  <img src="/images/discount.png" alt="Discount" width="300">
+  <img src="images/homepage.png" alt="homepage">
+  <img src="images/aboutus.png" alt="AboutUs" width="300">
+  <img src="images/discovermore.png" alt="DiscoverMore" width="300">
+  <img src="images/game.png" alt="game" width="300">
+  <img src="images/signin.png" alt="Signin" width="300">
+  <img src="images/discount.png" alt="Discount" width="300">
 </p>
 
 
