@@ -108,10 +108,10 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 - Cloudinary (Image hosting & transformations) 
 
 # Local Setup
-```
 Clone the Repository 
+```
 git clone https://github.com/GK-dig/Gharvedtan-aasf.git 
-cd Gharvedtan-aasf//
+cd Gharvedtan-aasf
 ```
 
 ### Team Members 
