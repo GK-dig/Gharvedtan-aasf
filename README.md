@@ -16,12 +16,12 @@ neighborhood.
 ##  Screenshots
 
 <p align="center">
-  <img src="images/Screenshot%202025-08-11%20233430.png" alt="Screenshot 1" width="300">
-  <img src="images/Screenshot%202025-08-11%20233453.png" alt="Screenshot 2" width="300">
-  <img src="images/Screenshot%202025-08-11%20233527.png" alt="Screenshot 3" width="300">
-  <img src="images/Screenshot%202025-08-11%20233700.png" alt="Screenshot 4" width="300">
-  <img src="images/Screenshot%202025-08-11%20233719.png" alt="Screenshot 5" width="300">
-  <img src="images/Screenshot%202025-08-11%20233807.png" alt="Screenshot 6" width="300">
+  <img src="./images/homepage.png" alt="homepage">
+  <img src="./images/aboutus.png" alt="AboutUs" width="300">
+  <img src="./images/discovermore.png" alt="DiscoverMore" width="300">
+  <img src="./images/game.png" alt="game" width="300">
+  <img src="./images/signin.png" alt="Signin" width="300">
+  <img src="./images/discount.png" alt="Discount" width="300">
 </p>
 
 
@@ -30,7 +30,13 @@ Hosted URL
 Frontend: https://yourprojectname.vercel.app   
 Backend API: https://yourprojectname.onrender.com   
 Features Implemented 
-Frontend ----Frontend Features---- 
+Frontend 
+Responsive Design – Works seamlessly on desktop
+ Browse Local Cuisines – Discover diverse home-cooked meals
+ Search & Filter – Find dishes by cuisine, or location
+ Add to Cart – Easy ordering system for multiple dishes
+ Location-Based Recommendations – Meals from chefs near you
+ Smooth Animations – For an engaging browsing experience
 Backend 
 The backend will handle user and seller authentication (role-based signup/login, 
 session or token management,  and optionally OAuth/Firebase Auth), store and 
@@ -63,8 +69,6 @@ Firebase Authentication (Phone, Google)
 Firestore Database (NoSQL) 
 Cloud Storage (for images) 
 2. Frontend Libraries & Frameworks 
-AOS (Animate On Scroll) 
-Used for scroll-triggered animations. 
 Razorpay 
 Payment gateway integration (for checkout). 
 Cloudinary 
@@ -102,7 +106,7 @@ addDoc
 CSS Animations & Keyframes 
 Used for transitions (e.g., coupon fade-in, confetti effects). 
 Flexbox & Grid Layout 
-Responsive Design (Mobile-first approach) 
+Responsive Design  
 5. Game Development (Delivery Game) 
 HTML5 Canvas 
 Maze rendering, player movement, and collision detection. 
