@@ -103,7 +103,7 @@ launch and report game progress and award points or discounts tied to orders.
 Used for transitions (e.g., coupon fade-in, confetti effects). 
 - Flexbox & Grid Layout 
 - Responsive Design
-- 
+  
 #### Game Development (Delivery Game) 
 - HTML5 Canvas 
 - Maze rendering, player movement, and collision detection. 
@@ -117,7 +117,7 @@ Used for transitions (e.g., coupon fade-in, confetti effects).
 - Storing user login state, rewards, and cart data. 
 - Geolocation API 
 - Detecting user location.
-- 
+  
 #### External APIs & Services 
 - Cloudinary for Image uploads 
 (https://api.cloudinary.com/v1_1/dew4c5d4k/upload) 
