@@ -39,15 +39,13 @@ Responsive Design – Works seamlessly on desktop
  Location-Based Recommendations – Meals from chefs near you
  Smooth Animations – For an engaging browsing experience
 ### **Backend** 
-The backend will handle user and seller authentication (role-based signup/login, 
-session or token management,  and optionally (Auth/Firebase Auth), store and 
-serve catalog data (items, categories, seller profiles), support seller CRUD for 
+The backend will handle user and seller authentication (role-based signup/login, and optionally (Auth/Firebase Auth), store and 
+serve catalog data (items, categories, sellers), support seller CRUD for 
 adding/updating/removing menu items (images, prices, stock, availability), power 
 a *fast search API* with location-aware filtering and text/indexed search, manage 
 buyer carts and persistent order checkout flows (order state transitions, price 
 calculation, tax/discounts), provide order management for sellers 
-(accept/prepare/dispatch), and drive the delivery experience (real-time order 
-tracking, ETA updates, notifications). It will also auto-detect user location 
+(accept/prepare/dispatch), and drive the delivery experience . It will also auto-detect user location 
 (geolocation fallback → reverse geocoding), handle payments or payment 
 intents, record analytics and logs, expose admin controls (user/seller moderation, 
 content and payout reporting), and include security/operational concerns (rate 
