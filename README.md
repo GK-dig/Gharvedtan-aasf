@@ -19,7 +19,6 @@ neighborhood.
   <img src="images/aboutus.png" alt="AboutUs" >
   <img src="images/discovermore.png" alt="DiscoverMore">
   <img src="images/game.png" alt="game">
-  <img src="images/signin.png" alt="Signin">
   <img src="images/discount.png" alt="Discount">
 </p>
 
